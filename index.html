@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CODES++ | Centro de Estudiantes</title>
-    <link rel="icon" href="ISOLOGO SIN FONDO.png" type="image/png" />
+    <link rel="icon" href="assets/images/ISOLOGO SIN FONDO.png" type="image/png" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -12,386 +12,334 @@
       rel="stylesheet"
     />
 
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <style>
-      :root {
-        --primary: #39c0c3;
-        --secondary: #000000;
-        --background: #f9f9f9;
-        --text: #333;
-      }
-
-      body {
-        font-family: "Roboto", sans-serif;
-        background-color: var(--background);
-        color: var(--text);
-      }
-
-      header img {
-        max-width: 220px;
-        border-radius: 12px;
-        padding: 10px;
-      }
-
-      .evento {
-        border-left: 5px solid var(--primary);
-        padding: 20px;
-        border-radius: 6px;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-      }
-
-      section h2 {
-        color: var(--primary);
-        margin-bottom: 30px;
-      }
-
-      footer {
-        background-color: var(--secondary);
-        color: white;
-        padding: 40px 20px;
-        text-align: center;
-        font-size: 0.9em;
-      }
-
-      footer a {
-        color: var(--primary);
-        text-decoration: none;
-      }
-
-      footer a:hover {
-        text-decoration: underline;
-      }
-
-      nav .nav-link:hover {
-        color: var(--primary) !important;
-      }
-      .card-title,
-      .card-text {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        hyphens: auto;
-      }
-
-      #contacto {
-        background-color: #f8f9fa;
-        padding: 2rem 1rem;
-        font-size: 0.95rem;
-      }
-
-      #contacto a {
-        color: #007bff;
-        text-decoration: none;
-      }
-
-      #contacto a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
   </head>
 
   <body>
-    <header class="bg-white border-bottom shadow-smfixed-top"
-    
->
-      <nav class="navbar navbar-expand-lg navbar-light container">
-        <a class="navbar-brand" href="#">
-          <img
-            src="LogoCodes.png"
-            alt="Logo CODES++"
-            style="max-height: 100px"
-          />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav gap-4">
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="#nosotros">Nosotros</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="#integrantes">Integrantes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="#eventos">Actividades</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="#extra">Recursos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-bold" href="#contacto">Contacto</a>
-            </li>
-          </ul>
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="assets/images/LogoCodes.png" alt="Logo CODES++" />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav gap-2">
+              <li class="nav-item">
+                <a class="nav-link" href="#nosotros">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#integrantes">Integrantes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#eventos">Actividades</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#extra">Recursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#contacto">Contacto</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
 
-    <section id="nosotros" class="container py-5">
-      <h2>¿Quiénes somos?</h2>
-      <p>
-        Somos el Centro Organizado de Estudiantes de Sistemas (CODES++), un
-        espacio creado por estudiantes y para estudiantes. Nacimos con el
-        objetivo de representar, acompañar y potenciar a toda la comunidad de la
-        carrera de Sistemas, promoviendo iniciativas académicas, sociales y
-        profesionales. Fuimos electos como centro de estudiantes en octubre de
-        2024 y desde entonces trabajamos activamente para representar los
-        intereses tanto de estudiantes como de personas graduadas de la carrera.
-        Nuestra participación incluye comisiones académicas, órganos de
-        cogobierno y espacios de decisión donde llevamos la voz del
-        estudiantado. Creemos en una comunidad unida, solidaria y comprometida
-        con el crecimiento colectivo. Por eso impulsamos talleres, charlas,
-        espacios de acompañamiento y propuestas que enriquecen la vida
-        universitaria dentro y fuera del aula.
-      </p>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>CODES++</h1>
+        <p>Centro Organizado de Estudiantes de Sistemas</p>
+        <p class="mt-3">Representando y potenciando a la comunidad estudiantil</p>
+      </div>
     </section>
-    <section id="integrantes" class="container py-5">
-      <h2 class="mb-4">Integrantes</h2>
-      <p>
-        Este es el equipo directivo del Centro de Estudiantes, quienes
-        representan y coordinan las actividades estudiantiles.
+
+    <!-- Nosotros Section -->
+    <section id="nosotros" class="container">
+      <h2 class="section-title">¿Quiénes somos?</h2>
+      <p class="section-subtitle">
+        Somos el Centro Organizado de Estudiantes de Sistemas (CODES++), un espacio creado por estudiantes y para estudiantes.
+      </p>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card p-4">
+            <p class="lead" style="font-size: 1.2rem; text-align: justify; margin: 0;">
+              Nacimos con el objetivo de representar, acompañar y potenciar a toda la comunidad de la carrera de Sistemas, 
+              promoviendo iniciativas académicas, sociales y profesionales. Fuimos electos como centro de estudiantes en 
+              octubre de 2024 y desde entonces trabajamos activamente para representar los intereses tanto de estudiantes 
+              como de personas graduadas de la carrera.
+            </p>
+            <p class="mt-3" style="text-align: justify;">
+              Nuestra participación incluye comisiones académicas, órganos de cogobierno y espacios de decisión donde 
+              llevamos la voz del estudiantado. Creemos en una comunidad unida, solidaria y comprometida con el crecimiento 
+              colectivo. Por eso impulsamos talleres, charlas, espacios de acompañamiento y propuestas que enriquecen la 
+              vida universitaria dentro y fuera del aula.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Integrantes Section -->
+    <section id="integrantes" class="container">
+      <h2 class="section-title">Integrantes</h2>
+      <p class="section-subtitle">
+        Conoce a los integrantes que forman parte de la comisión directiva del Centro de Estudiantes.
       </p>
 
+      <!-- Comisión Directiva -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <h3 class="text-center mb-4" style="color: var(--primary); font-weight: 600;">Comisión Directiva</h3>
+        </div>
+        
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card member-card">
+            <img src="assets/images/fede.jpg" alt="Federico Rizzo" class="member-avatar" />
+            <h5 class="member-name">Federico Rizzo</h5>
+            <p class="member-role">Presidente</p>
+            <a href="https://www.linkedin.com/in/federico-s-rizzo" target="_blank" rel="noopener" class="btn-linkedin">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card member-card">
+            <img src="assets/images/juan.jpg" alt="Juan Cruz Rodríguez" class="member-avatar" />
+            <h5 class="member-name">Juan Cruz Rodríguez</h5>
+            <p class="member-role">Vice Presidente</p>
+            <a href="#" target="_blank" rel="noopener" class="btn-linkedin">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card member-card">
+            <img src="assets/images/romi.jpeg" alt="Romina Ortiz" class="member-avatar" />
+            <h5 class="member-name">Romina Ortiz</h5>
+            <p class="member-role">Secretaria</p>
+            <a href="#" target="_blank" rel="noopener" class="btn-linkedin">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="card member-card">
+            <img src="assets/images/bau.jpeg" alt="Bautista Pereyra Buch" class="member-avatar" />
+            <h5 class="member-name">Bautista Pereyra Buch</h5>
+            <p class="member-role">Tesorero</p>
+            <a href="#" target="_blank" rel="noopener" class="btn-linkedin">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocales -->
       <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-          <div class="card h-100">
-            <img
-              src="fede.jpg"
-              alt="Federico Rizzo"
-              class="card-img-top rounded-circle mx-auto mt-3"
-              style="width: 120px; height: 120px; object-fit: cover"
-            />
-            <div class="card-body text-left">
-              <h5 class="card-title mb-1" style="word-break: break-word">
-                Federico Rizzo
-              </h5>
-              <p
-                class="card-text text-muted mb-2"
-                style="word-break: break-word"
-              >
-                Presidente
-              </p>
-              <a
-                href="https://www.linkedin.com/in/federico-s-rizzo"
-                target="_blank"
-                rel="noopener"
-                class="btn btn-outline-primary btn-sm"
-              >
-                <i class="bi bi-linkedin"></i> LinkedIn
-              </a>
+        <div class="col-12">
+          <h3 class="text-center mb-4" style="color: var(--primary); font-weight: 600;">Vocales</h3>
+          <div class="vocales-grid">
+            <div class="vocal-item">
+              <div class="vocal-name">Franco Marón</div>
+              <div class="vocal-role">Vocal</div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-          <div class="card h-100">
-            <img
-              src="juan.jpg"
-              alt="Juan Cruz Rodríguez"
-              class="card-img-top rounded-circle mx-auto mt-3"
-              style="width: 120px; height: 120px; object-fit: cover"
-            />
-            <div class="card-body text-left">
-              <h5 class="card-title mb-1" style="word-break: break-word">
-                Juan Cruz Rodríguez
-              </h5>
-              <p
-                class="card-text text-muted mb-2"
-                style="word-break: break-word"
-              >
-                Vice Presidente
-              </p>
-              <a
-                href=""
-                target="_blank"
-                rel="noopener"
-                class="btn btn-outline-primary btn-sm"
-              >
-                <i class="bi bi-linkedin"></i> LinkedIn
-              </a>
+            <div class="vocal-item">
+              <div class="vocal-name">Jeronimo Cardu Goldsworthy</div>
+              <div class="vocal-role">Vocal</div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-          <div class="card h-100">
-            <img
-              src="romi.jpeg"
-              alt="Romina Ortiz"
-              class="card-img-top rounded-circle mx-auto mt-3"
-              style="width: 120px; height: 120px; object-fit: cover"
-            />
-            <div class="card-body text-left">
-              <h5 class="card-title mb-1" style="word-break: break-word">
-                Romina Ortiz
-              </h5>
-              <p
-                class="card-text text-muted mb-2"
-                style="word-break: break-word"
-              >
-                Secretaria
-              </p>
-              <a
-                href=""
-                target="_blank"
-                rel="noopener"
-                class="btn btn-outline-primary btn-sm"
-              >
-                <i class="bi bi-linkedin"></i> LinkedIn
-              </a>
+            <div class="vocal-item">
+              <div class="vocal-name">Blas Martín Andrade</div>
+              <div class="vocal-role">Vocal</div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-          <div class="card h-100">
-            <img
-              src="bau.jpeg"
-              alt="Bautista Pereyra Buch"
-              class="card-img-top rounded-circle mx-auto mt-3"
-              style="width: 120px; height: 120px; object-fit: cover"
-            />
-            <div class="card-body text-left">
-              <h5 class="card-title mb-1" style="word-break: break-word">
-                Bautista Pereyra Buch
-              </h5>
-              <p
-                class="card-text text-muted mb-2"
-                style="word-break: break-word"
-              >
-                Tesorero
-              </p>
-              <a
-                href="https://www.linkedin.com/in/federico-s-rizzo"
-                target="_blank"
-                rel="noopener"
-                class="btn btn-outline-primary btn-sm"
-              >
-                <i class="bi bi-linkedin"></i> LinkedIn
-              </a>
+            <div class="vocal-item">
+              <div class="vocal-name">Marcelo Argañaraz</div>
+              <div class="vocal-role">Vocal</div>
+            </div>
+            <div class="vocal-item">
+              <div class="vocal-name">Octavio Giaccaglia</div>
+              <div class="vocal-role">Vocal</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="eventos" class="container py-5">
-      <h2>Actividades y Novedades</h2>
+    <!-- Eventos Section -->
+    <section id="eventos" class="container">
+      <h2 class="section-title">Actividades y Novedades</h2>
+      <p class="section-subtitle">
+        Mantente al día con nuestras próximas actividades y eventos.
+      </p>
+      
       <div class="row g-4">
         <div class="col-md-4">
-          <div class="evento h-100">
-            <h3>Preinscripción – Taller de Resolución de Problemas</h3>
+          <div class="event-card">
+            <h3><i class="bi bi-calendar-event text-primary me-2"></i>Taller de Resolución de Problemas</h3>
             <p>
-              Durante el taller se trabajará en: Técnicas de resolución
-              (backtracking, greedy, divide and conquer, DP) Análisis de
-              complejidad Estrategias para competencias e instancias técnicas
+              Durante el taller se trabajará en: Técnicas de resolución (backtracking, greedy, divide and conquer, DP), 
+              análisis de complejidad y estrategias para competencias e instancias técnicas.
             </p>
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header"
-              class="btn btn-primary mt-3"
-              target="_blank"
-              >Preinscribirme</a
-            >
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header" 
+               class="btn btn-primary" target="_blank">
+              <i class="bi bi-pencil-square me-2"></i>Preinscribirme
+            </a>
           </div>
         </div>
+        
         <div class="col-md-4">
-          <div class="evento h-100">
-            <h3>Preinscripción - CACIC 2025</h3>
+          <div class="event-card">
+            <h3><i class="bi bi-trophy text-primary me-2"></i>CACIC 2025</h3>
             <p>
-              Si estás interesado en participar de la competencia de
-              programación CACIC 2025, completa el siguiente formulario para
-              preinscribirte. Recibirás más información por correo electrónico
-              una vez que se abra la inscripción oficial.
+              Si estás interesado en participar de la competencia de programación CACIC 2025, completa el siguiente 
+              formulario para preinscribirte. Recibirás más información por correo electrónico.
             </p>
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header"
-              class="btn btn-primary mt-3"
-              target="_blank"
-              >Preinscribirme</a
-            >
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header" 
+               class="btn btn-primary" target="_blank">
+              <i class="bi bi-pencil-square me-2"></i>Preinscribirme
+            </a>
           </div>
         </div>
+        
         <div class="col-md-4">
-          <div class="evento h-100">
-            <h3>Expo Unlu 2025</h3>
+          <div class="event-card">
+            <h3><i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025</h3>
             <p>
-              La Expo UNLu es un evento anual pensado para que estudiantes de
-              escuelas secundarias conozcan las carreras que ofrece la
-              universidad. Es una instancia clave para acercar a nuevos
-              ingresantes a la vida universitaria.
+              La Expo UNLu es un evento anual pensado para que estudiantes de escuelas secundarias conozcan las carreras 
+              que ofrece la universidad. Es una instancia clave para acercar a nuevos ingresantes.
             </p>
+            <span class="badge bg-primary">Próximamente</span>
           </div>
         </div>
       </div>
     </section>
 
-   <section id="extra" class="container py-5">
-  <h2 class="mb-4">📂 Recursos Útiles</h2>
-  <ul class="list-unstyled ps-3 fs-5">
-    <li class="mb-3">
-      <a href="https://github.com/CODES-UNLU/Libros_Digitales" target="_blank">
-        📚 Bibliografía recomendada
-      </a>
-      <p class="text-muted small ms-4">
-        Accedé a una recopilación de libros y manuales usados en las materias de la carrera.
+    <!-- Recursos Section -->
+    <section id="extra" class="container">
+      <h2 class="section-title">📂 Recursos Útiles</h2>
+      <p class="section-subtitle">
+        Accedé a todos los recursos que hemos preparado para ayudarte en tu carrera.
       </p>
-    </li>
+      
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="resource-item">
+            <a href="https://github.com/CODES-UNLU/Libros_Digitales" target="_blank">
+              <i class="bi bi-book text-primary"></i>
+              📚 Bibliografía recomendada
+            </a>
+            <p>Accedé a una recopilación de libros y manuales usados en las materias de la carrera.</p>
+          </div>
 
-    <li class="mb-3">
-      <a href="https://github.com/CODES-UNLU" target="_blank">
-        📝 Guías y apuntes por materia
-      </a>
-      <p class="text-muted small ms-4">
-        Repositorio organizado por año con guías, parciales resueltos y apuntes útiles.
-      </p>
-    </li>
+          <div class="resource-item">
+            <a href="https://github.com/CODES-UNLU" target="_blank">
+              <i class="bi bi-file-earmark-text text-primary"></i>
+              📝 Guías y apuntes por materia
+            </a>
+            <p>Repositorio organizado por año con guías, parciales resueltos y apuntes útiles.</p>
+          </div>
 
-    <li class="mb-3">
-      <a href="https://discord.gg/rDtEx4dMvD" target="_blank">
-        🤝 Grupos de estudio (Discord)
-      </a>
-      <p class="text-muted small ms-4">
-        Unite a nuestro servidor para consultas, organización de grupos y apoyo entre estudiantes.
-      </p>
-    </li>
-  </ul>
-</section>
+          <div class="resource-item">
+            <a href="https://discord.gg/rDtEx4dMvD" target="_blank">
+              <i class="bi bi-discord text-primary"></i>
+              🤝 Grupos de estudio (Discord)
+            </a>
+            <p>Unite a nuestro servidor para consultas, organización de grupos y apoyo entre estudiantes.</p>
+          </div>
 
+          <div class="resource-item">
+            <a href="Calendario.pdf" target="_blank">
+              <i class="bi bi-calendar-check text-primary"></i>
+              📅 Cronograma académico
+            </a>
+            <p>Mantente informado sobre fechas importantes, parciales y eventos de la carrera.</p>
+          </div>
 
-    <footer id="contacto" class="text-center py-4 bg-light">
-      <p class="mb-1">
-        <strong>Centro Organizado de Estudiantes de Sistemas - CODES++</strong>
-      </p>
+          <div class="resource-item">
+            <a href="https://discord.gg/rcYPYB5V6P" target="_blank">
+              <i class="bi bi-people text-primary"></i>
+              👥 Mentorías y acompañamiento
+            </a>
+            <p>Programa de acompañamiento para estudiantes de primeros años por parte de estudiantes avanzados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <p class="mb-1">
-        <i class="bi bi-envelope-fill"></i>
-        <a href="mailto:codes.estudiantes@gmail.com"
-          >codes.unlu@gmail.com</a
-        >
-      </p>
+    <!-- Footer -->
+    <footer id="contacto">
+      <div class="container">
+        <div class="footer-content">
+          <h3 class="footer-title">Centro Organizado de Estudiantes de Sistemas - CODES++</h3>
+          
+          <div class="contact-item">
+            <i class="bi bi-envelope-fill"></i>
+            <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+          </div>
 
-      <p class="mb-1">
-        <i class="bi bi-instagram"></i>
-        <a href="https://www.instagram.com/codes_unlu/" target="_blank"
-          >@codes_unlu</a
-        >
-      </p>
+          <div class="contact-item">
+            <i class="bi bi-instagram"></i>
+            <a href="https://www.instagram.com/codes_unlu/" target="_blank">@codes_unlu</a>
+          </div>
+
+          <div class="social-links">
+            <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="social-link">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="social-link">
+              <i class="bi bi-discord"></i>
+            </a>
+            <a href="https://github.com/CODES-UNLU" target="_blank" class="social-link">
+              <i class="bi bi-github"></i>
+            </a>
+          </div>
+
+          <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem;">
+            © 2025 CODES++. Todos los derechos reservados.
+          </p>
+        </div>
+      </div>
     </footer>
 
-    <!-- Bootstrap JS (opcional, para componentes interactivos) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Back to Top Button -->
+    <button class="btn btn-primary position-fixed" id="backToTop" style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
+      <i class="bi bi-arrow-up"></i>
+    </button>
   </body>
 </html>
