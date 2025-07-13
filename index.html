@@ -3,7 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CODES++ | Centro de Estudiantes</title>
+    <title>CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <meta name="description" content="Centro Organizado de Estudiantes de Sistemas (CODES++) de la Universidad Nacional de Luján. Representamos y potenciamos a la comunidad estudiantil con recursos, actividades y apoyo académico." />
+    <meta name="keywords" content="CODES++, centro de estudiantes, sistemas, UNLu, universidad, estudiantes, programación, informática" />
+    <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codes-unlu.github.io/" />
+    <meta property="og:title" content="CODES++ | Centro de Estudiantes de Sistemas" />
+    <meta property="og:description" content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes." />
+    <meta property="og:image" content="assets/images/LogoCodes.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://codes-unlu.github.io/" />
+    <meta property="twitter:title" content="CODES++ | Centro de Estudiantes de Sistemas" />
+    <meta property="twitter:description" content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes." />
+    <meta property="twitter:image" content="assets/images/LogoCodes.png" />
+
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "CODES++",
+      "alternateName": "Centro Organizado de Estudiantes de Sistemas",
+      "url": "https://codes-unlu.github.io/",
+      "logo": "assets/images/LogoCodes.png",
+      "description": "Centro Organizado de Estudiantes de Sistemas de la Universidad Nacional de Luján",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Luján",
+        "addressRegion": "Buenos Aires",
+        "addressCountry": "AR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "codes.unlu@gmail.com",
+        "contactType": "customer service"
+      },
+      "sameAs": [
+        "https://www.instagram.com/codes_unlu/",
+        "https://discord.gg/rDtEx4dMvD",
+        "https://github.com/CODES-UNLU"
+      ]
+    }
+    </script>
+
     <link rel="icon" href="assets/images/ISOLOGO SIN FONDO.png" type="image/png" />
 
     <!-- Bootstrap CSS -->
@@ -38,6 +86,14 @@
           <a class="navbar-brand" href="#">
             <img src="assets/images/LogoCodes.png" alt="Logo CODES++" />
           </a>
+          <div class="navbar-actions d-flex gap-2 me-3">
+            <button class="btn btn-outline-primary btn-sm" id="searchToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar en el sitio">
+              <i class="bi bi-search"></i>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modo oscuro">
+              <i class="bi bi-moon"></i>
+            </button>
+          </div>
           <button
             class="navbar-toggler"
             type="button"
@@ -75,13 +131,62 @@
       </nav>
     </header>
 
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="searchModalLabel">
+              <i class="bi bi-search me-2"></i>Buscar en el sitio
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" class="form-control" id="searchInput" placeholder="Escribe tu búsqueda...">
+            </div>
+            <div id="searchResults" class="search-results">
+              <!-- Los resultados se mostrarán aquí -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+      <div class="container">
+        <ol class="breadcrumb" id="breadcrumbList">
+          <li class="breadcrumb-item">
+            <a href="#" class="breadcrumb-link">Inicio</a>
+          </li>
+        </ol>
+      </div>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
+      <div class="hero-floating"></div>
+      <div class="hero-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
       <div class="container">
-        <br>
-        <h1>CODES++</h1>
-        <p>Centro Organizado de Estudiantes de Sistemas</p>
-        <p class="mt-3">Representando y potenciando a la comunidad estudiantil</p>
+        <div class="hero-content">
+          <h1>CODES++</h1>
+          <p class="subtitle">Centro Organizado de Estudiantes de Sistemas</p>
+          <p class="description">Representando y potenciando a la comunidad estudiantil</p>
+        </div>
       </div>
     </section>
 
@@ -91,21 +196,96 @@
       <p class="section-subtitle">
         Somos el Centro Organizado de Estudiantes de Sistemas (CODES++), un espacio creado por estudiantes y para estudiantes.
       </p>
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
+      
+      <!-- Historia Detallada -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
           <div class="card p-4">
-            <p class="lead" style="font-size: 1.2rem; text-align: justify; margin: 0;">
-              Nacimos con el objetivo de representar, acompañar y potenciar a toda la comunidad de la carrera de Sistemas, 
-              promoviendo iniciativas académicas, sociales y profesionales. Fuimos electos como centro de estudiantes en 
-              octubre de 2024 y desde entonces trabajamos activamente para representar los intereses tanto de estudiantes 
-              como de personas graduadas de la carrera.
-            </p>
-            <p class="mt-3" style="text-align: justify;">
-              Nuestra participación incluye comisiones académicas, órganos de cogobierno y espacios de decisión donde 
-              llevamos la voz del estudiantado. Creemos en una comunidad unida, solidaria y comprometida con el crecimiento 
-              colectivo. Por eso impulsamos talleres, charlas, espacios de acompañamiento y propuestas que enriquecen la 
-              vida universitaria dentro y fuera del aula.
-            </p>
+            <h3 class="text-center mb-4" style="color: var(--primary);">Nuestra Historia</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <h5><i class="bi bi-calendar-event text-primary me-2"></i>Nacimiento y Fundación</h5>
+                <p class="text-justify">
+                  CODES++ nació de la necesidad de reconstruir la representación estudiantil en la carrera de Sistemas, luego de quedar acéfala tras la pandemia.
+A mediados de 2022, un grupo de estudiantes comprometidos comenzó a organizar un nuevo centro, al que decidieron llamar CODES++.
+En octubre de 2022 se realizaron las elecciones correspondientes, en las cuales fueron electas las primeras autoridades del centro.
+Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, se renovaron los miembros mediante una nueva elección.
+                </p>
+                <p class="text-justify">
+                  Fuimos electos como centro de estudiantes con el objetivo claro de representar, acompañar y potenciar a toda 
+                  la comunidad de la carrera, promoviendo iniciativas académicas, sociales y profesionales.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h5><i class="bi bi-bullseye text-primary me-2"></i>Nuestra Misión</h5>
+                <p class="text-justify">
+                  Nuestra misión es crear una comunidad unida, solidaria y comprometida con el crecimiento colectivo. 
+                  Trabajamos activamente para representar los intereses tanto de estudiantes como de personas graduadas de la carrera.
+                </p>
+                <p class="text-justify">
+                  Participamos en comisiones académicas, órganos de gobierno universitario y espacios de decisión donde llevamos la voz 
+                  del estudiantado, impulsando talleres, charlas, espacios de acompañamiento y propuestas que enriquecen la 
+                  vida universitaria.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logros y Reconocimientos -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+          <div class="card p-4">
+            <h3 class="text-center mb-4" style="color: var(--primary);">Logros y Reconocimientos</h3>
+            <div class="row">
+              <div class="col-md-4 text-center mb-3">
+                <div class="achievement-item">
+                  <i class="bi bi-trophy text-primary" style="font-size: 2.5rem;"></i>
+                  <h5 class="mt-2">Elección Democrática</h5>
+                  <p>Electos como centro de estudiantes en octubre de 2024</p>
+                </div>
+              </div>
+              <div class="col-md-4 text-center mb-3">
+                <div class="achievement-item">
+                  <i class="bi bi-people text-primary" style="font-size: 2.5rem;"></i>
+                  <h5 class="mt-2">Representación Activa</h5>
+                  <p>Participación en comisiones académicas y órganos de cogobierno</p>
+                </div>
+              </div>
+              <div class="col-md-4 text-center mb-3">
+                <div class="achievement-item">
+                  <i class="bi bi-lightbulb text-primary" style="font-size: 2.5rem;"></i>
+                  <h5 class="mt-2">Iniciativas Innovadoras</h5>
+                  <p>Desarrollo de talleres, mentorías y programas de apoyo</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Valores -->
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="card p-4">
+            <h3 class="text-center mb-4" style="color: var(--primary);">Nuestros Valores</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="values-list">
+                  <li><strong>Solidaridad:</strong> Apoyamos a nuestros compañeros en su trayectoria académica</li>
+                  <li><strong>Compromiso:</strong> Trabajamos activamente por mejorar la calidad educativa</li>
+                  <li><strong>Transparencia:</strong> Mantenemos informada a la comunidad sobre nuestras acciones</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="values-list">
+                  <li><strong>Innovación:</strong> Buscamos nuevas formas de apoyar a los estudiantes</li>
+                  <li><strong>Inclusión:</strong> Creamos espacios accesibles para todos los estudiantes</li>
+                  <li><strong>Excelencia:</strong> Promovemos la excelencia académica y profesional</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -215,8 +395,11 @@
               análisis de complejidad y estrategias para competencias e instancias técnicas.
             </p>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header" 
-               class="btn btn-primary" target="_blank">
+               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
               <i class="bi bi-pencil-square me-2"></i>Preinscribirme
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
           </div>
         </div>
@@ -229,8 +412,11 @@
               formulario para preinscribirte. Recibirás más información por correo electrónico.
             </p>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header" 
-               class="btn btn-primary" target="_blank">
+               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
               <i class="bi bi-pencil-square me-2"></i>Preinscribirme
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
           </div>
         </div>
@@ -258,41 +444,56 @@
       <div class="row">
         <div class="col-lg-8 mx-auto">
           <div class="resource-item">
-            <a href="https://github.com/CODES-UNLU/Libros_Digitales" target="_blank">
+            <a href="https://github.com/CODES-UNLU/Libros_Digitales" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir repositorio de bibliografía">
               <i class="bi bi-book text-primary"></i>
                Bibliografía recomendada
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
             <p>Accedé a una recopilación de libros y manuales usados en las materias de la carrera.</p>
           </div>
 
           <div class="resource-item">
-            <a href="https://github.com/CODES-UNLU" target="_blank">
+            <a href="https://github.com/CODES-UNLU" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir repositorio de guías y apuntes">
               <i class="bi bi-file-earmark-text text-primary"></i>
                Guías y apuntes por materia
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
             <p>Repositorio organizado por año con guías, parciales resueltos y apuntes útiles.</p>
           </div>
 
           <div class="resource-item">
-            <a href="https://discord.gg/rDtEx4dMvD" target="_blank">
+            <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Unirse al servidor de Discord">
               <i class="bi bi-discord text-primary"></i>
                Grupos de estudio (Discord)
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
             <p>Unite a nuestro servidor para consultas, organización de grupos y apoyo entre estudiantes.</p>
           </div>
 
           <div class="resource-item">
-            <a href="Calendario.pdf" target="_blank">
+            <a href="Calendario.pdf" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar cronograma académico">
               <i class="bi bi-calendar-check text-primary"></i>
                Cronograma académico
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
             <p>Mantente informado sobre fechas importantes, parciales y eventos de la carrera.</p>
           </div>
 
           <div class="resource-item">
-            <a href="https://discord.gg/rcYPYB5V6P" target="_blank">
+            <a href="https://discord.gg/rcYPYB5V6P" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Unirse al servidor de mentorías">
               <i class="bi bi-people text-primary"></i>
                Mentorías y acompañamiento
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
             </a>
             <p>Programa de acompañamiento para estudiantes de primeros años por parte de estudiantes avanzados.</p>
           </div>

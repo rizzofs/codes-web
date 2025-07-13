@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollEffects();
     initSmoothScrolling();
     initAnimations();
+    initSearchFunctionality();
+    initDarkMode();
+    initBreadcrumbs();
+    initTooltips();
+    initLoadingStates();
+    initHeroAnimations();
     
 });
 
@@ -212,12 +218,293 @@ function initBackToTop() {
     });
 }
 
+/**
+ * Initialize search functionality
+ */
+function initSearchFunctionality() {
+    const searchToggle = document.getElementById('searchToggle');
+    const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    // Search content data
+    const searchContent = [
+        {
+            title: '¿Cómo me cambio de plan de estudios?',
+            content: 'Enviar mail a tramitesunlu@unlu.edu.ar con DNI y materias aprobadas',
+            section: 'FAQ',
+            url: '#faq'
+        },
+        {
+            title: '¿Por qué perdí la regularidad?',
+            content: 'Se pierde si no aprobás al menos dos materias con final en un año',
+            section: 'FAQ',
+            url: '#faq'
+        },
+        {
+            title: 'Taller de Resolución de Problemas',
+            content: 'Técnicas de resolución, análisis de complejidad y estrategias',
+            section: 'Actividades',
+            url: '#eventos'
+        },
+        {
+            title: 'CACIC 2025',
+            content: 'Competencia de programación para estudiantes',
+            section: 'Actividades',
+            url: '#eventos'
+        },
+        {
+            title: 'Bibliografía recomendada',
+            content: 'Libros y manuales usados en las materias de la carrera',
+            section: 'Recursos',
+            url: '#extra'
+        },
+        {
+            title: 'Grupos de estudio (Discord)',
+            content: 'Servidor para consultas y organización de grupos',
+            section: 'Recursos',
+            url: '#extra'
+        },
+        {
+            title: 'Federico Rizzo',
+            content: 'Presidente del Centro de Estudiantes',
+            section: 'Integrantes',
+            url: '#integrantes'
+        },
+        {
+            title: 'Juan Cruz Rodríguez',
+            content: 'Vice Presidente del Centro de Estudiantes',
+            section: 'Integrantes',
+            url: '#integrantes'
+        }
+    ];
+    
+    // Open search modal
+    searchToggle.addEventListener('click', function() {
+        searchModal.show();
+        setTimeout(() => searchInput.focus(), 500);
+    });
+    
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const results = searchContent.filter(item => 
+            item.title.toLowerCase().includes(query) || 
+            item.content.toLowerCase().includes(query)
+        );
+        
+        displaySearchResults(results);
+    });
+    
+    function displaySearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<p class="text-muted text-center">No se encontraron resultados</p>';
+            return;
+        }
+        
+        searchResults.innerHTML = results.map(item => `
+            <div class="search-result-item" onclick="navigateToSection('${item.url}')">
+                <h6>${item.title}</h6>
+                <p>${item.content}</p>
+                <small class="text-muted">${item.section}</small>
+            </div>
+        `).join('');
+    }
+}
+
+/**
+ * Initialize dark mode toggle
+ */
+function initDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        body.setAttribute('data-theme', savedTheme);
+        updateDarkModeIcon(savedTheme === 'dark');
+    }
+    
+    darkModeToggle.addEventListener('click', function() {
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateDarkModeIcon(newTheme === 'dark');
+    });
+    
+    function updateDarkModeIcon(isDark) {
+        const icon = darkModeToggle.querySelector('i');
+        icon.className = isDark ? 'bi bi-sun' : 'bi bi-moon';
+        darkModeToggle.setAttribute('title', isDark ? 'Modo claro' : 'Modo oscuro');
+    }
+}
+
+/**
+ * Initialize breadcrumbs navigation
+ */
+function initBreadcrumbs() {
+    const breadcrumbList = document.getElementById('breadcrumbList');
+    const sections = [
+        { id: 'nosotros', name: 'Nosotros' },
+        { id: 'integrantes', name: 'Integrantes' },
+        { id: 'eventos', name: 'Actividades' },
+        { id: 'extra', name: 'Recursos' },
+        { id: 'faq', name: 'FAQ' },
+        { id: 'contacto', name: 'Contacto' }
+    ];
+    
+    function updateBreadcrumbs() {
+        const scrollPosition = window.scrollY + 100;
+        let currentSection = 'Inicio';
+        
+        sections.forEach(section => {
+            const element = document.getElementById(section.id);
+            if (element) {
+                const elementTop = element.offsetTop;
+                const elementBottom = elementTop + element.offsetHeight;
+                
+                if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+                    currentSection = section.name;
+                }
+            }
+        });
+        
+        breadcrumbList.innerHTML = `
+            <li class="breadcrumb-item">
+                <a href="#" class="breadcrumb-link">Inicio</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">${currentSection}</li>
+        `;
+    }
+    
+    window.addEventListener('scroll', updateBreadcrumbs);
+    updateBreadcrumbs();
+}
+
+/**
+ * Initialize tooltips
+ */
+function initTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+/**
+ * Initialize loading states for external links
+ */
+function initLoadingStates() {
+    const externalLinks = document.querySelectorAll('.external-link');
+    
+    externalLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const spinner = this.querySelector('.loading-spinner');
+            if (spinner) {
+                spinner.classList.remove('d-none');
+                spinner.classList.add('spin');
+                
+                // Remove spinner after a short delay (simulating loading)
+                setTimeout(() => {
+                    spinner.classList.remove('spin');
+                    spinner.classList.add('d-none');
+                }, 1000);
+            }
+        });
+    });
+}
+
+/**
+ * Navigate to section (for search results)
+ */
+function navigateToSection(sectionId) {
+    const target = document.querySelector(sectionId);
+    if (target) {
+        const navbar = document.getElementById('header');
+        const navbarHeight = navbar ? navbar.offsetHeight : 80;
+        const targetPosition = target.offsetTop - navbarHeight - 20;
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+        
+        // Close search modal
+        const searchModal = bootstrap.Modal.getInstance(document.getElementById('searchModal'));
+        if (searchModal) {
+            searchModal.hide();
+        }
+    }
+}
+
 // Initialize additional features
 document.addEventListener('DOMContentLoaded', function() {
     initLazyLoading();
     initMobileMenu();
     initBackToTop();
 });
+
+/**
+ * Initialize hero section animations
+ */
+function initHeroAnimations() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    // Create dynamic particles
+    const particlesContainer = hero.querySelector('.hero-particles');
+    if (particlesContainer) {
+        createDynamicParticles(particlesContainer);
+    }
+
+    // Add scroll-based parallax effect
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        if (hero) {
+            hero.style.transform = `translateY(${rate}px)`;
+        }
+    });
+
+    // Add mouse movement effect
+    hero.addEventListener('mousemove', function(e) {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        
+        const x = (clientX / innerWidth - 0.5) * 20;
+        const y = (clientY / innerHeight - 0.5) * 20;
+        
+        const floatingElements = hero.querySelectorAll('.hero-floating::before, .hero-floating::after');
+        floatingElements.forEach((element, index) => {
+            if (element) {
+                element.style.transform = `translate(${x * (index + 1)}px, ${y * (index + 1)}px)`;
+            }
+        });
+    });
+}
+
+/**
+ * Create dynamic particles for hero section
+ */
+function createDynamicParticles(container) {
+    const particleCount = 15;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random positioning and timing
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        
+        container.appendChild(particle);
+    }
+}
 
 // Export functions for potential use in other scripts
 window.CODES = {
