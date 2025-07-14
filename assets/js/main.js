@@ -189,6 +189,15 @@ function initMobileMenu() {
                 }
             });
         });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isNavbarOpen = navbarCollapse.classList.contains('show');
+            const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+            if (isNavbarOpen && !isClickInsideNavbar && window.innerWidth < 992) {
+                navbarCollapse.classList.remove('show');
+            }
+        });
     }
 }
 

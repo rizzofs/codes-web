@@ -548,13 +548,18 @@ section:nth-child(even) {
    ======================================== */
 
 .event-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background: white;
   border-radius: 16px;
   padding: 2rem;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   border-left: 5px solid var(--primary);
-  height: 100%;
+}
+.event-card .mt-auto {
+  margin-top: auto;
 }
 
 .event-card:hover {
@@ -1366,4 +1371,18 @@ footer {
   .values-list li {
     padding: 1rem 0;
   }
+} 
+
+.btn-proximamente {
+  background: var(--gradient);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  transition: all 0.3s ease;
 } 
