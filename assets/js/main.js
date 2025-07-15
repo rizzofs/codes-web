@@ -190,11 +190,20 @@ function initMobileMenu() {
                 }
             });
         });
+<<<<<<< HEAD
         // Cerrar menú al hacer clic fuera del navbar en móvil
         document.addEventListener('click', function(event) {
             const isNavbarOpen = navbarCollapse.classList.contains('show');
             const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
             if (window.innerWidth < 992 && isNavbarOpen && !isClickInsideNavbar) {
+=======
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isNavbarOpen = navbarCollapse.classList.contains('show');
+            const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+            if (isNavbarOpen && !isClickInsideNavbar && window.innerWidth < 992) {
+>>>>>>> 0a060881b9fe3f78d7dd3a9cc47410313f31c1b0
                 navbarCollapse.classList.remove('show');
             }
         });
