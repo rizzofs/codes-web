@@ -4,55 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
-    <meta name="description" content="Centro Organizado de Estudiantes de Sistemas (CODES++) de la Universidad Nacional de Luján. Representamos y potenciamos a la comunidad estudiantil con recursos, actividades y apoyo académico." />
-    <meta name="keywords" content="CODES++, centro de estudiantes, sistemas, UNLu, universidad, estudiantes, programación, informática" />
+    <meta
+      name="description"
+      content="Centro Organizado de Estudiantes de Sistemas (CODES++) de la Universidad Nacional de Luján. Representamos y potenciamos a la comunidad estudiantil con recursos, actividades y apoyo académico."
+    />
+    <meta
+      name="keywords"
+      content="CODES++, centro de estudiantes, sistemas, UNLu, universidad, estudiantes, programación, informática"
+    />
     <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
     <meta name="robots" content="index, follow" />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://codes-unlu.github.io/" />
-    <meta property="og:title" content="CODES++ | Centro de Estudiantes de Sistemas" />
-    <meta property="og:description" content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes." />
-    <meta property="og:image" content="assets/images/LogoCodes.png" />
+    <meta
+      property="og:title"
+      content="CODES++ | Centro de Estudiantes de Sistemas"
+    />
+    <meta
+      property="og:description"
+      content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes."
+    />
+    <meta property="og:image" content="assets/images/Logo.svg" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://codes-unlu.github.io/" />
-    <meta property="twitter:title" content="CODES++ | Centro de Estudiantes de Sistemas" />
-    <meta property="twitter:description" content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes." />
-    <meta property="twitter:image" content="assets/images/LogoCodes.png" />
+    <meta
+      property="twitter:title"
+      content="CODES++ | Centro de Estudiantes de Sistemas"
+    />
+    <meta
+      property="twitter:description"
+      content="Centro Organizado de Estudiantes de Sistemas de la UNLu. Recursos, actividades y apoyo para estudiantes."
+    />
+    <meta property="twitter:image" content="assets/images/Logo.svg" />
 
     <!-- Schema.org markup -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "CODES++",
-      "alternateName": "Centro Organizado de Estudiantes de Sistemas",
-      "url": "https://codes-unlu.github.io/",
-      "logo": "assets/images/LogoCodes.png",
-      "description": "Centro Organizado de Estudiantes de Sistemas de la Universidad Nacional de Luján",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Luján",
-        "addressRegion": "Buenos Aires",
-        "addressCountry": "AR"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "codes.unlu@gmail.com",
-        "contactType": "customer service"
-      },
-      "sameAs": [
-        "https://www.instagram.com/codes_unlu/",
-        "https://discord.gg/rDtEx4dMvD",
-        "https://github.com/CODES-UNLU"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CODES++",
+        "alternateName": "Centro Organizado de Estudiantes de Sistemas",
+        "url": "https://codes-unlu.github.io/",
+        "logo": "assets/images/Logo.svg",
+        "description": "Centro Organizado de Estudiantes de Sistemas de la Universidad Nacional de Luján",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Luján",
+          "addressRegion": "Buenos Aires",
+          "addressCountry": "AR"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "codes.unlu@gmail.com",
+          "contactType": "customer service"
+        },
+        "sameAs": [
+          "https://www.instagram.com/codes_unlu/",
+          "https://discord.gg/rDtEx4dMvD",
+          "https://github.com/CODES-UNLU"
+        ]
+      }
     </script>
 
-    <link rel="icon" href="assets/images/ISOLOGO SIN FONDO.png" type="image/png" />
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C73GLNE05C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-C73GLNE05C');
+    </script>
+
+    <link
+      rel="icon"
+      href="assets/images/ISOLOGO SIN FONDO.png"
+      type="image/png"
+    />
 
     <!-- Bootstrap CSS -->
     <link
@@ -61,7 +92,10 @@
     />
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
 
     <!-- Google Fonts -->
     <link
@@ -70,7 +104,7 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
 
   <body>
@@ -84,13 +118,25 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
           <a class="navbar-brand" href="#">
-            <img src="assets/images/LogoCodes.png" alt="Logo CODES++" />
+            <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
           </a>
           <div class="navbar-actions d-flex gap-2 me-3">
-            <button class="btn btn-outline-primary btn-sm" id="searchToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar en el sitio">
+            <button
+              class="btn btn-outline-primary btn-sm"
+              id="searchToggle"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Buscar en el sitio"
+            >
               <i class="bi bi-search"></i>
             </button>
-            <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modo oscuro">
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              id="darkModeToggle"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Modo oscuro"
+            >
               <i class="bi bi-moon"></i>
             </button>
           </div>
@@ -105,7 +151,10 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
             <ul class="navbar-nav gap-2">
               <li class="nav-item">
                 <a class="nav-link" href="#nosotros">Nosotros</a>
@@ -132,21 +181,37 @@
     </header>
 
     <!-- Search Modal -->
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="searchModal"
+      tabindex="-1"
+      aria-labelledby="searchModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="searchModalLabel">
               <i class="bi bi-search me-2"></i>Buscar en el sitio
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="input-group mb-3">
               <span class="input-group-text">
                 <i class="bi bi-search"></i>
               </span>
-              <input type="text" class="form-control" id="searchInput" placeholder="Escribe tu búsqueda...">
+              <input
+                type="text"
+                class="form-control"
+                id="searchInput"
+                placeholder="Escribe tu búsqueda..."
+              />
             </div>
             <div id="searchResults" class="search-results">
               <!-- Los resultados se mostrarán aquí -->
@@ -155,7 +220,7 @@
         </div>
       </div>
     </div>
-    <br>
+    <br />
     <!-- Breadcrumbs -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
       <div class="container">
@@ -185,7 +250,9 @@
         <div class="hero-content">
           <h1>CODES++</h1>
           <p class="subtitle">Centro Organizado de Estudiantes de Sistemas</p>
-          <p class="description">Representando y potenciando a la comunidad estudiantil</p>
+          <p class="description">
+            Representando y potenciando a la comunidad estudiantil
+          </p>
         </div>
       </div>
     </section>
@@ -194,38 +261,57 @@
     <section id="nosotros" class="container">
       <h2 class="section-title">¿Quiénes somos?</h2>
       <p class="section-subtitle">
-        Somos el Centro Organizado de Estudiantes de Sistemas (CODES++), un espacio creado por estudiantes y para estudiantes.
+        Somos el Centro Organizado de Estudiantes de Sistemas (CODES++), un
+        espacio creado por estudiantes y para estudiantes.
       </p>
-      
+
       <!-- Historia Detallada -->
       <div class="row justify-content-center mb-5">
         <div class="col-lg-10">
           <div class="card p-4">
-            <h3 class="text-center mb-4" style="color: var(--primary);">Nuestra Historia</h3>
+            <h3 class="text-center mb-4" style="color: var(--primary)">
+              Nuestra Historia
+            </h3>
             <div class="row">
               <div class="col-md-6">
-                <h5><i class="bi bi-calendar-event text-primary me-2"></i>Nacimiento y Fundación</h5>
+                <h5>
+                  <i class="bi bi-calendar-event text-primary me-2"></i
+                  >Nacimiento y Fundación
+                </h5>
                 <p class="text-justify">
-                  CODES++ nació de la necesidad de reconstruir la representación estudiantil en la carrera de Sistemas, luego de quedar acéfala tras la pandemia.
-A mediados de 2022, un grupo de estudiantes comprometidos comenzó a organizar un nuevo centro, al que decidieron llamar CODES++.
-En octubre de 2022 se realizaron las elecciones correspondientes, en las cuales fueron electas las primeras autoridades del centro.
-Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, se renovaron los miembros mediante una nueva elección.
+                  CODES++ nació de la necesidad de reconstruir la representación
+                  estudiantil en la carrera de Sistemas, luego de quedar acéfala
+                  tras la pandemia. A mediados de 2022, un grupo de estudiantes
+                  comprometidos comenzó a organizar un nuevo centro, al que
+                  decidieron llamar CODES++. En octubre de 2022 se realizaron
+                  las elecciones correspondientes, en las cuales fueron electas
+                  las primeras autoridades del centro. Cumpliendo con el
+                  reglamento vigente, dos años más tarde, en octubre de 2024, se
+                  renovaron los miembros mediante una nueva elección.
                 </p>
                 <p class="text-justify">
-                  Fuimos electos como centro de estudiantes con el objetivo claro de representar, acompañar y potenciar a toda 
-                  la comunidad de la carrera, promoviendo iniciativas académicas, sociales y profesionales.
+                  Fuimos electos como centro de estudiantes con el objetivo
+                  claro de representar, acompañar y potenciar a toda la
+                  comunidad de la carrera, promoviendo iniciativas académicas,
+                  sociales y profesionales.
                 </p>
               </div>
               <div class="col-md-6">
-                <h5><i class="bi bi-bullseye text-primary me-2"></i>Nuestra Misión</h5>
+                <h5>
+                  <i class="bi bi-bullseye text-primary me-2"></i>Nuestra Misión
+                </h5>
                 <p class="text-justify">
-                  Nuestra misión es crear una comunidad unida, solidaria y comprometida con el crecimiento colectivo. 
-                  Trabajamos activamente para representar los intereses tanto de estudiantes como de personas graduadas de la carrera.
+                  Nuestra misión es crear una comunidad unida, solidaria y
+                  comprometida con el crecimiento colectivo. Trabajamos
+                  activamente para representar los intereses tanto de
+                  estudiantes como de personas graduadas de la carrera.
                 </p>
                 <p class="text-justify">
-                  Participamos en comisiones académicas, órganos de gobierno universitario y espacios de decisión donde llevamos la voz 
-                  del estudiantado, impulsando talleres, charlas, espacios de acompañamiento y propuestas que enriquecen la 
-                  vida universitaria.
+                  Participamos en comisiones académicas, órganos de gobierno
+                  universitario y espacios de decisión donde llevamos la voz del
+                  estudiantado, impulsando talleres, charlas, espacios de
+                  acompañamiento y propuestas que enriquecen la vida
+                  universitaria.
                 </p>
               </div>
             </div>
@@ -237,25 +323,39 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
       <div class="row justify-content-center mb-5">
         <div class="col-lg-10">
           <div class="card p-4">
-            <h3 class="text-center mb-4" style="color: var(--primary);">Logros y Reconocimientos</h3>
+            <h3 class="text-center mb-4" style="color: var(--primary)">
+              Logros y Reconocimientos
+            </h3>
             <div class="row">
               <div class="col-md-4 text-center mb-3">
                 <div class="achievement-item">
-                  <i class="bi bi-trophy text-primary" style="font-size: 2.5rem;"></i>
+                  <i
+                    class="bi bi-trophy text-primary"
+                    style="font-size: 2.5rem"
+                  ></i>
                   <h5 class="mt-2">Elección Democrática</h5>
                   <p>Electos como centro de estudiantes en octubre de 2024</p>
                 </div>
               </div>
               <div class="col-md-4 text-center mb-3">
                 <div class="achievement-item">
-                  <i class="bi bi-people text-primary" style="font-size: 2.5rem;"></i>
+                  <i
+                    class="bi bi-people text-primary"
+                    style="font-size: 2.5rem"
+                  ></i>
                   <h5 class="mt-2">Representación Activa</h5>
-                  <p>Participación en comisiones académicas y órganos de cogobierno</p>
+                  <p>
+                    Participación en comisiones académicas y órganos de
+                    cogobierno
+                  </p>
                 </div>
               </div>
               <div class="col-md-4 text-center mb-3">
                 <div class="achievement-item">
-                  <i class="bi bi-lightbulb text-primary" style="font-size: 2.5rem;"></i>
+                  <i
+                    class="bi bi-lightbulb text-primary"
+                    style="font-size: 2.5rem"
+                  ></i>
                   <h5 class="mt-2">Iniciativas Innovadoras</h5>
                   <p>Desarrollo de talleres, mentorías y programas de apoyo</p>
                 </div>
@@ -269,20 +369,40 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
       <div class="row justify-content-center">
         <div class="col-lg-10">
           <div class="card p-4">
-            <h3 class="text-center mb-4" style="color: var(--primary);">Nuestros Valores</h3>
+            <h3 class="text-center mb-4" style="color: var(--primary)">
+              Nuestros Valores
+            </h3>
             <div class="row">
               <div class="col-md-6">
                 <ul class="values-list">
-                  <li><strong>Solidaridad:</strong> Apoyamos a nuestros compañeros en su trayectoria académica</li>
-                  <li><strong>Compromiso:</strong> Trabajamos activamente por mejorar la calidad educativa</li>
-                  <li><strong>Transparencia:</strong> Mantenemos informada a la comunidad sobre nuestras acciones</li>
+                  <li>
+                    <strong>Solidaridad:</strong> Apoyamos a nuestros compañeros
+                    en su trayectoria académica
+                  </li>
+                  <li>
+                    <strong>Compromiso:</strong> Trabajamos activamente por
+                    mejorar la calidad educativa
+                  </li>
+                  <li>
+                    <strong>Transparencia:</strong> Mantenemos informada a la
+                    comunidad sobre nuestras acciones
+                  </li>
                 </ul>
               </div>
               <div class="col-md-6">
                 <ul class="values-list">
-                  <li><strong>Innovación:</strong> Buscamos nuevas formas de apoyar a los estudiantes</li>
-                  <li><strong>Inclusión:</strong> Creamos espacios accesibles para todos los estudiantes</li>
-                  <li><strong>Excelencia:</strong> Promovemos la excelencia académica y profesional</li>
+                  <li>
+                    <strong>Innovación:</strong> Buscamos nuevas formas de
+                    apoyar a los estudiantes
+                  </li>
+                  <li>
+                    <strong>Inclusión:</strong> Creamos espacios accesibles para
+                    todos los estudiantes
+                  </li>
+                  <li>
+                    <strong>Excelencia:</strong> Promovemos la excelencia
+                    académica y profesional
+                  </li>
                 </ul>
               </div>
             </div>
@@ -295,21 +415,36 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
     <section id="integrantes" class="container">
       <h2 class="section-title">Integrantes</h2>
       <p class="section-subtitle">
-        Conoce a los integrantes que forman parte de la comisión directiva del Centro de Estudiantes.
+        Conoce a los integrantes que forman parte de la comisión directiva del
+        Centro de Estudiantes.
       </p>
 
       <!-- Comisión Directiva -->
       <div class="row mb-5">
         <div class="col-12">
-          <h3 class="text-center mb-4" style="color: var(--primary); font-weight: 600;">Comisión Directiva</h3>
+          <h3
+            class="text-center mb-4"
+            style="color: var(--primary); font-weight: 600"
+          >
+            Comisión Directiva
+          </h3>
         </div>
-        
+
         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
           <div class="card member-card">
-            <img src="assets/images/fede.jpg" alt="Federico Rizzo" class="member-avatar" />
+            <img
+              src="assets/images/fede.jpg"
+              alt="Federico Rizzo"
+              class="member-avatar"
+            />
             <h5 class="member-name">Federico Rizzo</h5>
             <p class="member-role">Presidente</p>
-            <a href="https://www.linkedin.com/in/federico-s-rizzo" target="_blank" rel="noopener" class="btn-linkedin">
+            <a
+              href="https://www.linkedin.com/in/federico-s-rizzo"
+              target="_blank"
+              rel="noopener"
+              class="btn-linkedin"
+            >
               <i class="bi bi-linkedin"></i> LinkedIn
             </a>
           </div>
@@ -317,10 +452,19 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
 
         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
           <div class="card member-card">
-            <img src="assets/images/juan.jpg" alt="Juan Cruz Rodríguez" class="member-avatar" />
+            <img
+              src="assets/images/juan.jpg"
+              alt="Juan Cruz Rodríguez"
+              class="member-avatar"
+            />
             <h5 class="member-name">Juan Cruz Rodríguez</h5>
             <p class="member-role">Vice Presidente</p>
-            <a href="https://www.linkedin.com/in/juan-cruz-rodriguez-731609218/" target="_blank" rel="noopener" class="btn-linkedin">
+            <a
+              href="https://www.linkedin.com/in/juan-cruz-rodriguez-731609218/"
+              target="_blank"
+              rel="noopener"
+              class="btn-linkedin"
+            >
               <i class="bi bi-linkedin"></i> LinkedIn
             </a>
           </div>
@@ -328,10 +472,19 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
 
         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
           <div class="card member-card">
-            <img src="assets/images/romi.jpeg" alt="Romina Ortiz" class="member-avatar" />
+            <img
+              src="assets/images/romi.jpeg"
+              alt="Romina Ortiz"
+              class="member-avatar"
+            />
             <h5 class="member-name">Romina Ortiz</h5>
             <p class="member-role">Secretaria</p>
-            <a href="https://www.linkedin.com/in/romina-ortiz/" target="_blank" rel="noopener" class="btn-linkedin">
+            <a
+              href="https://www.linkedin.com/in/romina-ortiz/"
+              target="_blank"
+              rel="noopener"
+              class="btn-linkedin"
+            >
               <i class="bi bi-linkedin"></i> LinkedIn
             </a>
           </div>
@@ -339,10 +492,19 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
 
         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
           <div class="card member-card">
-            <img src="assets/images/bau.jpeg" alt="Bautista Pereyra Buch" class="member-avatar" />
+            <img
+              src="assets/images/bau.jpeg"
+              alt="Bautista Pereyra Buch"
+              class="member-avatar"
+            />
             <h5 class="member-name">Bautista Pereyra Buch</h5>
             <p class="member-role">Tesorero</p>
-            <a href="https://www.linkedin.com/in/bautista-pereyra-buch/" target="_blank" rel="noopener" class="btn-linkedin">
+            <a
+              href="https://www.linkedin.com/in/bautista-pereyra-buch/"
+              target="_blank"
+              rel="noopener"
+              class="btn-linkedin"
+            >
               <i class="bi bi-linkedin"></i> LinkedIn
             </a>
           </div>
@@ -352,7 +514,12 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
       <!-- Vocales -->
       <div class="row">
         <div class="col-12">
-          <h3 class="text-center mb-4" style="color: var(--primary); font-weight: 600;">Vocales</h3>
+          <h3
+            class="text-center mb-4"
+            style="color: var(--primary); font-weight: 600"
+          >
+            Vocales
+          </h3>
           <div class="vocales-grid">
             <div class="vocal-item">
               <div class="vocal-name">Franco Marón</div>
@@ -385,17 +552,27 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
       <p class="section-subtitle">
         Mantente al día con nuestras próximas actividades y eventos.
       </p>
-      
+
       <div class="row g-4">
-        <div class="col-md-4">
-          <div class="event-card">
-            <h3><i class="bi bi-calendar-event text-primary me-2"></i>Taller de Resolución de Problemas</h3>
+        <div class="col-md-4 d-flex">
+          <div class="event-card d-flex flex-column h-100 w-100">
+            <h3>
+              <i class="bi bi-calendar-event text-primary me-2"></i>Taller de
+              Resolución de Problemas
+            </h3>
             <p>
-              Durante el taller se trabajará en: Técnicas de resolución (backtracking, greedy, divide and conquer, DP), 
-              análisis de complejidad y estrategias para competencias e instancias técnicas.
+              Durante el taller se trabajará en: Técnicas de resolución
+              (backtracking, greedy, divide and conquer, DP), análisis de
+              complejidad y estrategias para competencias e instancias técnicas.
             </p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header" 
-               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header"
+              class="btn btn-primary external-link mt-auto"
+              target="_blank"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Abrir formulario de preinscripción"
+            >
               <i class="bi bi-pencil-square me-2"></i>Preinscribirme
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
@@ -403,16 +580,23 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             </a>
           </div>
         </div>
-        
-        <div class="col-md-4">
-          <div class="event-card">
+
+        <div class="col-md-4 d-flex">
+          <div class="event-card d-flex flex-column h-100 w-100">
             <h3><i class="bi bi-trophy text-primary me-2"></i>CACIC 2025</h3>
             <p>
-              Si estás interesado en participar de la competencia de programación CACIC 2025, completa el siguiente 
-              formulario para preinscribirte. Recibirás más información por correo electrónico.
+              Si estás interesado en participar de la competencia de
+              programación CACIC 2025, completa el siguiente formulario para
+              preinscribirte. Recibirás más información por correo electrónico.
             </p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header" 
-               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header"
+              class="btn btn-primary external-link mt-auto"
+              target="_blank"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Abrir formulario de preinscripción"
+            >
               <i class="bi bi-pencil-square me-2"></i>Preinscribirme
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
@@ -420,15 +604,19 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             </a>
           </div>
         </div>
-        
-        <div class="col-md-4">
-          <div class="event-card">
-            <h3><i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025</h3>
+
+        <div class="col-md-4 d-flex">
+          <div class="event-card d-flex flex-column h-100 w-100">
+            <h3>
+              <i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025
+            </h3>
             <p>
-              La Expo UNLu es un evento anual pensado para que estudiantes de escuelas secundarias conozcan las carreras 
-              que ofrece la universidad. Es una instancia clave para acercar a nuevos ingresantes.
+              La Expo UNLu es un evento anual pensado para que estudiantes de
+              escuelas secundarias conozcan las carreras que ofrece la
+              universidad. Es una instancia clave para acercar a nuevos
+              ingresantes.
             </p>
-            <span class="badge bg-primary">Próximamente</span>
+            <button class="btn btn-primary w-100 mt-auto" disabled>Próximamente</button>
           </div>
         </div>
       </div>
@@ -438,64 +626,115 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
     <section id="extra" class="container">
       <h2 class="section-title">📂 Recursos Útiles</h2>
       <p class="section-subtitle">
-        Accedé a todos los recursos que hemos preparado para ayudarte en tu carrera.
+        Accedé a todos los recursos que hemos preparado para ayudarte en tu
+        carrera.
       </p>
-      
+
       <div class="row">
         <div class="col-lg-8 mx-auto">
           <div class="resource-item">
-            <a href="https://github.com/CODES-UNLU/Libros_Digitales" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir repositorio de bibliografía">
+            <a
+              href="https://github.com/CODES-UNLU/Libros_Digitales"
+              target="_blank"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Abrir repositorio de bibliografía"
+            >
               <i class="bi bi-book text-primary"></i>
-               Bibliografía recomendada
+              Bibliografía recomendada
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
               </span>
             </a>
-            <p>Accedé a una recopilación de libros y manuales usados en las materias de la carrera.</p>
+            <p>
+              Accedé a una recopilación de libros y manuales usados en las
+              materias de la carrera.
+            </p>
           </div>
 
           <div class="resource-item">
-            <a href="https://github.com/CODES-UNLU" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir repositorio de guías y apuntes">
+            <a
+              href="https://github.com/CODES-UNLU"
+              target="_blank"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Abrir repositorio de guías y apuntes"
+            >
               <i class="bi bi-file-earmark-text text-primary"></i>
-               Guías y apuntes por materia
+              Guías y apuntes por materia
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
               </span>
             </a>
-            <p>Repositorio organizado por año con guías, parciales resueltos y apuntes útiles.</p>
+            <p>
+              Repositorio organizado por año con guías, parciales resueltos y
+              apuntes útiles.
+            </p>
           </div>
 
           <div class="resource-item">
-            <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Unirse al servidor de Discord">
+            <a
+              href="https://discord.gg/rDtEx4dMvD"
+              target="_blank"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Unirse al servidor de Discord"
+            >
               <i class="bi bi-discord text-primary"></i>
-               Grupos de estudio (Discord)
+              Grupos de estudio (Discord)
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
               </span>
             </a>
-            <p>Unite a nuestro servidor para consultas, organización de grupos y apoyo entre estudiantes.</p>
+            <p>
+              Unite a nuestro servidor para consultas, organización de grupos y
+              apoyo entre estudiantes.
+            </p>
           </div>
 
           <div class="resource-item">
-            <a href="Calendario.pdf" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar cronograma académico">
+            <a
+              href="Calendario.pdf"
+              target="_blank"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Descargar cronograma académico"
+            >
               <i class="bi bi-calendar-check text-primary"></i>
-               Cronograma académico
+              Cronograma académico
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
               </span>
             </a>
-            <p>Mantente informado sobre fechas importantes, parciales y eventos de la carrera.</p>
+            <p>
+              Mantente informado sobre fechas importantes, parciales y eventos
+              de la carrera.
+            </p>
           </div>
 
           <div class="resource-item">
-            <a href="https://discord.gg/rcYPYB5V6P" target="_blank" class="external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Unirse al servidor de mentorías">
+            <a
+              href="https://discord.gg/rcYPYB5V6P"
+              target="_blank"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Unirse al servidor de mentorías"
+            >
               <i class="bi bi-people text-primary"></i>
-               Mentorías y acompañamiento
+              Mentorías y acompañamiento
               <span class="loading-spinner d-none">
                 <i class="bi bi-arrow-clockwise spin"></i>
               </span>
             </a>
-            <p>Programa de acompañamiento para estudiantes de primeros años por parte de estudiantes avanzados.</p>
+            <p>
+              Programa de acompañamiento para estudiantes de primeros años por
+              parte de estudiantes avanzados.
+            </p>
           </div>
         </div>
       </div>
@@ -505,28 +744,53 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
     <section id="faq" class="container">
       <h2 class="section-title">❓ Preguntas Frecuentes</h2>
       <p class="section-subtitle">
-        Resolvé tus dudas más comunes sobre la carrera y los trámites académicos.
+        Resolvé tus dudas más comunes sobre la carrera y los trámites
+        académicos.
       </p>
-      
+
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="accordion" id="faqAccordion">
-            
             <!-- FAQ Item 1 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq1">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse1"
+                  aria-expanded="true"
+                  aria-controls="collapse1"
+                >
                   ¿Cómo me cambio de plan de estudios?
                 </button>
               </h2>
-              <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse1"
+                class="accordion-collapse collapse show"
+                aria-labelledby="faq1"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>Si querés cambiarte de plan de estudios, debés enviar un mail a <strong>tramitesunlu@unlu.edu.ar</strong> con los siguientes datos:</p>
+                  <p>
+                    Si querés cambiarte de plan de estudios, debés enviar un
+                    mail a <strong>tramitesunlu@unlu.edu.ar</strong> con los
+                    siguientes datos:
+                  </p>
                   <ul>
-                    <li>Una foto clara y legible de tu DNI (frente y dorso).</li>
-                    <li>Una lista detallada con las materias que hayas aprobado, especificando si las aprobaste con final o si solo aprobaste la cursada.</li>
+                    <li>
+                      Una foto clara y legible de tu DNI (frente y dorso).
+                    </li>
+                    <li>
+                      Una lista detallada con las materias que hayas aprobado,
+                      especificando si las aprobaste con final o si solo
+                      aprobaste la cursada.
+                    </li>
                   </ul>
-                  <p>El trámite se realiza de manera online, y una vez enviado el mail, te van a informar los pasos a seguir.</p>
+                  <p>
+                    El trámite se realiza de manera online, y una vez enviado el
+                    mail, te van a informar los pasos a seguir.
+                  </p>
                 </div>
               </div>
             </div>
@@ -534,13 +798,31 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 2 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq2">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse2"
+                  aria-expanded="false"
+                  aria-controls="collapse2"
+                >
                   ¿Por qué perdí la regularidad?
                 </button>
               </h2>
-              <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse2"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq2"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>La regularidad se pierde si no aprobás al menos <strong>dos materias con final en un año calendario</strong>. Es importante tener en cuenta que aprobar solo la cursada no alcanza, ya que la regularidad solo se mantiene con finales aprobados.</p>
+                  <p>
+                    La regularidad se pierde si no aprobás al menos
+                    <strong>dos materias con final en un año calendario</strong
+                    >. Es importante tener en cuenta que aprobar solo la cursada
+                    no alcanza, ya que la regularidad solo se mantiene con
+                    finales aprobados.
+                  </p>
                 </div>
               </div>
             </div>
@@ -548,13 +830,30 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 3 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq3">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse3"
+                  aria-expanded="false"
+                  aria-controls="collapse3"
+                >
                   Si pierdo la regularidad, ¿me cambian de plan?
                 </button>
               </h2>
-              <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse3"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq3"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p><strong>No.</strong> Si perdés la regularidad y luego la recuperás, seguís dentro del mismo plan de estudios con las mismas materias que estabas cursando antes de perder la regularidad.</p>
+                  <p>
+                    <strong>No.</strong> Si perdés la regularidad y luego la
+                    recuperás, seguís dentro del mismo plan de estudios con las
+                    mismas materias que estabas cursando antes de perder la
+                    regularidad.
+                  </p>
                 </div>
               </div>
             </div>
@@ -562,16 +861,38 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 4 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq4">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse4"
+                  aria-expanded="false"
+                  aria-controls="collapse4"
+                >
                   ¿Qué significa aprobar una materia?
                 </button>
               </h2>
-              <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse4"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq4"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
                   <p>Aprobar una materia puede darse de dos maneras:</p>
                   <ul>
-                    <li><strong>Promocionar:</strong> Cuando obtenés una nota alta en la cursada (generalmente 7 o más, dependiendo de la materia) y no necesitás rendir final. Con esto, la materia queda aprobada automáticamente.</li>
-                    <li><strong>Quedar regular:</strong> Significa que aprobaste la cursada con la nota mínima requerida (generalmente 4 o más). En este caso, tenés que rendir el examen final para aprobar definitivamente la materia.</li>
+                    <li>
+                      <strong>Promocionar:</strong> Cuando obtenés una nota alta
+                      en la cursada (generalmente 7 o más, dependiendo de la
+                      materia) y no necesitás rendir final. Con esto, la materia
+                      queda aprobada automáticamente.
+                    </li>
+                    <li>
+                      <strong>Quedar regular:</strong> Significa que aprobaste
+                      la cursada con la nota mínima requerida (generalmente 4 o
+                      más). En este caso, tenés que rendir el examen final para
+                      aprobar definitivamente la materia.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -580,16 +901,47 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 5 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq5">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
-                  Si dos materias que quiero cursar tienen horarios superpuestos, ¿qué hago?
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse5"
+                  aria-expanded="false"
+                  aria-controls="collapse5"
+                >
+                  Si dos materias que quiero cursar tienen horarios
+                  superpuestos, ¿qué hago?
                 </button>
               </h2>
-              <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse5"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq5"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>Si los horarios de dos materias que querés cursar se superponen, las soluciones dependen del cuatrimestre al que pertenezcan:</p>
+                  <p>
+                    Si los horarios de dos materias que querés cursar se
+                    superponen, las soluciones dependen del cuatrimestre al que
+                    pertenezcan:
+                  </p>
                   <ul>
-                    <li><strong>Mismo cuatrimestre:</strong> Contactá al Centro de Estudiantes para que soliciten la corrección de horarios ante la universidad.</li>
-                    <li><strong>Cuatrimestres distintos:</strong> En este caso, lo recomendable es elegir una de las materias o buscar otra comisión con un horario que se adapte mejor a tu disponibilidad. O podes inscribirte en ambas y elegir a cual asistir. En caso de que se superpongan los horarios de examen, tendrás que comunicarte con el docente para solicitar un posible cambio, o una excepción para tu caso particular (Tene en cuenta que el docente no tiene la obligación de mover la fecha).</li>
+                    <li>
+                      <strong>Mismo cuatrimestre:</strong> Contactá al Centro de
+                      Estudiantes para que soliciten la corrección de horarios
+                      ante la universidad.
+                    </li>
+                    <li>
+                      <strong>Cuatrimestres distintos:</strong> En este caso, lo
+                      recomendable es elegir una de las materias o buscar otra
+                      comisión con un horario que se adapte mejor a tu
+                      disponibilidad. O podes inscribirte en ambas y elegir a
+                      cual asistir. En caso de que se superpongan los horarios
+                      de examen, tendrás que comunicarte con el docente para
+                      solicitar un posible cambio, o una excepción para tu caso
+                      particular (Tene en cuenta que el docente no tiene la
+                      obligación de mover la fecha).
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -598,13 +950,32 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 6 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq6">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse6"
+                  aria-expanded="false"
+                  aria-controls="collapse6"
+                >
                   ¿Qué significa estar regular en una materia?
                 </button>
               </h2>
-              <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse6"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq6"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>Estar regular significa que aprobaste la cursada con la nota mínima requerida y podés rendir el examen final para aprobar la materia definitivamente. Tenés un plazo máximo de <strong>2 años y medio (5 cuatrimestres)</strong> para rendir el final antes de que la regularidad se venza. Si no lo hacés, deberás recursar la materia.</p>
+                  <p>
+                    Estar regular significa que aprobaste la cursada con la nota
+                    mínima requerida y podés rendir el examen final para aprobar
+                    la materia definitivamente. Tenés un plazo máximo de
+                    <strong>2 años y medio (5 cuatrimestres)</strong> para
+                    rendir el final antes de que la regularidad se venza. Si no
+                    lo hacés, deberás recursar la materia.
+                  </p>
                 </div>
               </div>
             </div>
@@ -612,16 +983,38 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 7 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq7">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse7"
+                  aria-expanded="false"
+                  aria-controls="collapse7"
+                >
                   No hay cupos para la materia que quiero cursar, ¿qué hago?
                 </button>
               </h2>
-              <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="faq7" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse7"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq7"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>Si te quedaste sin cupo para la materia que querías cursar, tenés dos opciones:</p>
+                  <p>
+                    Si te quedaste sin cupo para la materia que querías cursar,
+                    tenés dos opciones:
+                  </p>
                   <ul>
-                    <li>Esperar a que se abra una nueva comisión con más cupos disponibles.</li>
-                    <li>Inscribirte fuera de término durante la primera semana de cursada. Esta inscripción está sujeta a la disponibilidad de lugares, pero te garantiza la posibilidad de cursar.</li>
+                    <li>
+                      Esperar a que se abra una nueva comisión con más cupos
+                      disponibles.
+                    </li>
+                    <li>
+                      Inscribirte fuera de término durante la primera semana de
+                      cursada. Esta inscripción está sujeta a la disponibilidad
+                      de lugares, pero te garantiza la posibilidad de cursar.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -630,13 +1023,33 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 8 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq8">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
-                  Desaprobé una materia, ¿tengo que esperar al próximo año para cursarla?
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse8"
+                  aria-expanded="false"
+                  aria-controls="collapse8"
+                >
+                  Desaprobé una materia, ¿tengo que esperar al próximo año para
+                  cursarla?
                 </button>
               </h2>
-              <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="faq8" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse8"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq8"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p><strong>No necesariamente.</strong> Si la materia no se dicta en el próximo cuatrimestre, podés solicitar una contra-cursada con otros estudiantes que también quieran recursarla. Para hacerlo, necesitás juntar firmas de los interesados y pedir al Centro de Estudiantes que gestione la solicitud con la universidad.</p>
+                  <p>
+                    <strong>No necesariamente.</strong> Si la materia no se
+                    dicta en el próximo cuatrimestre, podés solicitar una
+                    contra-cursada con otros estudiantes que también quieran
+                    recursarla. Para hacerlo, necesitás juntar firmas de los
+                    interesados y pedir al Centro de Estudiantes que gestione la
+                    solicitud con la universidad.
+                  </p>
                 </div>
               </div>
             </div>
@@ -644,51 +1057,88 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
             <!-- FAQ Item 9 -->
             <div class="accordion-item">
               <h2 class="accordion-header" id="faq9">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapse9"
+                  aria-expanded="false"
+                  aria-controls="collapse9"
+                >
                   No veo los horarios de las materias, ¿qué pasa?
                 </button>
               </h2>
-              <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="faq9" data-bs-parent="#faqAccordion">
+              <div
+                id="collapse9"
+                class="accordion-collapse collapse"
+                aria-labelledby="faq9"
+                data-bs-parent="#faqAccordion"
+              >
                 <div class="accordion-body">
-                  <p>Los horarios se cargan en el sistema a medida que los docentes los envían. Hasta que no se cierre la fecha límite para que los profesores envíen sus horarios, puede que algunas materias no aparezcan. Tené paciencia, ya que todos los estudiantes tienen garantizado su derecho a cursar. En caso de dudas, podés consultar al Centro de Estudiantes para que te brinden más información.</p>
+                  <p>
+                    Los horarios se cargan en el sistema a medida que los
+                    docentes los envían. Hasta que no se cierre la fecha límite
+                    para que los profesores envíen sus horarios, puede que
+                    algunas materias no aparezcan. Tené paciencia, ya que todos
+                    los estudiantes tienen garantizado su derecho a cursar. En
+                    caso de dudas, podés consultar al Centro de Estudiantes para
+                    que te brinden más información.
+                  </p>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </section>
 
+
+
     <!-- Footer -->
     <footer id="contacto">
       <div class="container">
         <div class="footer-content">
-          <h3 class="footer-title">Centro Organizado de Estudiantes de Sistemas - CODES++</h3>
-          
+          <h3 class="footer-title">
+            Centro Organizado de Estudiantes de Sistemas - CODES++
+          </h3>
+
           <div class="contact-item">
             <i class="bi bi-envelope-fill"></i>
             <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
           </div>
 
-
-
           <div class="social-links">
-            <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="social-link">
+            <a
+              href="https://www.instagram.com/codes_unlu/"
+              target="_blank"
+              class="social-link"
+            >
               <i class="bi bi-instagram"></i>
             </a>
-            <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="social-link">
+            <a
+              href="https://discord.gg/rDtEx4dMvD"
+              target="_blank"
+              class="social-link"
+            >
               <i class="bi bi-discord"></i>
             </a>
-            <a href="https://github.com/CODES-UNLU" target="_blank" class="social-link">
+            <a
+              href="https://github.com/CODES-UNLU"
+              target="_blank"
+              class="social-link"
+            >
               <i class="bi bi-github"></i>
             </a>
-            <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank" class="social-link">
+            <a
+              href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c"
+              target="_blank"
+              class="social-link"
+            >
               <i class="bi bi-whatsapp"></i>
             </a>
           </div>
 
-          <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem;">
+          <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem">
             © 2025 CODES++. Todos los derechos reservados.
           </p>
         </div>
@@ -702,7 +1152,18 @@ Cumpliendo con el reglamento vigente, dos años más tarde, en octubre de 2024, 
     <script src="assets/js/main.js"></script>
 
     <!-- Back to Top Button -->
-    <button class="btn btn-primary position-fixed" id="backToTop" style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
+    <button
+      class="btn btn-primary position-fixed"
+      id="backToTop"
+      style="
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      "
+    >
       <i class="bi bi-arrow-up"></i>
     </button>
   </body>

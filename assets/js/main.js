@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
     initLoadingStates();
     initHeroAnimations();
+    initMobileMenu(); // <--- Añado la llamada aquí
     
 });
 
@@ -189,6 +190,14 @@ function initMobileMenu() {
                 }
             });
         });
+        // Cerrar menú al hacer clic fuera del navbar en móvil
+        document.addEventListener('click', function(event) {
+            const isNavbarOpen = navbarCollapse.classList.contains('show');
+            const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
+            if (window.innerWidth < 992 && isNavbarOpen && !isClickInsideNavbar) {
+                navbarCollapse.classList.remove('show');
+            }
+        });
     }
 }
 
@@ -318,7 +327,8 @@ function initSearchFunctionality() {
 function initDarkMode() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
-    
+    // El logo ya no cambia, solo se gestiona el modo oscuro
+
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
