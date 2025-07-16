@@ -76,7 +76,16 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-C73GLNE05C');
+      gtag('config', 'G-C73GLNE05C', {
+        page_title: 'CODES++ - Centro de Estudiantes de Sistemas',
+        page_location: window.location.href,
+        send_page_view: true
+      });
+      
+      // Debug analytics in development
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('Google Analytics loaded in development mode');
+      }
     </script>
 
     <link
@@ -105,6 +114,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <!-- Analytics Debug Script (Development Only) -->
+    <script src="assets/js/analytics-debug.js"></script>
   </head>
 
   <body>

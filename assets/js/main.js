@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
     initLoadingStates();
     initHeroAnimations();
-    initMobileMenu(); // <--- Añado la llamada aquí
+    initMobileMenu();
+    initAnalytics(); // Initialize analytics tracking
     
 });
 
@@ -190,20 +191,12 @@ function initMobileMenu() {
                 }
             });
         });
-<<<<<<< HEAD
-        // Cerrar menú al hacer clic fuera del navbar en móvil
-        document.addEventListener('click', function(event) {
-            const isNavbarOpen = navbarCollapse.classList.contains('show');
-            const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
-            if (window.innerWidth < 992 && isNavbarOpen && !isClickInsideNavbar) {
-=======
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const isNavbarOpen = navbarCollapse.classList.contains('show');
             const isClickInsideNavbar = navbarCollapse.contains(event.target) || navbarToggler.contains(event.target);
             if (isNavbarOpen && !isClickInsideNavbar && window.innerWidth < 992) {
->>>>>>> 0a060881b9fe3f78d7dd3a9cc47410313f31c1b0
                 navbarCollapse.classList.remove('show');
             }
         });
@@ -375,6 +368,8 @@ function initBreadcrumbs() {
         { id: 'contacto', name: 'Contacto' }
     ];
     
+    let lastTrackedSection = 'Inicio';
+    
     function updateBreadcrumbs() {
         const scrollPosition = window.scrollY + 100;
         let currentSection = 'Inicio';
@@ -390,6 +385,12 @@ function initBreadcrumbs() {
                 }
             }
         });
+        
+        // Track section changes for analytics
+        if (currentSection !== lastTrackedSection) {
+            trackPageView(currentSection);
+            lastTrackedSection = currentSection;
+        }
         
         breadcrumbList.innerHTML = `
             <li class="breadcrumb-item">
@@ -525,9 +526,101 @@ function createDynamicParticles(container) {
     }
 }
 
+/**
+ * Analytics tracking functions
+ */
+function trackEvent(eventName, parameters = {}) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, parameters);
+        console.log('Analytics event tracked:', eventName, parameters);
+    } else {
+        console.warn('Google Analytics not loaded');
+    }
+}
+
+/**
+ * Track page views for single page application
+ */
+function trackPageView(section) {
+    if (typeof gtag !== 'undefined') {
+        gtag('config', 'G-C73GLNE05C', {
+            page_title: `CODES++ - ${section}`,
+            page_location: window.location.href + '#' + section,
+            send_page_view: true
+        });
+        console.log('Page view tracked:', section);
+    }
+}
+
+/**
+ * Initialize analytics tracking
+ */
+function initAnalytics() {
+    // Track navigation clicks
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            const section = this.getAttribute('href').substring(1);
+            trackEvent('navigation_click', {
+                section: section,
+                link_text: this.textContent
+            });
+        });
+    });
+
+    // Track search usage
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            if (this.value.length > 2) {
+                trackEvent('search_input', {
+                    search_term: this.value,
+                    search_term_length: this.value.length
+                });
+            }
+        });
+    }
+
+    // Track external link clicks
+    document.querySelectorAll('a[href^="http"]').forEach(link => {
+        link.addEventListener('click', function() {
+            trackEvent('external_link_click', {
+                link_url: this.href,
+                link_text: this.textContent
+            });
+        });
+    });
+
+    // Track dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            trackEvent('theme_toggle', {
+                theme: currentTheme === 'dark' ? 'light' : 'dark'
+            });
+        });
+    }
+
+    // Track scroll depth
+    let maxScroll = 0;
+    window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+            maxScroll = scrollPercent;
+            trackEvent('scroll_depth', {
+                scroll_percent: scrollPercent
+            });
+        }
+    });
+
+    console.log('Analytics tracking initialized');
+}
+
 // Export functions for potential use in other scripts
 window.CODES = {
     showNotification,
     validateForm,
-    addLoadingState
+    addLoadingState,
+    trackEvent,
+    trackPageView
 }; 
