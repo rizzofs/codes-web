@@ -1346,6 +1346,12 @@ footer {
   text-align: justify;
 }
 
+@media (max-width: 768px) {
+  .text-justify {
+    text-align: left !important;
+  }
+}
+
 /* ========================================
    RESPONSIVE DESIGN
    ======================================== */
@@ -1408,6 +1414,52 @@ footer {
     padding: 1rem 0;
   }
 } 
+
+/* --- INICIO: Ajustes de responsividad y alineación navbar/logo --- */
+
+/* Logo siempre alineado y con tamaño fijo */
+.navbar-logo {
+  height: 48px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 12px;
+  margin-left: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Navbar container: espacio entre logo y acciones */
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Acciones y toggler alineados */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 8px;
+}
+
+/* En mobile: logo y acciones en la misma fila, sin saltos */
+@media (max-width: 991.98px) {
+  .navbar .container {
+    flex-wrap: nowrap;
+  }
+  .navbar-logo {
+    height: 40px;
+    max-width: 120px;
+  }
+  .navbar-actions {
+    margin-left: 4px;
+  }
+}
+
+/* --- FIN: Ajustes de responsividad y alineación navbar/logo --- */
 
 <<<<<<< HEAD
 /* Forzar navbar siempre claro, incluso en modo oscuro */
