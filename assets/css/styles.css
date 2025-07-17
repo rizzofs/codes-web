@@ -1545,3 +1545,142 @@ header, .navbar, .navbar-light, [data-theme="dark"] header, [data-theme="dark"] 
   transition: all 0.3s ease;
 } 
 >>>>>>> 0a060881b9fe3f78d7dd3a9cc47410313f31c1b0
+
+/* --- MEJORA DEL MENÚ NAVBAR EN MOBILE --- */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    min-width: 100vw;
+    background: #fff !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    z-index: 1050;
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    border-radius: 0 0 16px 16px;
+    margin: 0;
+    display: block;
+    transition: all 0.3s;
+  }
+  .navbar-nav {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .nav-link {
+    font-size: 1.15rem;
+    padding: 1rem 1.5rem !important;
+    border-radius: 8px;
+    margin: 0.25rem 0;
+    text-align: left;
+    width: 100%;
+    background: transparent !important;
+  }
+  .navbar-toggler {
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    background: #fff !important;
+    z-index: 1100;
+    box-shadow: 0 2px 8px #0001;
+    margin-left: 0.5rem;
+  }
+  .navbar-actions {
+    z-index: 1100;
+  }
+  .navbar {
+    position: relative;
+    z-index: 1100;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-collapse {
+    padding: 0.5rem 0.25rem 0.75rem 0.25rem;
+    border-radius: 0 0 12px 12px;
+  }
+  .nav-link {
+    font-size: 1.05rem;
+    padding: 0.85rem 1rem !important;
+  }
+}
+/* --- FIN MEJORA DEL MENÚ NAVBAR EN MOBILE --- */
+
+/* --- MENÚ MOBILE DROPDOWN DESDE NAVBAR --- */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    display: none !important;
+  }
+  .mobile-menu-modal .modal-dialog.mobile-menu-dropdown {
+    margin: 0 auto;
+    margin-top: 60px;
+    max-width: 420px;
+    width: 95vw;
+    pointer-events: none;
+    transition: margin-top 0.3s;
+  }
+  .mobile-menu-modal .modal-content {
+    border-radius: 0 0 1.5rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    background: rgba(255,255,255,0.98) !important;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
+    pointer-events: auto;
+    animation: slideDownMenu 0.35s cubic-bezier(.4,1.6,.6,1) both;
+  }
+  .mobile-menu-modal .modal-body {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+  .mobile-menu-modal .nav-link {
+    font-size: 1.15rem !important;
+    font-weight: 700;
+    color: var(--primary) !important;
+    padding: 0.85rem 1rem !important;
+    border-radius: 10px;
+    transition: background 0.2s, color 0.2s;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+  .mobile-menu-modal .nav-link:hover {
+    background: var(--primary);
+    color: #fff !important;
+  }
+  .mobile-menu-modal .modal-header, .mobile-menu-modal .btn-close {
+    display: none !important;
+  }
+  .mobile-menu-modal.show .modal-dialog {
+    margin-top: 60px;
+  }
+  .modal-backdrop.show {
+    background: rgba(0,0,0,0.18) !important;
+    backdrop-filter: blur(2px);
+  }
+}
+@media (min-width: 992px) {
+  .mobile-menu-modal {
+    display: none !important;
+  }
+}
+@keyframes slideDownMenu {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* --- FIN MENÚ MOBILE DROPDOWN DESDE NAVBAR --- */
