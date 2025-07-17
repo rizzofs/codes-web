@@ -74,23 +74,37 @@ header.scrolled {
     filter: brightness(0.9) contrast(1.2) saturate(0.8);
 }
 
-/* Logo navbar tamaño y contraste */
+/* Logo navbar: tamaño fijo y sin cambios entre modos */
 .navbar-logo {
-  max-height: 56px;
-  height: 56px;
-  width: auto;
+  height: 40px !important;
+  max-height: 40px !important;
+  width: auto !important;
+  max-width: 160px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin: 0 !important;
+  padding: 0 !important;
   display: block;
-  background: transparent;
-  padding: 2px 0;
-  transition: filter 0.3s, background 0.3s;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  border-radius: 0 !important;
+}
+
+@media (max-width: 576px) {
+  .navbar-logo {
+    height: 32px !important;
+    max-height: 32px !important;
+  }
 }
 
 [data-theme="dark"] .navbar-logo {
-  background: #222;
-  border-radius: 8px;
-  padding: 4px 8px;
-  /* Si el logo es oscuro, puedes agregar un borde claro */
-  box-shadow: 0 0 0 2px #fff2, 0 2px 8px #0004;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Navbar actions (search and dark mode buttons) */
