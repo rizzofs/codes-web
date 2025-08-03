@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Links de pago según la cantidad de chances
     const paymentLinks = {
         1: 'https://mpago.la/2YQW3HX',
-        3: 'https://tu-enlace-pago.com/3chances',
-        4: 'https://tu-enlace-pago.com/4chances'
+        3: 'https://mpago.la/2YQW3HX', // Usar el mismo link por ahora
+        4: 'https://mpago.la/2YQW3HX'  // Usar el mismo link por ahora
     };
 
     if (cantidadChances) {
@@ -206,13 +206,14 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             console.log('🎯 Formulario enviado - Iniciando proceso');
 
-            // Validar que el pago fue confirmado
+            // Validar que el pago fue confirmado (opcional por ahora)
             if (pagado !== 'ok') {
                 console.log('Pago no confirmado, pagado =', pagado);
-                alert('Debes completar el pago antes de enviar el formulario.');
-                return;
+                // Permitir continuar sin validación estricta del pago
+                console.log('Continuando sin validación estricta del pago');
+            } else {
+                console.log('Pago confirmado, procediendo con envío');
             }
-            console.log('Pago confirmado, procediendo con envío');
 
             // Obtener datos del formulario
             const nombre = document.getElementById('nombre').value;
@@ -263,8 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (result.success) {
                     console.log('✅ Envío exitoso a Google Sheets');
-                    // Mostrar mensaje de éxito
-                    alert('¡Participación registrada exitosamente! Gracias por participar.');
                     
                     // Limpiar formulario
                     sorteoForm.reset();
@@ -272,8 +271,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Ocultar botón de submit
                     ocultarBotonSubmit();
                     
-                    // Redirigir o mostrar mensaje de confirmación
-                    window.location.href = 'index.html?registro=exitoso';
+                    // Redirigir a la página de agradecimiento
+                    window.location.href = 'agradecimiento.html';
                 } else {
                     console.log('❌ Error en el envío:', result.error);
                     throw new Error(result.error || 'Error desconocido');
@@ -365,7 +364,8 @@ document.addEventListener('DOMContentLoaded', function() {
         enviarAGoogleSheets(formData).then(result => {
             if (result.success) {
                 console.log('✅ Datos enviados exitosamente');
-                mostrarAgradecimiento();
+                // Redirigir a la página de agradecimiento
+                window.location.href = 'agradecimiento.html';
             } else {
                 console.log('❌ Error enviando datos:', result.error);
                 alert('Error al enviar los datos. Por favor intenta nuevamente.');
@@ -393,6 +393,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (paymentLink) {
                     console.log('🌐 Abriendo:', paymentLink);
                     window.open(paymentLink, '_blank');
+                    
+                    // Mostrar instrucciones al usuario
+                    setTimeout(() => {
+                        alert('✅ Pago iniciado en nueva ventana.\n\nDespués de completar el pago:\n1. Regresa a esta página\n2. Completa el formulario con tus datos\n3. Haz clic en "Registrar Participación"\n\n¡Gracias por participar!');
+                        
+                        // Mostrar el botón de submit para que pueda completar el formulario
+                        mostrarBotonSubmit();
+                        if (goToPayContainer) goToPayContainer.style.display = 'none';
+                        
+                        // Restaurar el botón de pago
+                        goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                        goToPayBtn.disabled = false;
+                    }, 2000);
+                    
                 } else {
                     console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
                     alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');

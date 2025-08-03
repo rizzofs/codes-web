@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Gracias por Participar! - CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <meta name="description"
+        content="Gracias por participar en el sorteo de la Tablet Android 15 organizado por CODES++ - Centro de Estudiantes de Sistemas de la UNLu." />
+    <meta name="keywords" content="agradecimiento, sorteo, tablet, CODES++, centro de estudiantes, sistemas, UNLu" />
+    <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=1.3">
+    <link rel="stylesheet" href="assets/css/sorteo.css?v=1.0">
+
+    <style>
+        .agradecimiento-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+        }
+
+        .agradecimiento-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #28a745;
+            margin-bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f39c12;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .btn-custom {
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+                </a>
+                <div class="navbar-actions d-flex gap-2 me-3">
+                    <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="Modo oscuro">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#nosotros">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#integrantes">Integrantes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#eventos">Actividades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#extra">Recursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#faq">FAQ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#contacto">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="agradecimiento-container">
+        <div class="container">
+            <div class="agradecimiento-card">
+                <!-- Icono de éxito animado -->
+                <div class="success-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+
+                <!-- Título principal -->
+                <h1 class="display-4 fw-bold text-success mb-3">
+                    ¡Participación Confirmada!
+                </h1>
+
+                <!-- Mensaje de agradecimiento -->
+                <p class="lead mb-4">
+                    Gracias por participar en nuestro sorteo de la <strong>Tablet Android 15</strong>.
+                </p>
+
+                <!-- Información importante -->
+                <div class="info-box">
+                    <h5 class="mb-2">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Tu participación ha sido registrada exitosamente
+                    </h5>
+                    <p class="mb-0">
+                        Te notificaremos por correo electrónico si resultas ganador/a del sorteo.
+                    </p>
+                </div>
+
+                <!-- Próximos pasos -->
+                <div class="next-steps">
+                    <h5 class="mb-3">
+                        <i class="bi bi-calendar-event me-2"></i>
+                        Próximos pasos
+                    </h5>
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <span>Recibirás un correo de confirmación en los próximos minutos</span>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <span>El sorteo se realizará el 30 de septiembre de 2025</span>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <span>Si resultas ganador/a, te contactaremos inmediatamente</span>
+                    </div>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="alert alert-light border-0" role="alert">
+                    <i class="bi bi-lightbulb me-2 text-warning"></i>
+                    <strong>¿Sabías que?</strong> Todo lo recaudado será destinado a cubrir los costos de viaje de estudiantes que participarán del CACIC 2025.
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mt-4">
+                    <a href="index.html" class="btn btn-primary btn-custom">
+                        <i class="bi bi-house me-2"></i>
+                        Volver al Inicio
+                    </a>
+                    <a href="sorteo.html" class="btn btn-outline-primary btn-custom">
+                        <i class="bi bi-gift me-2"></i>
+                        Participar Nuevamente
+                    </a>
+                </div>
+
+                <!-- Redes sociales -->
+                <div class="mt-4">
+                    <p class="text-muted mb-2">Síguenos en nuestras redes:</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-discord"></i>
+                        </a>
+                        <a href="https://github.com/CODES-UNLU" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <h3 class="footer-title">
+                    Centro Organizado de Estudiantes de Sistemas - CODES++
+                </h3>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="social-link">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="social-link">
+                        <i class="bi bi-discord"></i>
+                    </a>
+                    <a href="https://github.com/CODES-UNLU" target="_blank" class="social-link">
+                        <i class="bi bi-github"></i>
+                    </a>
+                    <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank"
+                        class="social-link">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                </div>
+
+                <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem">
+                    2025 CODES++. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="btn btn-primary position-fixed" id="backToTop"
+        style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Script para crear confeti -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear confeti
+            function createConfetti() {
+                const colors = ['#f39c12', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(confetti);
+
+                // Remover confeti después de la animación
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+
+            // Crear confeti cada 200ms durante 3 segundos
+            let confettiInterval = setInterval(createConfetti, 200);
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+            }, 3000);
+
+            // Google Analytics tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'sorteo_participacion_exitosa', {
+                    'event_category': 'sorteo',
+                    'event_label': 'agradecimiento'
+                });
+            }
+        });
+    </script>
+</body>
+
+</html> 
