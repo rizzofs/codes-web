@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Mostrar botón de ir a pagar cuando se seleccione cantidad de chances válida
+    // Mostrar botón de ir a pagar cuando se complete el formulario
     const cantidadChances = document.getElementById('cantidadChances');
     const goToPayContainer = document.getElementById('goToPayContainer');
     const goToPayBtn = document.getElementById('goToPayBtn');
@@ -101,27 +101,50 @@ document.addEventListener('DOMContentLoaded', function() {
         4: 'https://mpago.la/2YQW3HX'  // Usar el mismo link por ahora
     };
 
-    if (cantidadChances) {
-        console.log('✅ Select de chances encontrado:', cantidadChances);
-        cantidadChances.addEventListener('change', function() {
-            console.log('🔄 Cantidad de chances cambiada a:', this.value);
-            if (["1","3","4"].includes(this.value)) {
-                console.log('✅ Mostrando botón de pago para', this.value, 'chances');
-                goToPayContainer.style.display = "block";
-                goToPayBtn.disabled = false;
-                goToPayBtn.setAttribute('data-link', paymentLinks[this.value]);
-                goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${this.value} chance${this.value=="1"?"":"s"})`;
-            } else {
-                console.log('❌ Ocultando botón de pago - cantidad inválida');
-                goToPayContainer.style.display = "none";
-                goToPayBtn.disabled = true;
-                goToPayBtn.removeAttribute('data-link');
-                goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar`;
-            }
-        });
-    } else {
-        console.log('❌ No se encontró el select de chances');
+    // Función para validar que el formulario esté completo
+    function validarFormularioCompleto() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const dni = document.getElementById('dni').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const cantidadChances = document.getElementById('cantidadChances').value;
+        
+        return nombre && apellido && email && dni && telefono && cantidadChances;
     }
+
+    // Función para actualizar el botón de pago
+    function actualizarBotonPago() {
+        const formularioCompleto = validarFormularioCompleto();
+        const cantidadChances = document.getElementById('cantidadChances').value;
+        
+        if (formularioCompleto && ["1","3","4"].includes(cantidadChances)) {
+            console.log('✅ Formulario completo - Mostrando botón de pago para', cantidadChances, 'chances');
+            goToPayContainer.style.display = "block";
+            goToPayBtn.disabled = false;
+            goToPayBtn.setAttribute('data-link', paymentLinks[cantidadChances]);
+            goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+        } else {
+            console.log('❌ Formulario incompleto o cantidad inválida - Ocultando botón de pago');
+            goToPayContainer.style.display = "none";
+            goToPayBtn.disabled = true;
+            goToPayBtn.removeAttribute('data-link');
+            goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar`;
+        }
+    }
+
+    // Agregar event listeners a todos los campos del formulario
+    const camposFormulario = ['nombre', 'apellido', 'email', 'dni', 'telefono', 'cantidadChances'];
+    camposFormulario.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            elemento.addEventListener('input', actualizarBotonPago);
+            elemento.addEventListener('change', actualizarBotonPago);
+        }
+    });
+
+    // Validación inicial
+    actualizarBotonPago();
 
     if (goToPayBtn) {
         console.log('✅ Botón de pago encontrado:', goToPayBtn);
@@ -160,11 +183,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('Valor de pagado:', pagado);
-    if (pagado === 'ok') {
-        console.log('Pago confirmado, mostrando botón submit');
-        if (goToPayContainer) goToPayContainer.style.display = 'none';
-        mostrarBotonSubmit();
-        submitBtn && submitBtn.scrollIntoView({behavior: 'smooth'});
+    
+    // Detectar si el pago fue exitoso (nuevos parámetros de MercadoPago)
+    const collectionStatus = getQueryParam('collection_status');
+    const status = getQueryParam('status');
+    const paymentId = getQueryParam('payment_id');
+    
+    console.log('Estado del pago:', { pagado, collectionStatus, status, paymentId });
+    
+    // Si el pago fue exitoso, actualizar estado y redirigir a agradecimiento
+    if (pagado === 'ok' || collectionStatus === 'approved' || status === 'approved') {
+        console.log('✅ Pago confirmado - Actualizando estado y redirigiendo');
+        
+        // Obtener datos del pago pendiente
+        const datosPendientes = localStorage.getItem('sorteo_pendiente');
+        if (datosPendientes) {
+            const datos = JSON.parse(datosPendientes);
+            console.log('📊 Datos pendientes encontrados:', datos);
+            
+            // Actualizar estado del pago
+            const datosActualizados = {
+                sessionId: datos.sessionId,
+                estadoPago: 'CONFIRMADO',
+                pagoConfirmado: true,
+                fechaConfirmacion: new Date().toISOString(),
+                paymentId: paymentId || 'N/A',
+                collectionStatus: collectionStatus || 'N/A',
+                status: status || 'N/A'
+            };
+            
+            // Enviar actualización a Google Sheets
+            enviarAGoogleSheets(datosActualizados).then(result => {
+                if (result.success) {
+                    console.log('✅ Estado de pago actualizado exitosamente');
+                    // Limpiar datos pendientes
+                    localStorage.removeItem('sorteo_pendiente');
+                } else {
+                    console.log('❌ Error actualizando estado de pago:', result.error);
+                }
+            });
+        }
+        
+        // Redirigir a página de agradecimiento
+        window.location.href = 'agradecimiento.html';
+        return;
     } else {
         console.log('Pago no confirmado, ocultando botón submit');
         ocultarBotonSubmit();
@@ -291,6 +353,39 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('✅ Sorteo.js inicializado correctamente');
+    
+    // Función para limpiar registros pendientes antiguos (más de 24 horas)
+    function limpiarRegistrosPendientes() {
+        const datosPendientes = localStorage.getItem('sorteo_pendiente');
+        if (datosPendientes) {
+            const datos = JSON.parse(datosPendientes);
+            const tiempoTranscurrido = Date.now() - datos.timestamp;
+            const horasTranscurridas = tiempoTranscurrido / (1000 * 60 * 60);
+            
+            if (horasTranscurridas > 24) {
+                console.log('🧹 Limpiando registro pendiente antiguo (más de 24 horas)');
+                localStorage.removeItem('sorteo_pendiente');
+                
+                // Opcional: Enviar a Google Sheets como "CANCELADO"
+                const datosCancelados = {
+                    sessionId: datos.sessionId,
+                    estadoPago: 'CANCELADO',
+                    pagoConfirmado: false,
+                    fechaCancelacion: new Date().toISOString(),
+                    motivo: 'Tiempo expirado (24h)'
+                };
+                
+                enviarAGoogleSheets(datosCancelados).then(result => {
+                    if (result.success) {
+                        console.log('✅ Registro cancelado enviado a Google Sheets');
+                    }
+                });
+            }
+        }
+    }
+    
+    // Ejecutar limpieza al cargar la página
+    limpiarRegistrosPendientes();
 
     // Función de prueba para simular pago (temporal)
     window.simularPago = function() {
@@ -375,45 +470,111 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para ir a pagar con Mercado Pago real
     window.irAPagar = function() {
-        console.log('💳 Redirigiendo a Mercado Pago...');
+        console.log('💳 Iniciando proceso de pago...');
+        
+        // Validar que el formulario esté completo
+        if (!validarFormularioCompleto()) {
+            alert('Por favor completa todos los campos del formulario antes de proceder al pago.');
+            return;
+        }
         
         const cantidadChances = document.getElementById('cantidadChances').value;
         const goToPayBtn = document.getElementById('goToPayBtn');
         
         if (goToPayBtn) {
             // Cambiar el texto del botón
-            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Redirigiendo...';
+            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando...';
             goToPayBtn.disabled = true;
             
-            console.log('🔄 Redirigiendo a Mercado Pago para', cantidadChances, 'chances');
+            console.log('📤 Enviando datos a Google Sheets (PENDIENTE DE PAGO)...');
             
-            // Redirigir al link de pago correspondiente
-            setTimeout(() => {
-                const paymentLink = paymentLinks[cantidadChances];
-                if (paymentLink) {
-                    console.log('🌐 Abriendo:', paymentLink);
-                    window.open(paymentLink, '_blank');
+            // Obtener datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const email = document.getElementById('email').value;
+            const dni = document.getElementById('dni').value;
+            const telefono = document.getElementById('telefono').value;
+            
+            const formData = {
+                nombre: nombre,
+                apellido: apellido,
+                email: email,
+                dni: dni,
+                telefono: telefono,
+                cantidadChances: cantidadChances,
+                estadoPago: 'PENDIENTE', // Estado inicial
+                pagoConfirmado: false,
+                fechaRegistro: new Date().toISOString(),
+                timestamp: new Date().getTime(),
+                sessionId: Date.now() + Math.random().toString(36).substr(2, 9) // ID único para tracking
+            };
+            
+            // Enviar datos a Google Sheets (PENDIENTE)
+            enviarAGoogleSheets(formData).then(result => {
+                if (result.success) {
+                    console.log('✅ Datos enviados exitosamente (PENDIENTE) - Redirigiendo a MercadoPago');
                     
-                    // Mostrar instrucciones al usuario
+                    // Guardar datos en localStorage para tracking
+                    localStorage.setItem('sorteo_pendiente', JSON.stringify({
+                        sessionId: formData.sessionId,
+                        timestamp: formData.timestamp,
+                        cantidadChances: cantidadChances
+                    }));
+                    
+                    // Redirigir al link de pago correspondiente
                     setTimeout(() => {
-                        alert('✅ Pago iniciado en nueva ventana.\n\nDespués de completar el pago:\n1. Regresa a esta página\n2. Completa el formulario con tus datos\n3. Haz clic en "Registrar Participación"\n\n¡Gracias por participar!');
-                        
-                        // Mostrar el botón de submit para que pueda completar el formulario
-                        mostrarBotonSubmit();
-                        if (goToPayContainer) goToPayContainer.style.display = 'none';
-                        
-                        // Restaurar el botón de pago
-                        goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
-                        goToPayBtn.disabled = false;
-                    }, 2000);
+                        const paymentLink = paymentLinks[cantidadChances];
+                        if (paymentLink) {
+                            console.log('🌐 Abriendo MercadoPago:', paymentLink);
+                            window.open(paymentLink, '_blank');
+                            
+                            // Mostrar mensaje de confirmación
+                            setTimeout(() => {
+                                alert('✅ Datos registrados exitosamente.\n\nPago iniciado en nueva ventana.\n\nDespués de completar el pago, serás redirigido automáticamente a la página de agradecimiento.');
+                                
+                                // Ocultar el formulario para evitar modificaciones
+                                const formStep = document.getElementById('formStep');
+                                if (formStep) {
+                                    formStep.style.display = 'none';
+                                }
+                                
+                                // Mostrar mensaje de espera
+                                const productCard = document.querySelector('.product-card');
+                                if (productCard) {
+                                    productCard.innerHTML = `
+                                        <div class="text-center">
+                                            <div class="mb-4">
+                                                <i class="bi bi-hourglass-split text-primary" style="font-size: 3rem;"></i>
+                                            </div>
+                                            <h3 class="text-primary">Procesando Pago</h3>
+                                            <p class="lead">Tu información ha sido registrada. Completa el pago en la ventana que se abrió.</p>
+                                            <div class="alert alert-info">
+                                                <i class="bi bi-info-circle me-2"></i>
+                                                <strong>Después del pago serás redirigido automáticamente.</strong>
+                                            </div>
+                                        </div>
+                                    `;
+                                    productCard.style.display = 'block';
+                                }
+                                
+                            }, 1000);
+                            
+                        } else {
+                            console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
+                            alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
+                            goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                            goToPayBtn.disabled = false;
+                        }
+                    }, 500);
                     
                 } else {
-                    console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
-                    alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
+                    console.log('❌ Error enviando datos:', result.error);
+                    alert('Error al registrar los datos. Por favor intenta nuevamente.');
                     goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
                     goToPayBtn.disabled = false;
                 }
-            }, 1000);
+            });
+            
         } else {
             console.log('❌ No se encontró el botón de pago');
         }
