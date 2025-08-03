@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Datos - Google Sheets</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .log { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; max-height: 300px; overflow-y: auto; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verificar Datos en Google Sheets</h1>
+        
+        <div class="status info">
+            <h3>📋 Instrucciones:</h3>
+            <ol>
+                <li>Haz clic en "Enviar Datos de Prueba"</li>
+                <li>Revisa los logs en la consola</li>
+                <li>Verifica tu hoja de Google Sheets</li>
+                <li>Si no ves los datos, revisa la configuración</li>
+            </ol>
+        </div>
+
+        <button onclick="enviarDatosPrueba()">📤 Enviar Datos de Prueba</button>
+        <button onclick="limpiarLogs()">🗑️ Limpiar Logs</button>
+        
+        <div id="log" class="log"></div>
+        
+        <div class="status info">
+            <h3>📊 Datos que se envían:</h3>
+            <ul>
+                <li><strong>Nombre:</strong> Test Usuario</li>
+                <li><strong>Apellido:</strong> Prueba</li>
+                <li><strong>Email:</strong> test@ejemplo.com</li>
+                <li><strong>DNI:</strong> 12345678</li>
+                <li><strong>Teléfono:</strong> 11-1234-5678</li>
+                <li><strong>Chances:</strong> 3</li>
+                <li><strong>Pago Confirmado:</strong> true</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOxMXytFzphjVGZ13jIFZxZ8HNCWABjjLTQC2Lpiiac2Vw9nwqlNsn82hK5_yCUQxbjw/exec';
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const emoji = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            logDiv.innerHTML += `<div>[${timestamp}] ${emoji} ${message}</div>`;
+            console.log(message);
+        }
+        
+        async function enviarAGoogleSheets(formData) {
+            try {
+                log('Enviando datos a Google Sheets...');
+                log('URL: ' + GOOGLE_SHEETS_URL);
+                log('Datos: ' + JSON.stringify(formData, null, 2));
+                
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                log('Respuesta del servidor: ' + response.status + ' ' + response.statusText);
+                log('Tipo de respuesta: ' + response.type);
+                
+                return { success: true };
+            } catch (error) {
+                log('Error: ' + error.message, 'error');
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function enviarDatosPrueba() {
+            log('=== INICIO DE PRUEBA ===');
+            
+            const formData = {
+                nombre: "Test",
+                apellido: "Usuario",
+                email: "test@ejemplo.com",
+                dni: "12345678",
+                telefono: "11-1234-5678",
+                cantidadChances: "3",
+                pagoConfirmado: true,
+                fechaRegistro: new Date().toISOString(),
+                timestamp: new Date().getTime()
+            };
+            
+            try {
+                const result = await enviarAGoogleSheets(formData);
+                
+                if (result.success) {
+                    log('✅ Envío exitoso - Revisa tu hoja de Google Sheets', 'success');
+                    setTimeout(() => {
+                        alert('¡Datos enviados! Revisa tu hoja de Google Sheets para confirmar.');
+                    }, 1000);
+                } else {
+                    log('❌ Error en el envío: ' + result.error, 'error');
+                    alert('Error al enviar los datos: ' + result.error);
+                }
+            } catch (error) {
+                log('❌ Error inesperado: ' + error.message, 'error');
+                alert('Error inesperado: ' + error.message);
+            }
+            
+            log('=== FIN DE PRUEBA ===');
+        }
+        
+        function limpiarLogs() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        log('Página de verificación cargada. Listo para enviar datos de prueba.');
+    </script>
+</body>
+</html> 

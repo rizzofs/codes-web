@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sorteo - Google Sheets</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:disabled { background: #ccc; }
+        .log { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Test de Envío a Google Sheets</h1>
+    
+    <form id="testForm">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="Test" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" value="Usuario" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="test@ejemplo.com" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" value="12345678" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" value="11-1234-5678" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="cantidadChances">Cantidad de Chances:</label>
+            <select id="cantidadChances" name="cantidadChances" required>
+                <option value="1">1 chance</option>
+                <option value="3" selected>3 chances</option>
+                <option value="4">4 chances</option>
+            </select>
+        </div>
+        
+        <button type="submit" id="submitBtn">Enviar a Google Sheets</button>
+    </form>
+    
+    <div id="log" class="log"></div>
+
+    <script>
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOxMXytFzphjVGZ13jIFZxZ8HNCWABjjLTQC2Lpiiac2Vw9nwqlNsn82hK5_yCUQxbjw/exec';
+        
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+            console.log(message);
+        }
+        
+        async function enviarAGoogleSheets(formData) {
+            try {
+                log('Enviando datos a Google Sheets...');
+                log('URL: ' + GOOGLE_SHEETS_URL);
+                log('Datos: ' + JSON.stringify(formData, null, 2));
+                
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                log('Respuesta del servidor: ' + response.status + ' ' + response.statusText);
+                log('Tipo de respuesta: ' + response.type);
+                
+                return { success: true };
+            } catch (error) {
+                log('Error: ' + error.message);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = 'Enviando...';
+            submitBtn.disabled = true;
+            
+            log('=== INICIO DE PRUEBA ===');
+            
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                email: document.getElementById('email').value,
+                dni: document.getElementById('dni').value,
+                telefono: document.getElementById('telefono').value,
+                cantidadChances: document.getElementById('cantidadChances').value,
+                pagoConfirmado: true,
+                fechaRegistro: new Date().toISOString(),
+                timestamp: new Date().getTime()
+            };
+            
+            try {
+                const result = await enviarAGoogleSheets(formData);
+                
+                if (result.success) {
+                    log('✅ Envío exitoso');
+                    alert('¡Datos enviados correctamente! Revisa tu hoja de Google Sheets.');
+                } else {
+                    log('❌ Error en el envío: ' + result.error);
+                    alert('Error al enviar los datos: ' + result.error);
+                }
+            } catch (error) {
+                log('❌ Error inesperado: ' + error.message);
+                alert('Error inesperado: ' + error.message);
+            }
+            
+            log('=== FIN DE PRUEBA ===');
+            
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+        
+        log('Página de prueba cargada. Listo para enviar datos.');
+    </script>
+</body>
+</html> 

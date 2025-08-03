@@ -151,6 +151,15 @@
             >
               <i class="bi bi-moon"></i>
             </button>
+            <button
+              class="btn btn-outline-warning btn-sm"
+              id="goToRifaBtn"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Ir a la Rifa por la Tablet"
+            >
+              <i class="bi bi-gift"></i>
+            </button>
           </div>
           <button
             class="navbar-toggler"
@@ -601,6 +610,52 @@
               ingresantes.
             </p>
             <span class="badge bg-primary">Próximamente</span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="event-card" id="rifa-event">
+            <h3>
+              <i class="bi bi-gift text-warning me-2"></i>
+              SORTEO DE UNA TABLET
+            </h3>
+            <p class="mb-2">
+              <strong>Organiza:</strong> Centro de Estudiantes
+            </p>
+            <ul class="mb-2">
+              <li>Participás con tu número de DNI</li>
+              <li>¡Más chances, más oportunidades de ganar!</li>
+            </ul>
+            <div class="mb-2">
+              <strong>Valores por cantidad de chances:</strong>
+              <ul class="mb-2">
+                <li>✅ 1 chance → $1000</li>
+                <li>✅ 3 chances → $2800</li>
+                <li>✅ 4 chances → $4000 <span class="badge bg-success">¡te regalamos 1 extra!</span></li>
+              </ul>
+            </div>
+            <p class="mb-1">
+              <i class="bi bi-calendar-event text-primary"></i>
+              <strong>Sorteo:</strong> 30 de septiembre de 2025
+            </p>
+            <p class="mb-1">
+              <i class="bi bi-person-badge text-primary"></i>
+              Participan todos los DNIs registrados que hayan abonado
+            </p>
+            <p class="mb-2">
+              <i class="bi bi-envelope-check text-primary"></i>
+              Para participar, completá el formulario y subí tu comprobante de pago
+            </p>
+            <p class="mb-2">
+              <i class="bi bi-mortarboard text-primary"></i>
+              <strong>Todo lo recaudado será destinado a cubrir los costos de viaje de estudiantes que participarán del CACIC 2025</strong>
+            </p>
+            <a href="sorteo.html" target="_blank" class="btn btn-primary w-100 mt-auto external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Participar en la rifa">
+              <i class="bi bi-clipboard-check me-2"></i>Participar
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
+            </a>
           </div>
         </div>
       </div>
@@ -1197,5 +1252,19 @@
     >
       <i class="bi bi-arrow-up"></i>
     </button>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var goToRifaBtn = document.getElementById('goToRifaBtn');
+        if (goToRifaBtn) {
+          goToRifaBtn.addEventListener('click', function() {
+            var rifaCard = document.getElementById('rifa-event');
+            if (rifaCard) {
+              var y = rifaCard.getBoundingClientRect().top + window.pageYOffset - 90;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

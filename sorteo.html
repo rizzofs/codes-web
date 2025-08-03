@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Tablet - CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <meta name="description"
+        content="Participá del sorteo de una Tablet Android 15 organizado por CODES++ - Centro de Estudiantes de Sistemas de la UNLu." />
+    <meta name="keywords" content="sorteo, tablet, CODES++, centro de estudiantes, sistemas, UNLu" />
+    <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css?v=1.3">
+    <link rel="stylesheet" href="assets/css/sorteo.css?v=1.0">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+                </a>
+                <div class="navbar-actions d-flex gap-2 me-3">
+                    <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="Modo oscuro">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#nosotros">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#integrantes">Integrantes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#eventos">Actividades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#extra">Recursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#faq">FAQ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#contacto">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="sorteo-container">
+        <div class="container">
+            <!-- Header -->
+            <!-- <div class="header-logo">
+
+                <h1 class="header-title">SORTEO DE UNA TABLET</h1>
+                <p class="header-subtitle">Centro de Estudiantes CODES++ - UNLu</p>
+            </div> -->
+
+            <!-- Step Indicator -->
+            <!-- <div class="step-indicator">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div> -->
+
+            <!-- Product Card -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="product-card">
+                        <!-- Product Image -->
+                        <div class="product-image carousel-images">
+                            <img src="assets/images/tablet.webp" alt="Tablet Android 15" class="carousel-img active">
+                            <img src="assets/images/tablet2.webp" alt="Tablet Android 15" class="carousel-img">
+                            <img src="assets/images/tablet3.webp" alt="Tablet Android 15" class="carousel-img">
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="product-details">
+                            <h2 class="product-title">Tablet Android 15</h2>
+                            <h4 class="product-subtitle">¡La última tecnología en tus manos!</h4>
+
+                            <!-- Action Button -->
+                            <div class="text-center mt-4">
+                                <button class="btn btn-sorteo btn-lg" type="button" id="nextStepBtn">
+                                    <i class="bi bi-arrow-right me-2"></i>
+                                    Completar Formulario
+                                </button>
+                            </div>
+
+                            <!-- Package Includes -->
+                            <div class="package-includes">
+                                <h6 class="package-title">
+                                    <i class="bi bi-box-seam me-2" style="color: #27ae60;"></i>
+                                    El paquete incluye:
+                                </h6>
+                                <ul class="package-items">
+                                    <li>1 tableta de 10,1 pulgadas</li>
+                                    <li>1 teclado</li>
+                                    <li>1 ratón</li>
+                                    <li>1 lápiz óptico</li>
+                                    <li>1 funda protectora</li>
+                                    <li>1 cable USB-C</li>
+                                </ul>
+                            </div>
+
+                            <div class="accordion" id="featuresAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="featuresHeader">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#featuresCollapse" aria-expanded="false"
+                                            aria-controls="featuresCollapse">
+                                            <i class="bi bi-gear-fill me-2" style="color: #3498db;"></i>
+                                            <strong>VER CARACTERÍSTICAS</strong>
+                                        </button>
+                                    </h2>
+                                    <div id="featuresCollapse" class="accordion-collapse collapse"
+                                        aria-labelledby="featuresHeader" data-bs-parent="#featuresAccordion">
+                                        <div class="accordion-body">
+                                            <ul class="features-list">
+                                                <li>
+                                                    <i class="bi bi-phone-fill feature-icon"></i>
+                                                    <div>
+                                                        <strong>Android 15:</strong> La última tableta Android funciona
+                                                        con la última versión del sistema operativo Android 15.0. Ofrece
+                                                        una interfaz intuitiva y acceso a una amplia gama de
+                                                        aplicaciones de Google Play Store, como Netflix, YouTube,
+                                                        TikTok, Facebook, Instagram, WhatsApp, Disney+, etc.
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="bi bi-memory feature-icon"></i>
+                                                    <div>
+                                                        <strong>18 GB de RAM + 128 GB de ROM + 2 TB de memoria
+                                                            ampliable:</strong> Esta tableta Android de 10,1 pulgadas
+                                                        cuenta con 18 GB de RAM (4Gb físico y 14 GB de memoria
+                                                        ampliable) para una multitarea fluida y un rendimiento
+                                                        eficiente. También cuenta con 128 GB de ROM para guardar tus
+                                                        aplicaciones, archivos y contenido multimedia. La ranura para
+                                                        tarjeta Micro SD ofrece hasta 2 TB de memoria ampliable,
+                                                        brindándote opciones ilimitadas.
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="bi bi-wifi feature-icon"></i>
+                                                    <div>
+                                                        <strong>WiFi 6 de 2.4G/5G + 6000 mAh:</strong> Esta tableta
+                                                        Android te permite disfrutar de una velocidad de internet
+                                                        ultrarrápida gracias a la conectividad Wi-Fi 5G. Te permite
+                                                        mantenerte conectado dondequiera que estés, brindando una
+                                                        experiencia más cómoda para el entretenimiento, la navegación,
+                                                        los juegos y las compras. También incluye una batería de 6000
+                                                        mAh que dura hasta 10 horas con una sola carga, ideal para
+                                                        desplazamientos y viajes de larga distancia.
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="bi bi-laptop feature-icon"></i>
+                                                    <div>
+                                                        <strong>Tableta portátil 2 en 1:</strong> Esta tableta de 10
+                                                        pulgadas cuenta con un modo de trabajo profesional. Con teclado
+                                                        y ratón, puedes cambiar fácilmente entre el modo tableta y
+                                                        portátil. La funda la protege de arañazos y golpes. Es un
+                                                        dispositivo ideal para trabajar, estudiar o jugar. Un regalo
+                                                        ideal para colegas, estudiantes, escritores y empresarios.
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Step (Hidden by default) -->
+                    <div id="formStep" style="display: none;">
+                        <div class="product-card">
+                                <div class="product-details">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h2 class="product-title mb-0">Formulario de Participación</h2>
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                            onclick="goBackToProduct()">
+                                            <i class="bi bi-arrow-left me-2"></i>Volver
+                                        </button>
+                                    </div>
+
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <strong>Información importante:</strong> Participás con tu número de DNI.
+                                        ¡Más chances, más
+                                        oportunidades de ganar!
+                                    </div>
+
+                                    <form id="sorteoForm">
+                                        <!-- Personal Information -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="nombre" class="form-label">Nombre *</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                                    required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="apellido" class="form-label">Apellido *</label>
+                                                <input type="text" class="form-control" id="apellido"
+                                                    name="apellido" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="email" class="form-label">Email *</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="dni" class="form-label">DNI *</label>
+                                                <input type="text" class="form-control" id="dni" name="dni"
+                                                    maxlength="8" oninput="formatDNI(this)" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="telefono" class="form-label">Teléfono *</label>
+                                                <input type="tel" class="form-control" id="telefono" name="telefono"
+                                                    oninput="formatPhone(this)" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="cantidadChances" class="form-label">Cantidad de Chances
+                                                    *</label>
+                                                <select class="form-select" id="cantidadChances"
+                                                    name="cantidadChances" onchange="calculateTotal()" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">1 chance - $1</option>
+                                                    <option value="3">3 chances - $2.800</option>
+                                                    <option value="4">4 chances - $4.000 (¡te regalamos 1 extra!)
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pricing Information -->
+                                        <div class="card mb-4" style="background: var(--background-alt);">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <i class="bi bi-calculator me-2"
+                                                        style="color: var(--primary);"></i>
+                                                    Resumen de Compra
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <p class="mb-1"><strong>Chances seleccionadas:</strong></p>
+                                                        <p class="mb-1"><strong>Precio total:</strong></p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p class="mb-1"><span id="chancesDisplay">0</span> chances
+                                                        </p>
+                                                        <p class="mb-1"><span id="totalPrecio"
+                                                                class="text-primary fw-bold">$0</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón de ir a pagar (oculto al inicio) -->
+                                        <div class="text-center mt-3" id="goToPayContainer" style="display:none;">
+                                            <button type="button" id="goToPayBtn"
+                                                class="btn btn-primary btn-lg px-5" onclick="irAPagar()">
+                                                <i class="bi bi-credit-card me-2"></i> Ir a pagar
+                                            </button>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <div class="text-center mt-4 mb-2">
+                                            <button type="submit" class="btn btn-sorteo btn-lg btn-submit px-5">
+                                                <i class="bi bi-check-circle me-2"></i>
+                                                Registrar Participación
+                                            </button>
+                                        </div>
+
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    </div>
+
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <h3 class="footer-title">
+                    Centro Organizado de Estudiantes de Sistemas - CODES++
+                </h3>
+
+                <div class="contact-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="social-link">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="social-link">
+                        <i class="bi bi-discord"></i>
+                    </a>
+                    <a href="https://github.com/CODES-UNLU" target="_blank" class="social-link">
+                        <i class="bi bi-github"></i>
+                    </a>
+                    <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank"
+                        class="social-link">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                </div>
+
+                <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem">
+                    2025 CODES++. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="btn btn-primary position-fixed" id="backToTop"
+        style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/sorteo.js"></script>
+</body>
+
+</html>

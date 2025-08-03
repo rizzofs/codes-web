@@ -1,0 +1,43 @@
+function doPost(e) {
+  try {
+    // Obtener la hoja activa
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Obtener los datos del formulario
+    var data = JSON.parse(e.postData.contents);
+    
+    // Crear una nueva fila con los datos
+    var rowData = [
+      new Date(), // Timestamp
+      data.nombre || '',
+      data.apellido || '',
+      data.email || '',
+      data.dni || '',
+      data.telefono || '',
+      data.cantidadChances || '',
+      data.pagoConfirmado || false,
+      data.fechaRegistro || new Date().toISOString(),
+      data.observaciones || ''
+    ];
+    
+    // Agregar la fila a la hoja
+    sheet.appendRow(rowData);
+    
+    // Devolver respuesta exitosa
+    return ContentService
+      .createTextOutput(JSON.stringify({ 'result': 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch(error) {
+    // Devolver error
+    return ContentService
+      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput('API funcionando correctamente')
+    .setMimeType(ContentService.MimeType.TEXT);
+} 

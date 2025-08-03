@@ -1,0 +1,401 @@
+/* ========================================
+   SORTEO PAGE STYLES
+   ======================================== */
+
+/* Usar las mismas variables CSS que la página principal */
+:root {
+    --primary: #39c0c3;
+    --primary-dark: #2a8a8d;
+    --secondary: #1a1a1a;
+    --background: #ffffff;
+    --background-alt: #f8f9fa;
+    --text: #2c3e50;
+    --text-light: #6c757d;
+    --border: #e9ecef;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --gradient: linear-gradient(135deg, #39c0c3 0%, #2a8a8d 100%);
+}
+
+/* Dark mode variables - mantener consistencia */
+[data-theme="dark"] {
+    --background: #1a1a1a;
+    --background-alt: #2d2d2d;
+    --text: #ffffff;
+    --text-light: #b0b0b0;
+    --border: #404040;
+}
+
+/* Base styles - mantener consistencia con la página principal */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Sorteo container - usar el gradiente de la página principal */
+.sorteo-container {
+    min-height: 100vh;
+    padding: 2rem 0;
+    padding-top: 120px;
+    background: var(--gradient);
+}
+
+/* Product card - usar estilos consistentes con la página principal */
+.product-card {
+    background: var(--background);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Product image carousel */
+.product-image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+}
+
+.carousel-images {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-img.active {
+    opacity: 1;
+}
+
+/* Product details - mantener consistencia */
+.product-details {
+    padding: 2rem;
+}
+
+.product-title {
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.product-subtitle {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Sorteo button - usar el gradiente de la página principal */
+.btn-sorteo {
+    background: var(--gradient);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(57, 192, 195, 0.3);
+}
+
+.btn-sorteo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(57, 192, 195, 0.4);
+    color: white;
+}
+
+/* Package includes - mantener consistencia */
+.package-includes {
+    background: var(--background-alt);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.package-title {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.package-items {
+    list-style: none;
+    padding: 0;
+}
+
+.package-items li {
+    padding: 0.25rem 0;
+    color: var(--text-light);
+}
+
+.package-items li::before {
+    content: "✓";
+    color: #27ae60;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Features accordion - mantener consistencia */
+.accordion-item {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.accordion-button {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+.accordion-button:not(.collapsed) {
+    background: var(--gradient);
+    color: white;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(57, 192, 195, 0.25);
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-list li {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-icon {
+    color: var(--primary);
+    font-size: 1.25rem;
+    margin-right: 1rem;
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+}
+
+/* Form step transitions */
+#formStep {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-in-out;
+}
+
+#formStep.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#formStep[style*="display: block"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Form styles - mantener consistencia */
+.form-label {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+    background: var(--background);
+    color: var(--text);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 192, 195, 0.25);
+    outline: none;
+}
+
+/* Alert styles - mantener consistencia */
+.alert {
+    border-radius: 10px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-info {
+    background: rgba(57, 192, 195, 0.1);
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+}
+
+/* Card styles - mantener consistencia */
+.card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--background);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Button styles - mantener consistencia */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+    border-color: var(--secondary);
+    color: var(--secondary);
+}
+
+.btn-outline-secondary:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .product-details {
+        padding: 1.5rem;
+    }
+    
+    .product-title {
+        font-size: 1.5rem;
+    }
+    
+    .btn-sorteo {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .package-includes {
+        padding: 1rem;
+    }
+}
+
+/* Dark mode adjustments - mantener consistencia */
+[data-theme="dark"] .product-card {
+    background: var(--background-alt);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background: var(--background-alt);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+[data-theme="dark"] .card {
+    background: var(--background-alt);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .accordion-body {
+    background: var(--background-alt);
+}
+
+[data-theme="dark"] .package-includes {
+    background: var(--background-alt);
+}
+
+/* Step indicator styles */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    gap: 1rem;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: var(--transition);
+}
+
+.step-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+/* Loading states */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Success/Error message animations */
+.alert {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+} 
