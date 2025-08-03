@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Links de pago según la cantidad de chances
     const paymentLinks = {
-        1: 'https://mpago.la/2YQW3HX',
+        1: 'https://mpago.la/2n46a5E', // Link para 1 peso
         3: 'https://mpago.la/2YQW3HX', // Usar el mismo link por ahora
         4: 'https://mpago.la/2YQW3HX'  // Usar el mismo link por ahora
     };
@@ -191,6 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Estado del pago:', { pagado, collectionStatus, status, paymentId });
     
+    // Verificar si hay parámetros de MercadoPago en la URL
+    const hasMercadoPagoParams = collectionStatus || status || paymentId;
+    console.log('¿Tiene parámetros de MercadoPago?', hasMercadoPagoParams);
+    
     // Si el pago fue exitoso, actualizar estado y redirigir a agradecimiento
     if (pagado === 'ok' || collectionStatus === 'approved' || status === 'approved') {
         console.log('✅ Pago confirmado - Actualizando estado y redirigiendo');
@@ -224,7 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Redirigir a página de agradecimiento
+        // Redirigir inmediatamente a página de agradecimiento
+        console.log('🔄 Redirigiendo a agradecimiento.html...');
         window.location.href = 'agradecimiento.html';
         return;
     } else {
@@ -239,8 +244,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
         try {
-            console.log('Enviando datos a Google Sheets:', GOOGLE_SHEETS_URL);
-            console.log('Datos a enviar:', JSON.stringify(formData));
+            console.log('📤 Enviando datos a Google Sheets...');
+            console.log('🔗 URL:', GOOGLE_SHEETS_URL);
+            console.log('📊 Datos a enviar:', JSON.stringify(formData, null, 2));
             
             const response = await fetch(GOOGLE_SHEETS_URL, {
                 method: 'POST',
@@ -251,11 +257,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(formData)
             });
 
-            console.log('Respuesta del servidor:', response);
-            // Como no-cors no permite leer la respuesta, asumimos éxito
-            return { success: true };
+            console.log('📥 Respuesta del servidor:', response);
+            console.log('📊 Estado de respuesta:', response.status);
+            console.log('📊 Tipo de respuesta:', response.type);
+            
+            // Verificar si la respuesta es exitosa
+            if (response.status === 0 || response.ok) {
+                console.log('✅ Datos enviados exitosamente a Google Sheets');
+                return { success: true };
+            } else {
+                console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
+                return { success: false, error: 'Estado de respuesta: ' + response.status };
+            }
         } catch (error) {
-            console.error('Error enviando a Google Sheets:', error);
+            console.error('❌ Error enviando a Google Sheets:', error);
+            console.error('❌ Detalles del error:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
             return { success: false, error: error.message };
         }
     }

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesando Pago - CODES++</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-card">
+        <div class="spinner mb-3"></div>
+        <h3 class="text-primary mb-3">Procesando Pago</h3>
+        <p class="lead mb-4">Estamos confirmando tu pago...</p>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Por favor espera mientras procesamos tu transacción.</strong>
+        </div>
+    </div>
+
+    <script>
+        // URL de Google Sheets
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOxMXytFzphjVGZ13jIFZxZ8HNCWABjjLTQC2Lpiiac2Vw9nwqlNsn82hK5_yCUQxbjw/exec';
+        
+        // Función para obtener parámetros de la URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+        
+        // Función para enviar datos a Google Sheets
+        async function enviarAGoogleSheets(formData) {
+            try {
+                console.log('📤 Enviando datos a Google Sheets...');
+                console.log('📊 Datos a enviar:', JSON.stringify(formData, null, 2));
+                
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('📥 Respuesta del servidor:', response);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Error enviando a Google Sheets:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // Procesar parámetros de MercadoPago
+        function procesarPago() {
+            console.log('🎯 Procesando parámetros de pago...');
+            
+            // Obtener parámetros de MercadoPago
+            const collectionStatus = getQueryParam('collection_status');
+            const status = getQueryParam('status');
+            const paymentId = getQueryParam('payment_id');
+            const collectionId = getQueryParam('collection_id');
+            const merchantOrderId = getQueryParam('merchant_order_id');
+            const preferenceId = getQueryParam('preference_id');
+            
+            console.log('📊 Parámetros recibidos:', {
+                collectionStatus,
+                status,
+                paymentId,
+                collectionId,
+                merchantOrderId,
+                preferenceId
+            });
+            
+            // Verificar si el pago fue exitoso
+            const pagoExitoso = collectionStatus === 'approved' || status === 'approved';
+            
+            if (pagoExitoso) {
+                console.log('✅ Pago confirmado como exitoso');
+                
+                // Obtener datos del pago pendiente
+                const datosPendientes = localStorage.getItem('sorteo_pendiente');
+                if (datosPendientes) {
+                    const datos = JSON.parse(datosPendientes);
+                    console.log('📊 Datos pendientes encontrados:', datos);
+                    
+                    // Actualizar estado del pago
+                    const datosActualizados = {
+                        sessionId: datos.sessionId,
+                        estadoPago: 'CONFIRMADO',
+                        pagoConfirmado: true,
+                        fechaConfirmacion: new Date().toISOString(),
+                        paymentId: paymentId || 'N/A',
+                        collectionStatus: collectionStatus || 'N/A',
+                        status: status || 'N/A',
+                        collectionId: collectionId || 'N/A',
+                        merchantOrderId: merchantOrderId || 'N/A',
+                        preferenceId: preferenceId || 'N/A'
+                    };
+                    
+                    // Enviar actualización a Google Sheets
+                    enviarAGoogleSheets(datosActualizados).then(result => {
+                        if (result.success) {
+                            console.log('✅ Estado de pago actualizado exitosamente');
+                            // Limpiar datos pendientes
+                            localStorage.removeItem('sorteo_pendiente');
+                        } else {
+                            console.log('❌ Error actualizando estado de pago:', result.error);
+                        }
+                    });
+                }
+                
+                // Redirigir a página de agradecimiento después de 2 segundos
+                setTimeout(() => {
+                    console.log('🔄 Redirigiendo a agradecimiento.html...');
+                    window.location.href = 'agradecimiento.html';
+                }, 2000);
+                
+            } else {
+                console.log('❌ Pago no confirmado como exitoso');
+                
+                // Redirigir de vuelta al sorteo con mensaje de error
+                setTimeout(() => {
+                    console.log('🔄 Redirigiendo de vuelta al sorteo...');
+                    window.location.href = 'sorteo.html?error=pago_fallido';
+                }, 2000);
+            }
+        }
+        
+        // Ejecutar procesamiento al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Página de redirección cargada');
+            procesarPago();
+        });
+    </script>
+</body>
+</html> 
