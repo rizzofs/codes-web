@@ -406,39 +406,42 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('📊 Datos a guardar en localStorage:', datosPendientes);
             
-            // Guardar datos en localStorage para tracking
+            // Guardar datos en localStorage para tracking posterior
             localStorage.setItem('sorteo_pendiente', JSON.stringify(datosPendientes));
-            
             console.log('✅ Datos guardados en localStorage - Redirigiendo a MercadoPago');
             
-            // Redirigir al link de pago correspondiente
-            setTimeout(() => {
-                console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
-                console.log('📋 Enlaces disponibles:', paymentLinks);
-                
-                const paymentLink = paymentLinks[cantidadChances];
-                console.log('🔗 Enlace encontrado:', paymentLink);
-                
-                if (paymentLink) {
-                    console.log('🌐 Abriendo MercadoPago:', paymentLink);
-                    console.log('✅ Redirigiendo a:', paymentLink);
-                    
-                    // Redirigir a MercadoPago
-                    window.location.href = paymentLink;
-                    
-                } else {
-                    console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
-                    console.log('📋 Enlaces disponibles:', Object.keys(paymentLinks));
-                    alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
-                    goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
-                    goToPayBtn.disabled = false;
-                }
-            }, 500);
-            
+            // Continuar con el proceso de pago
+            continuarConPago(cantidadChances, goToPayBtn);
         } else {
             console.log('❌ No se encontró el botón de pago');
         }
     };
+
+    // Función para continuar con el proceso de pago después de enviar datos iniciales
+    function continuarConPago(cantidadChances, goToPayBtn) {
+        setTimeout(() => {
+            console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
+            console.log('📋 Enlaces disponibles:', paymentLinks);
+            
+            const paymentLink = paymentLinks[cantidadChances];
+            console.log('🔗 Enlace encontrado:', paymentLink);
+            
+            if (paymentLink) {
+                console.log('🌐 Abriendo MercadoPago:', paymentLink);
+                console.log('✅ Redirigiendo a:', paymentLink);
+                
+                // Redirigir a MercadoPago
+                window.location.href = paymentLink;
+                
+            } else {
+                console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
+                console.log('📋 Enlaces disponibles:', Object.keys(paymentLinks));
+                alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
+                goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                goToPayBtn.disabled = false;
+            }
+        }, 500);
+    }
 
     console.log('✅ Sorteo.js inicializado correctamente');
 });
