@@ -70,36 +70,21 @@
 
     <div class="sorteo-container">
         <div class="container">
-            <!-- Header -->
-            <!-- <div class="header-logo">
-
-                <h1 class="header-title">SORTEO DE UNA TABLET</h1>
-                <p class="header-subtitle">Centro de Estudiantes CODES++ - UNLu</p>
-            </div> -->
-
-            <!-- Step Indicator -->
-            <!-- <div class="step-indicator">
-                <div class="step-dot active"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
-                <div class="step-dot"></div>
-            </div> -->
 
             <!-- Product Card -->
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="product-card">
-                        <!-- Product Image -->
-                        <div class="product-image carousel-images">
-                            <img src="assets/images/tablet.webp" alt="Tablet Android 15" class="carousel-img active">
-                            <img src="assets/images/tablet2.webp" alt="Tablet Android 15" class="carousel-img">
-                            <img src="assets/images/tablet3.webp" alt="Tablet Android 15" class="carousel-img">
-                        </div>
+                        
 
                         <!-- Product Details -->
                         <div class="product-details">
                             <h2 class="product-title">Tablet Android 15</h2>
                             <h4 class="product-subtitle">¡La última tecnología en tus manos!</h4>
+                            <!-- Product Image -->
+                            <div class="product-image-container">
+                                <img src="assets/images/tablet.webp" alt="Tablet Android 15" class="product-image-clickable" onclick="showImageModal(this.src)">
+                            </div>
 
                             <!-- Action Button -->
                             <div class="text-center mt-4">
@@ -358,6 +343,53 @@
         </div>
     </footer>
 
+    <!-- Modal Menú Mobile tipo dropdown desde navbar (sin cruz de cierre) -->
+    <div class="modal fade mobile-menu-modal" id="mobileMenuModal" tabindex="-1" aria-labelledby="mobileMenuLabel" aria-hidden="true">
+      <div class="modal-dialog mobile-menu-dropdown" style="margin: 0 auto; max-width: 420px;">
+        <div class="modal-content border-0 rounded-bottom-4 shadow-lg p-0" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+          <div class="modal-body d-flex flex-column align-items-center justify-content-center p-0">
+            <ul class="nav flex-column gap-2 w-100 align-items-center mb-2 py-3">
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#nosotros" data-bs-dismiss="modal">Nosotros</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#integrantes" data-bs-dismiss="modal">Integrantes</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#eventos" data-bs-dismiss="modal">Actividades</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#extra" data-bs-dismiss="modal">Recursos</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#faq" data-bs-dismiss="modal">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#contacto" data-bs-dismiss="modal">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script para abrir/cerrar el modal tipo dropdown -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggler = document.querySelector('.navbar-toggler');
+        var modalEl = document.getElementById('mobileMenuModal');
+        var mobileMenuModal = new bootstrap.Modal(modalEl, { backdrop: true });
+        if (toggler) {
+          toggler.addEventListener('click', function(e) {
+            if (window.innerWidth <= 991) {
+              e.preventDefault();
+              mobileMenuModal.show();
+            }
+          });
+        }
+        // Cerrar al hacer click fuera del menú
+        modalEl.addEventListener('click', function(e) {
+          if (e.target === modalEl) {
+            mobileMenuModal.hide();
+          }
+        });
+        // Cerrar al hacer click en un link
+        modalEl.querySelectorAll('.nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            mobileMenuModal.hide();
+          });
+        });
+      });
+    </script>
+
     <!-- Back to Top Button -->
     <button class="btn btn-primary position-fixed" id="backToTop"
         style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
@@ -370,6 +402,14 @@
     <!-- Custom JS -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/sorteo.js"></script>
+    
+    <!-- Modal para imagen ampliada -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" class="modal-image" src="" alt="Tablet Android 15">
+        </div>
+    </div>
 </body>
 
 </html>

@@ -8,10 +8,11 @@ class SorteoApp {
         this.currentStep = 1;
         this.participantData = {};
         this.paymentLinks = {
-            1: 'https://mpago.la/1chance',
-            3: 'https://mpago.la/3chances',
-            4: 'https://mpago.la/4chances'
+            1: 'https://mpago.la/2n46a5E', // Link para 1 peso
+            3: 'https://mpago.la/2YQW3HX', // Link para 3 chances
+            4: 'https://mpago.la/2YQW3HX'  // Link para 4 chances
         };
+        this.GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz';
         this.init();
     }
 
@@ -426,14 +427,15 @@ class SorteoApp {
 
     showPaymentSuccess() {
         const formStep = document.getElementById('formStep');
-        const chancesSelect = document.getElementById('cantidadChances');
-        const value = chancesSelect ? chancesSelect.value : '1';
+        if (!formStep) return;
 
-        // Crear la pantalla de agradecimiento
+        const value = this.participantData.cantidadChances || '1';
+        
         const thankYouContent = `
-            <div class="product-details">
-                <div class="text-center mb-4">
-                    <i class="bi bi-heart-fill text-danger" style="font-size: 3rem;"></i>
+            <div class="text-center">
+                <div class="alert alert-success mb-4">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <strong>¡Pago procesado correctamente!</strong>
                 </div>
                 
                 <h2 class="product-title text-center mb-4">¡Gracias por tu colaboración!</h2>
@@ -499,6 +501,151 @@ class SorteoApp {
 
         this.currentStep = 3;
     }
+
+    // Función para enviar datos a Google Sheets
+    async enviarAGoogleSheets(formData) {
+        try {
+            console.log('📤 Enviando datos a Google Sheets...');
+            console.log('🔗 URL:', this.GOOGLE_SHEETS_URL);
+            console.log('📊 Datos a enviar:', JSON.stringify(formData, null, 2));
+            
+            const response = await fetch(this.GOOGLE_SHEETS_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Importante para Google Apps Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            console.log('📥 Respuesta del servidor:', response);
+            console.log('📊 Estado de respuesta:', response.status);
+            console.log('📊 Tipo de respuesta:', response.type);
+            
+            // Verificar si la respuesta es exitosa
+            if (response.status === 0 || response.ok) {
+                console.log('✅ Datos enviados exitosamente a Google Sheets');
+                return { success: true };
+            } else {
+                console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
+                return { success: false, error: 'Estado de respuesta: ' + response.status };
+            }
+        } catch (error) {
+            console.error('❌ Error enviando a Google Sheets:', error);
+            console.error('❌ Detalles del error:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
+            return { success: false, error: error.message };
+        }
+    }
+
+    // Función para ir a pagar con Mercado Pago real
+    irAPagar() {
+        console.log('💳 Iniciando proceso de pago...');
+        
+        // Validar que el formulario esté completo
+        if (!this.validarFormularioCompleto()) {
+            alert('Por favor completa todos los campos del formulario antes de proceder al pago.');
+            return;
+        }
+        
+        const cantidadChances = document.getElementById('cantidadChances').value;
+        const goToPayBtn = document.getElementById('goToPayBtn');
+        
+        if (goToPayBtn) {
+            // Cambiar el texto del botón
+            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando...';
+            goToPayBtn.disabled = true;
+            
+            console.log('📤 Enviando datos a Google Sheets (PENDIENTE DE PAGO)...');
+            
+            // Obtener datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const email = document.getElementById('email').value;
+            const dni = document.getElementById('dni').value;
+            const telefono = document.getElementById('telefono').value;
+            
+            // Generar Session ID único
+            const sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            const formData = {
+                nombre: nombre,
+                apellido: apellido,
+                email: email,
+                dni: dni,
+                telefono: telefono,
+                cantidadChances: cantidadChances,
+                estadoPago: 'PENDIENTE', // Estado inicial
+                pagoConfirmado: false,
+                fechaRegistro: new Date().toISOString(),
+                timestamp: new Date().getTime(),
+                sessionId: sessionId,
+                paymentId: 'N/A' // Valor inicial
+            };
+            
+            console.log('📊 Datos a enviar:', formData);
+            
+            // Enviar datos a Google Sheets (PENDIENTE)
+            this.enviarAGoogleSheets(formData).then(result => {
+                if (result.success) {
+                    console.log('✅ Datos enviados exitosamente (PENDIENTE) - Redirigiendo a MercadoPago');
+                    
+                    // Guardar datos en localStorage para tracking
+                    localStorage.setItem('sorteo_pendiente', JSON.stringify({
+                        sessionId: sessionId,
+                        timestamp: formData.timestamp,
+                        cantidadChances: cantidadChances,
+                        nombre: nombre,
+                        email: email
+                    }));
+                    
+                    // Redirigir al link de pago correspondiente
+                    setTimeout(() => {
+                        const paymentLink = this.paymentLinks[cantidadChances];
+                        if (paymentLink) {
+                            console.log('🌐 Abriendo MercadoPago:', paymentLink);
+                            
+                            // Mostrar mensaje de confirmación
+                            alert('✅ Datos registrados exitosamente.\n\nSerás redirigido a MercadoPago para completar el pago.\n\nDespués del pago, serás redirigido automáticamente a la página de agradecimiento.');
+                            
+                            // Redirigir a MercadoPago
+                            window.location.href = paymentLink;
+                            
+                        } else {
+                            console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
+                            alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
+                            goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                            goToPayBtn.disabled = false;
+                        }
+                    }, 500);
+                    
+                } else {
+                    console.log('❌ Error enviando datos:', result.error);
+                    alert('Error al registrar los datos. Por favor intenta nuevamente.');
+                    goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                    goToPayBtn.disabled = false;
+                }
+            });
+            
+        } else {
+            console.log('❌ No se encontró el botón de pago');
+        }
+    }
+
+    // Función para validar que el formulario esté completo
+    validarFormularioCompleto() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const apellido = document.getElementById('apellido').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const dni = document.getElementById('dni').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const cantidadChances = document.getElementById('cantidadChances').value;
+        
+        return nombre && apellido && email && dni && telefono && cantidadChances;
+    }
 }
 
 // La inicialización se hace al final del archivo
@@ -529,6 +676,10 @@ window.calculateTotal = function() {
     if (app) app.handleChancesChange();
 };
 
+window.irAPagar = function() {
+    const app = window.sorteoApp;
+    if (app) app.irAPagar();
+};
 
 
 // Inicializar la aplicación globalmente

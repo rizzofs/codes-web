@@ -360,18 +360,10 @@ function trackSectionVisibility() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const sectionId = entry.target.id;
-                
-                // Track section view
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'section_view', {
-                        'event_category': 'engagement',
-                        'event_label': sectionId
-                    });
-                }
+                console.log(`Section visible: ${entry.target.id}`);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.1 });
     
     sections.forEach(section => {
         observer.observe(section);

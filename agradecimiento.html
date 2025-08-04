@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #39c0c3 0%, #2a8a8d 100%);
             padding: 2rem 0;
         }
 
@@ -95,7 +95,7 @@
         }
 
         .info-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #39c0c3 0%, #2a8a8d 100%);
             color: white;
             border-radius: 15px;
             padding: 1.5rem;
@@ -116,7 +116,7 @@
         }
 
         .step-number {
-            background: #667eea;
+            background: #39c0c3;
             color: white;
             width: 30px;
             height: 30px;
@@ -126,6 +126,55 @@
             justify-content: center;
             font-weight: bold;
             margin-right: 1rem;
+        }
+
+        /* Estilos para modo oscuro */
+        [data-theme="dark"] .agradecimiento-card {
+            background: #2d2d2d;
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .next-steps {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .alert-light {
+            background: #2d2d2d !important;
+            color: #ffffff !important;
+            border-color: #404040 !important;
+        }
+
+        [data-theme="dark"] .text-muted {
+            color: #b0b0b0 !important;
+        }
+
+        [data-theme="dark"] .lead {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .display-4 {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .btn-outline-primary {
+            border-color: #39c0c3;
+            color: #39c0c3;
+        }
+
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background-color: #39c0c3;
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .btn-outline-secondary {
+            border-color: #b0b0b0;
+            color: #b0b0b0;
+        }
+
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background-color: #b0b0b0;
+            color: #1a1a1a;
         }
     </style>
 </head>
@@ -209,16 +258,13 @@
                         <i class="bi bi-calendar-event me-2"></i>
                         Próximos pasos
                     </h5>
+
                     <div class="step-item">
                         <div class="step-number">1</div>
-                        <span>Recibirás un correo de confirmación en los próximos minutos</span>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">2</div>
                         <span>El sorteo se realizará el 30 de septiembre de 2025</span>
                     </div>
                     <div class="step-item">
-                        <div class="step-number">3</div>
+                        <div class="step-number">2</div>
                         <span>Si resultas ganador/a, te contactaremos inmediatamente</span>
                     </div>
                 </div>
@@ -241,24 +287,7 @@
                     </a>
                 </div>
 
-                <!-- Redes sociales -->
-                <div class="mt-4">
-                    <p class="text-muted mb-2">Síguenos en nuestras redes:</p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-discord"></i>
-                        </a>
-                        <a href="https://github.com/CODES-UNLU" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-github"></i>
-                        </a>
-                        <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-whatsapp"></i>
-                        </a>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -299,6 +328,53 @@
         </div>
     </footer>
 
+    <!-- Modal Menú Mobile tipo dropdown desde navbar (sin cruz de cierre) -->
+    <div class="modal fade mobile-menu-modal" id="mobileMenuModal" tabindex="-1" aria-labelledby="mobileMenuLabel" aria-hidden="true">
+      <div class="modal-dialog mobile-menu-dropdown" style="margin: 0 auto; max-width: 420px;">
+        <div class="modal-content border-0 rounded-bottom-4 shadow-lg p-0" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+          <div class="modal-body d-flex flex-column align-items-center justify-content-center p-0">
+            <ul class="nav flex-column gap-2 w-100 align-items-center mb-2 py-3">
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#nosotros" data-bs-dismiss="modal">Nosotros</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#integrantes" data-bs-dismiss="modal">Integrantes</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#eventos" data-bs-dismiss="modal">Actividades</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#extra" data-bs-dismiss="modal">Recursos</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#faq" data-bs-dismiss="modal">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#contacto" data-bs-dismiss="modal">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script para abrir/cerrar el modal tipo dropdown -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggler = document.querySelector('.navbar-toggler');
+        var modalEl = document.getElementById('mobileMenuModal');
+        var mobileMenuModal = new bootstrap.Modal(modalEl, { backdrop: true });
+        if (toggler) {
+          toggler.addEventListener('click', function(e) {
+            if (window.innerWidth <= 991) {
+              e.preventDefault();
+              mobileMenuModal.show();
+            }
+          });
+        }
+        // Cerrar al hacer click fuera del menú
+        modalEl.addEventListener('click', function(e) {
+          if (e.target === modalEl) {
+            mobileMenuModal.hide();
+          }
+        });
+        // Cerrar al hacer click en un link
+        modalEl.querySelectorAll('.nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            mobileMenuModal.hide();
+          });
+        });
+      });
+    </script>
+
     <!-- Back to Top Button -->
     <button class="btn btn-primary position-fixed" id="backToTop"
         style="bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
@@ -314,6 +390,19 @@
     <!-- Script para crear confeti -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Aplicar modo oscuro guardado
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                if (darkModeToggle) {
+                    const icon = darkModeToggle.querySelector('i');
+                    if (icon) {
+                        icon.className = savedTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon';
+                    }
+                }
+            }
+
             // Crear confeti
             function createConfetti() {
                 const colors = ['#f39c12', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];

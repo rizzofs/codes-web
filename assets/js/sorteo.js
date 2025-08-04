@@ -13,15 +13,126 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Carrusel automático de imágenes ---
-    const images = document.querySelectorAll('.carousel-img');
-    let current = 0;
-    if (images.length > 1) {
-        setInterval(() => {
-            images[current].classList.remove('active');
-            current = (current + 1) % images.length;
-            images[current].classList.add('active');
-        }, 3000); // Cambia cada 3 segundos
+    // --- Funcionalidad del menú móvil ---
+    // El menú móvil ahora usa un modal personalizado como en index.html
+    // La funcionalidad está manejada por el script inline en sorteo.html
+    console.log('🍔 Menú móvil usando modal personalizado');
+
+    // --- Scroll suave para enlaces del menú ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            
+            if (target) {
+                // Obtener altura del navbar
+                const navbar = document.getElementById('header');
+                const navbarHeight = navbar ? navbar.offsetHeight : 80;
+                
+                // Calcular posición objetivo con offset del navbar
+                const targetPosition = target.offsetTop - navbarHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // --- Scroll del header ---
+    const header = document.getElementById('header');
+    if (header) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // --- Modo oscuro mejorado ---
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = darkModeToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('bi-moon');
+                icon.classList.toggle('bi-sun');
+            }
+        });
+        
+        // Aplicar tema guardado
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        const icon = darkModeToggle.querySelector('i');
+        if (icon && savedTheme === 'dark') {
+            icon.classList.remove('bi-moon');
+            icon.classList.add('bi-sun');
+        }
+    }
+
+    // --- Botón volver arriba ---
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'block';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Funciones para el modal de imagen
+    window.showImageModal = function(imageSrc) {
+        console.log('🖼️ Abriendo modal de imagen:', imageSrc);
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        
+        modalImage.src = imageSrc;
+        modal.style.display = 'block';
+        
+        // Prevenir scroll del body
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeImageModal = function() {
+        console.log('🖼️ Cerrando modal de imagen');
+        const modal = document.getElementById('imageModal');
+        modal.style.display = 'none';
+        
+        // Restaurar scroll del body
+        document.body.style.overflow = 'auto';
+    };
+
+    // Cerrar modal con ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+
+    // Cerrar modal haciendo clic fuera de la imagen
+    const imageModal = document.getElementById('imageModal');
+    if (imageModal) {
+        imageModal.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeImageModal();
+            }
+        });
     }
 
     // --- Navegación entre pasos ---
@@ -148,96 +259,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (goToPayBtn) {
         console.log('✅ Botón de pago encontrado:', goToPayBtn);
-        // Removemos el event listener anterior ya que ahora usamos onclick
-        console.log('ℹ️ El botón de pago ahora usa onclick="simularPagoCompleto()"');
+        console.log('ℹ️ El botón de pago ahora usa onclick="irAPagar()"');
     } else {
         console.log('❌ No se encontró el botón de pago');
     }
 
-    // Detectar si vuelve de la pasarela de pago (?pagado=ok)
-    function getQueryParam(param) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
-    const pagado = getQueryParam('pagado');
-
-    // --- Control robusto del botón submit ---
-    const submitBtn = document.querySelector('.btn-submit');
-    console.log('Botón submit encontrado:', submitBtn);
-    
-    function mostrarBotonSubmit() {
-        if (submitBtn) {
-            submitBtn.style.display = 'inline-block';
-            submitBtn.disabled = false;
-            console.log('Botón submit mostrado');
-        } else {
-            console.log('No se encontró el botón submit');
-        }
-    }
-    function ocultarBotonSubmit() {
-        if (submitBtn) {
-            submitBtn.style.display = 'none';
-            submitBtn.disabled = true;
-            console.log('Botón submit oculto');
-        }
-    }
-
-    console.log('Valor de pagado:', pagado);
-    
-    // Detectar si el pago fue exitoso (nuevos parámetros de MercadoPago)
-    const collectionStatus = getQueryParam('collection_status');
-    const status = getQueryParam('status');
-    const paymentId = getQueryParam('payment_id');
-    
-    console.log('Estado del pago:', { pagado, collectionStatus, status, paymentId });
-    
-    // Verificar si hay parámetros de MercadoPago en la URL
-    const hasMercadoPagoParams = collectionStatus || status || paymentId;
-    console.log('¿Tiene parámetros de MercadoPago?', hasMercadoPagoParams);
-    
-    // Si el pago fue exitoso, actualizar estado y redirigir a agradecimiento
-    if (pagado === 'ok' || collectionStatus === 'approved' || status === 'approved') {
-        console.log('✅ Pago confirmado - Actualizando estado y redirigiendo');
-        
-        // Obtener datos del pago pendiente
-        const datosPendientes = localStorage.getItem('sorteo_pendiente');
-        if (datosPendientes) {
-            const datos = JSON.parse(datosPendientes);
-            console.log('📊 Datos pendientes encontrados:', datos);
-            
-            // Actualizar estado del pago (solo datos de actualización, sin datos personales)
-            const datosActualizados = {
-                sessionId: datos.sessionId,
-                estadoPago: 'CONFIRMADO',
-                pagoConfirmado: true,
-                paymentId: paymentId || 'N/A',
-                fechaConfirmacion: new Date().toISOString()
-            };
-            
-            // Enviar actualización a Google Sheets
-            enviarAGoogleSheets(datosActualizados).then(result => {
-                if (result.success) {
-                    console.log('✅ Estado de pago actualizado exitosamente');
-                    // Limpiar datos pendientes
-                    localStorage.removeItem('sorteo_pendiente');
-                } else {
-                    console.log('❌ Error actualizando estado de pago:', result.error);
-                }
-            });
-        }
-        
-        // Redirigir inmediatamente a página de agradecimiento
-        console.log('🔄 Redirigiendo a agradecimiento.html...');
-        window.location.href = 'agradecimiento.html';
-        return;
-    } else {
-        console.log('Pago no confirmado, ocultando botón submit');
-        ocultarBotonSubmit();
-    }
-
     // --- Configuración de Google Sheets ---
-    // URL de tu Google Apps Script
-    const GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz'; // Reemplaza con la nueva URL del web app
+    const GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz';
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
@@ -277,214 +305,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return { success: false, error: error.message };
         }
     }
-
-    // --- Manejo del formulario ---
-    const sorteoForm = document.getElementById('sorteoForm');
-    if (sorteoForm) {
-        console.log('✅ Formulario encontrado:', sorteoForm);
-        sorteoForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            console.log('🎯 Formulario enviado - Iniciando proceso');
-
-            // Validar que el pago fue confirmado (opcional por ahora)
-            if (pagado !== 'ok') {
-                console.log('Pago no confirmado, pagado =', pagado);
-                // Permitir continuar sin validación estricta del pago
-                console.log('Continuando sin validación estricta del pago');
-            } else {
-                console.log('Pago confirmado, procediendo con envío');
-            }
-
-            // Obtener datos del formulario
-            const nombre = document.getElementById('nombre').value;
-            const apellido = document.getElementById('apellido').value;
-            const email = document.getElementById('email').value;
-            const dni = document.getElementById('dni').value;
-            const telefono = document.getElementById('telefono').value;
-            const cantidadChances = document.getElementById('cantidadChances').value;
-            
-            console.log('📋 Campos del formulario:');
-            console.log('  - Nombre:', nombre);
-            console.log('  - Apellido:', apellido);
-            console.log('  - Email:', email);
-            console.log('  - DNI:', dni);
-            console.log('  - Teléfono:', telefono);
-            console.log('  - Cantidad de Chances:', cantidadChances);
-            
-            const formData = {
-                nombre: nombre,
-                apellido: apellido,
-                email: email,
-                dni: dni,
-                telefono: telefono,
-                cantidadChances: cantidadChances,
-                pagoConfirmado: true,
-                fechaRegistro: new Date().toISOString(),
-                timestamp: new Date().getTime()
-            };
-            
-            console.log('📊 Datos completos del formulario:', formData);
-
-            // Validar campos requeridos
-            if (!formData.nombre || !formData.apellido || !formData.email || 
-                !formData.dni || !formData.telefono || !formData.cantidadChances) {
-                alert('Por favor completa todos los campos requeridos.');
-                return;
-            }
-
-            // Mostrar estado de envío
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Enviando...';
-            submitBtn.disabled = true;
-
-            try {
-                console.log('Iniciando envío a Google Sheets...');
-                // Enviar a Google Sheets
-                const result = await enviarAGoogleSheets(formData);
-                
-                if (result.success) {
-                    console.log('✅ Envío exitoso a Google Sheets');
-                    
-                    // Limpiar formulario
-                    sorteoForm.reset();
-                    
-                    // Ocultar botón de submit
-                    ocultarBotonSubmit();
-                    
-                    // Redirigir a la página de agradecimiento
-                    window.location.href = 'agradecimiento.html';
-                } else {
-                    console.log('❌ Error en el envío:', result.error);
-                    throw new Error(result.error || 'Error desconocido');
-                }
-            } catch (error) {
-                console.error('❌ Error inesperado:', error);
-                alert('Hubo un error al enviar el formulario. Por favor intenta nuevamente.');
-                
-                // Restaurar botón
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    } else {
-        console.log('❌ No se encontró el formulario sorteoForm');
-    }
-
-    console.log('✅ Sorteo.js inicializado correctamente');
-    
-    // Función para limpiar registros pendientes antiguos (más de 24 horas)
-    function limpiarRegistrosPendientes() {
-        const datosPendientes = localStorage.getItem('sorteo_pendiente');
-        if (datosPendientes) {
-            const datos = JSON.parse(datosPendientes);
-            const tiempoTranscurrido = Date.now() - datos.timestamp;
-            const horasTranscurridas = tiempoTranscurrido / (1000 * 60 * 60);
-            
-            if (horasTranscurridas > 24) {
-                console.log('🧹 Limpiando registro pendiente antiguo (más de 24 horas)');
-                localStorage.removeItem('sorteo_pendiente');
-                
-                // Opcional: Enviar a Google Sheets como "CANCELADO"
-                const datosCancelados = {
-                    sessionId: datos.sessionId,
-                    estadoPago: 'CANCELADO',
-                    pagoConfirmado: false,
-                    fechaCancelacion: new Date().toISOString(),
-                    motivo: 'Tiempo expirado (24h)'
-                };
-                
-                enviarAGoogleSheets(datosCancelados).then(result => {
-                    if (result.success) {
-                        console.log('✅ Registro cancelado enviado a Google Sheets');
-                    }
-                });
-            }
-        }
-    }
-    
-    // Ejecutar limpieza al cargar la página
-    limpiarRegistrosPendientes();
-
-    // Función de prueba para simular pago (temporal)
-    window.simularPago = function() {
-        console.log('🧪 Simulando pago manualmente...');
-        window.location.href = 'https://codes-unlu.github.io/Web-Codes/sorteo.html?pagado=ok';
-    };
-
-    // Función para simular pago completo con animación
-    window.simularPagoCompleto = function() {
-        console.log('💳 Iniciando simulación de pago completo...');
-        
-        const goToPayBtn = document.getElementById('goToPayBtn');
-        if (goToPayBtn) {
-            // Cambiar el texto del botón
-            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando pago...';
-            goToPayBtn.disabled = true;
-            
-            console.log('⏳ Simulando procesamiento de pago...');
-            
-            // Simular el proceso de pago
-            setTimeout(() => {
-                console.log('✅ Pago procesado exitosamente');
-                goToPayBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i> ¡Pago exitoso!';
-                
-                // Mostrar mensaje de agradecimiento
-                setTimeout(() => {
-                    alert('¡Gracias por tu pago! Tu participación ha sido confirmada.');
-                    console.log('🔄 Redirigiendo con parámetro de pago confirmado...');
-                    window.location.href = 'https://codes-unlu.github.io/Web-Codes/sorteo.html?pagado=ok';
-                }, 1000);
-                
-            }, 2000);
-        } else {
-            console.log('❌ No se encontró el botón de pago');
-            // Fallback: simular pago directamente
-            window.location.href = 'https://codes-unlu.github.io/Web-Codes/sorteo.html?pagado=ok';
-        }
-    };
-
-    // Función para enviar datos inmediatamente después del pago
-    window.enviarDatosInmediatamente = function() {
-        console.log('📤 Enviando datos inmediatamente después del pago...');
-        
-        const nombre = document.getElementById('nombre').value;
-        const apellido = document.getElementById('apellido').value;
-        const email = document.getElementById('email').value;
-        const dni = document.getElementById('dni').value;
-        const telefono = document.getElementById('telefono').value;
-        const cantidadChances = document.getElementById('cantidadChances').value;
-        
-        if (!nombre || !apellido || !email || !dni || !telefono || !cantidadChances) {
-            alert('Por favor completa todos los campos antes de simular el pago.');
-            return;
-        }
-        
-        const formData = {
-            nombre: nombre,
-            apellido: apellido,
-            email: email,
-            dni: dni,
-            telefono: telefono,
-            cantidadChances: cantidadChances,
-            pagoConfirmado: true,
-            fechaRegistro: new Date().toISOString(),
-            timestamp: new Date().getTime()
-        };
-        
-        console.log('📊 Datos a enviar:', formData);
-        
-        // Enviar datos inmediatamente
-        enviarAGoogleSheets(formData).then(result => {
-            if (result.success) {
-                console.log('✅ Datos enviados exitosamente');
-                // Redirigir a la página de agradecimiento
-                window.location.href = 'agradecimiento.html';
-            } else {
-                console.log('❌ Error enviando datos:', result.error);
-                alert('Error al enviar los datos. Por favor intenta nuevamente.');
-            }
-        });
-    };
 
     // Función para ir a pagar con Mercado Pago real
     window.irAPagar = function() {
@@ -553,9 +373,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (paymentLink) {
                             console.log('🌐 Abriendo MercadoPago:', paymentLink);
                             
-                            // Mostrar mensaje de confirmación
-                            alert('✅ Datos registrados exitosamente.\n\nSerás redirigido a MercadoPago para completar el pago.\n\nDespués del pago, serás redirigido automáticamente a la página de agradecimiento.');
-                            
                             // Redirigir a MercadoPago
                             window.location.href = paymentLink;
                             
@@ -580,91 +397,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // Función que combina simulación de pago + envío de datos
-    window.simularPagoYEnviar = function() {
-        console.log('💳 Iniciando simulación de pago y envío de datos...');
-        
-        const goToPayBtn = document.getElementById('goToPayBtn');
-        if (goToPayBtn) {
-            // Cambiar el texto del botón
-            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando pago...';
-            goToPayBtn.disabled = true;
-            
-            console.log('⏳ Simulando procesamiento de pago...');
-            
-            // Simular el proceso de pago
-            setTimeout(() => {
-                console.log('✅ Pago procesado exitosamente');
-                goToPayBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i> ¡Pago exitoso!';
-                
-                // Enviar datos inmediatamente después del pago
-                setTimeout(() => {
-                    console.log('📤 Enviando datos después del pago...');
-                    enviarDatosInmediatamente();
-                }, 1000);
-                
-            }, 2000);
-        } else {
-            console.log('❌ No se encontró el botón de pago');
-            // Fallback: enviar datos directamente
-            enviarDatosInmediatamente();
-        }
-    };
-
-    // Función para mostrar agradecimiento elegante
-    function mostrarAgradecimiento() {
-        console.log('🎉 Mostrando pantalla de agradecimiento...');
-        
-        // Ocultar el formulario
-        const formStep = document.getElementById('formStep');
-        if (formStep) {
-            formStep.style.display = 'none';
-        }
-        
-        // Crear y mostrar pantalla de agradecimiento
-        const agradecimientoHTML = `
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="product-card text-center">
-                            <div class="product-details">
-                                <div class="mb-4">
-                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
-                                </div>
-                                <h2 class="product-title text-success mb-3">¡Participación Confirmada!</h2>
-                                <p class="lead mb-4">Gracias por participar en nuestro sorteo de la Tablet Android 15.</p>
-                                
-                                <div class="alert alert-success">
-                                    <i class="bi bi-info-circle me-2"></i>
-                                    <strong>Tu participación ha sido registrada exitosamente.</strong><br>
-                                    Te notificaremos si resultas ganador/a.
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <a href="https://codes-unlu.github.io/Web-Codes/" class="btn btn-primary btn-lg me-3">
-                                        <i class="bi bi-house me-2"></i>Volver al Inicio
-                                    </a>
-                                    <button class="btn btn-outline-secondary btn-lg" onclick="volverAlSorteo()">
-                                        <i class="bi bi-arrow-left me-2"></i>Participar Nuevamente
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        // Insertar el agradecimiento en la página
-        const sorteoContainer = document.querySelector('.sorteo-container');
-        if (sorteoContainer) {
-            sorteoContainer.innerHTML = agradecimientoHTML;
-        }
-    }
-
-    // Función para volver al sorteo
-    window.volverAlSorteo = function() {
-        console.log('🔄 Volviendo al sorteo...');
-        window.location.reload();
-    };
+    console.log('✅ Sorteo.js inicializado correctamente');
 });

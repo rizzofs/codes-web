@@ -51,8 +51,22 @@ function doPost(e) {
     console.log('📥 Datos recibidos:', e.postData.contents);
     const data = JSON.parse(e.postData.contents);
     
+    console.log('🔍 Analizando tipo de solicitud...');
+    console.log('📊 Datos recibidos:', data);
+    
     // Verificar si es una actualización de pago existente
-    if (data.sessionId && !data.nombre && !data.apellido && !data.email) {
+    // Una actualización tiene sessionId pero NO tiene datos personales completos
+    const tieneSessionId = data.sessionId && data.sessionId !== '';
+    const tieneDatosPersonales = data.nombre && data.apellido && data.email && data.telefono && data.cantidadChances;
+    const esActualizacion = tieneSessionId && !tieneDatosPersonales;
+    
+    console.log('🔍 Análisis:', {
+      tieneSessionId: tieneSessionId,
+      tieneDatosPersonales: tieneDatosPersonales,
+      esActualizacion: esActualizacion
+    });
+    
+    if (esActualizacion) {
       console.log('🔄 Actualizando pago existente...');
       const result = actualizarPagoExistente(data);
       
@@ -66,6 +80,9 @@ function doPost(e) {
           .setMimeType(ContentService.MimeType.JSON);
       }
     }
+    
+    // Es un nuevo registro
+    console.log('📝 Creando nuevo registro...');
     
     // Validar datos requeridos para nuevo registro
     if (!data.nombre || !data.apellido || !data.email || !data.telefono || !data.cantidadChances) {
@@ -686,6 +703,261 @@ function probarFlujoCompleto() {
     
   } catch (error) {
     console.error('❌ Error probando flujo completo:', error);
+    return { success: false, error: error.message };
+  }
+} 
+
+/**
+ * Función para probar el flujo de una sola fila
+ */
+function probarFlujoUnaFila() {
+  try {
+    console.log('🧪 Probando flujo de una sola fila...');
+    
+    // Simular datos iniciales (PENDIENTE)
+    const datosIniciales = {
+      nombre: 'Federico Sebastián',
+      apellido: 'Rizzo',
+      email: 'rizzofs@gmail.com',
+      dni: '31608123',
+      telefono: '234652913',
+      cantidadChances: '1',
+      estadoPago: 'PENDIENTE',
+      pagoConfirmado: false,
+      fechaRegistro: new Date().toISOString(),
+      sessionId: 'TEST_ONE_ROW_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+      paymentId: 'N/A'
+    };
+    
+    console.log('📊 Datos iniciales:', datosIniciales);
+    
+    // Guardar datos iniciales
+    const resultadoInicial = guardarEnGoogleSheets(datosIniciales);
+    if (!resultadoInicial.success) {
+      throw new Error('Error guardando datos iniciales: ' + resultadoInicial.error);
+    }
+    
+    console.log('✅ Datos iniciales guardados correctamente');
+    
+    // Simular datos de confirmación (SOLO datos de actualización)
+    const datosConfirmacion = {
+      sessionId: datosIniciales.sessionId,
+      estadoPago: 'CONFIRMADO',
+      pagoConfirmado: true,
+      paymentId: 'TEST_PAY_ONE_ROW_' + Date.now(),
+      fechaConfirmacion: new Date().toISOString()
+      // NO incluir datos personales para que sea detectado como actualización
+    };
+    
+    console.log('📊 Datos de confirmación:', datosConfirmacion);
+    
+    // Actualizar datos
+    const resultadoConfirmacion = actualizarPagoExistente(datosConfirmacion);
+    if (!resultadoConfirmacion.success) {
+      throw new Error('Error actualizando datos: ' + resultadoConfirmacion.error);
+    }
+    
+    console.log('✅ Datos de confirmación actualizados correctamente');
+    
+    return { 
+      success: true, 
+      sessionId: datosIniciales.sessionId,
+      message: 'Flujo de una sola fila probado exitosamente' 
+    };
+    
+  } catch (error) {
+    console.error('❌ Error probando flujo de una sola fila:', error);
+    return { success: false, error: error.message };
+  }
+} 
+
+/**
+ * Función para limpiar datos de prueba
+ */
+function limpiarDatosPrueba() {
+  try {
+    console.log('🧹 Limpiando datos de prueba...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const sessionIdIndex = headers.indexOf('Session ID');
+    
+    if (sessionIdIndex === -1) {
+      throw new Error('No se encontró la columna Session ID');
+    }
+    
+    // Obtener todos los datos
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    let filasEliminadas = 0;
+    
+    // Empezar desde la fila 2 (después del header) y ir hacia atrás para no afectar los índices
+    for (let i = values.length - 1; i >= 1; i--) {
+      const sessionId = values[i][sessionIdIndex];
+      
+      // Eliminar filas que contengan sessionId de prueba
+      if (sessionId && (
+        sessionId.includes('TEST_') || 
+        sessionId.includes('TEST_ONE_ROW_') || 
+        sessionId.includes('TEST_PAY_')
+      )) {
+        console.log(`🗑️ Eliminando fila con sessionId: ${sessionId}`);
+        sheet.deleteRow(i + 1); // +1 porque getValues() devuelve índices basados en 0
+        filasEliminadas++;
+      }
+    }
+    
+    console.log(`✅ Datos de prueba limpiados. Filas eliminadas: ${filasEliminadas}`);
+    return { success: true, filasEliminadas };
+    
+  } catch (error) {
+    console.error('❌ Error limpiando datos de prueba:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Función para actualizar una fila existente (sin crear nueva)
+ */
+function actualizarFilaExistente() {
+  try {
+    console.log('🔄 Actualizando fila existente...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    if (sessionIdIndex === -1) {
+      throw new Error('No se encontró la columna Session ID');
+    }
+    
+    // Obtener todos los datos
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    // Buscar la primera fila con datos (no de prueba)
+    let filaEncontrada = -1;
+    let sessionIdEncontrado = '';
+    
+    for (let i = 1; i < values.length; i++) {
+      const sessionId = values[i][sessionIdIndex];
+      
+      // Buscar una fila que NO sea de prueba y que tenga datos personales
+      if (sessionId && 
+          !sessionId.includes('TEST_') && 
+          values[i][headers.indexOf('Nombre')] && 
+          values[i][headers.indexOf('Email')]) {
+        filaEncontrada = i + 1;
+        sessionIdEncontrado = sessionId;
+        break;
+      }
+    }
+    
+    if (filaEncontrada === -1) {
+      throw new Error('No se encontró una fila válida para actualizar');
+    }
+    
+    console.log(`✅ Fila encontrada: ${filaEncontrada}, Session ID: ${sessionIdEncontrado}`);
+    
+    // Actualizar solo las columnas de pago
+    if (pagoConfirmadoIndex !== -1) {
+      sheet.getRange(filaEncontrada, pagoConfirmadoIndex + 1).setValue('TRUE');
+    }
+    if (estadoPagoIndex !== -1) {
+      sheet.getRange(filaEncontrada, estadoPagoIndex + 1).setValue('CONFIRMADO');
+    }
+    if (paymentIdIndex !== -1) {
+      sheet.getRange(filaEncontrada, paymentIdIndex + 1).setValue('ACTUALIZADO_' + Date.now());
+    }
+    if (fechaConfirmacionIndex !== -1) {
+      sheet.getRange(filaEncontrada, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+    }
+    
+    console.log('✅ Fila actualizada correctamente');
+    return { 
+      success: true, 
+      filaActualizada: filaEncontrada,
+      sessionId: sessionIdEncontrado
+    };
+    
+  } catch (error) {
+    console.error('❌ Error actualizando fila:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Función para verificar el estado actual de las filas
+ */
+function verificarEstadoFilas() {
+  try {
+    console.log('🔍 Verificando estado de las filas...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const nombreIndex = headers.indexOf('Nombre');
+    const emailIndex = headers.indexOf('Email');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    
+    // Obtener todos los datos
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    console.log(`📊 Total de filas (incluyendo header): ${values.length}`);
+    
+    let filasValidas = 0;
+    let filasPrueba = 0;
+    
+    for (let i = 1; i < values.length; i++) {
+      const sessionId = values[i][sessionIdIndex];
+      const nombre = values[i][nombreIndex];
+      const email = values[i][emailIndex];
+      const estadoPago = values[i][estadoPagoIndex];
+      const pagoConfirmado = values[i][pagoConfirmadoIndex];
+      
+      if (sessionId && sessionId.includes('TEST_')) {
+        filasPrueba++;
+        console.log(`🧪 Fila ${i + 1}: PRUEBA - ${sessionId}`);
+      } else if (nombre && email) {
+        filasValidas++;
+        console.log(`✅ Fila ${i + 1}: VÁLIDA - ${nombre} (${email}) - Estado: ${estadoPago} - Confirmado: ${pagoConfirmado}`);
+      } else {
+        console.log(`❓ Fila ${i + 1}: INCOMPLETA - Session ID: ${sessionId}`);
+      }
+    }
+    
+    console.log(`📊 Resumen: ${filasValidas} filas válidas, ${filasPrueba} filas de prueba`);
+    return { 
+      success: true, 
+      filasValidas, 
+      filasPrueba, 
+      totalFilas: values.length - 1 
+    };
+    
+  } catch (error) {
+    console.error('❌ Error verificando estado:', error);
     return { success: false, error: error.message };
   }
 } 
