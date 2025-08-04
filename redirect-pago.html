@@ -263,8 +263,8 @@
 
     <script>
         // URL de tu Google Apps Script
-            // URL directa del Google Apps Script (sin proxy CORS)
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
+                    // URL con proxy CORS para evitar problemas desde GitHub Pages
+        const GOOGLE_SHEETS_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec');
         
         document.addEventListener('DOMContentLoaded', function() {
             // Aplicar modo oscuro guardado
@@ -326,6 +326,16 @@
                         status: status
                     });
                     
+                    // Debug: Verificar el tipo de paymentId
+                    console.log('🔍 Debug paymentId:', {
+                        paymentId: paymentId,
+                        type: typeof paymentId,
+                        isNull: paymentId === null,
+                        isUndefined: paymentId === undefined,
+                        isString: typeof paymentId === 'string',
+                        length: paymentId ? paymentId.length : 'N/A'
+                    });
+                    
                     // Actualizar estado del pago con TODOS los datos
                     const datosActualizados = {
                         sessionId: datos.sessionId,
@@ -343,6 +353,10 @@
                         telefono: datos.telefono,
                         cantidadChances: datos.cantidadChances
                     };
+                    
+                    // Debug: Verificar datos finales que se enviarán
+                    console.log('🔍 Datos finales a enviar:', datosActualizados);
+                    console.log('🔍 paymentId en datos finales:', datosActualizados.paymentId);
                     
                     // Enviar actualización a Google Sheets
                     enviarAGoogleSheets(datosActualizados).then(result => {

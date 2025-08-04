@@ -269,8 +269,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Configuración de Google Sheets ---
-    // URL directa del Google Apps Script (sin proxy CORS)
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
+    // URL con proxy CORS para evitar problemas desde GitHub Pages
+    const GOOGLE_SHEETS_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec');
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {

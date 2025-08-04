@@ -186,6 +186,18 @@ function doPost(e) {
     console.log('  - pagoConfirmado:', data.pagoConfirmado);
     console.log('  - action:', data.action);
     
+    // Debug adicional para paymentId
+    console.log('🔍 Debug paymentId recibido:', {
+        paymentId: data.paymentId,
+        type: typeof data.paymentId,
+        isNull: data.paymentId === null,
+        isUndefined: data.paymentId === undefined,
+        isString: typeof data.paymentId === 'string',
+        length: data.paymentId ? data.paymentId.length : 'N/A',
+        isN_A: data.paymentId === 'N/A',
+        isNullString: data.paymentId === 'null'
+    });
+    
     // Verificar y agregar columna "Email Enviado" si no existe
     verificarYAgregarColumnaEmailEnviado();
     
@@ -200,56 +212,65 @@ function doPost(e) {
     }
     
     // CONFIRMACIÓN DE PAGO - PROCESO COMPLETO
-    if (data.sessionId && data.paymentId && data.estadoPago === 'approved' && data.pagoConfirmado === true) {
+    console.log('🔍 Verificando condición de confirmación de pago:');
+    console.log('  - data.sessionId existe:', !!data.sessionId);
+    console.log('  - data.estadoPago === "approved":', data.estadoPago === 'approved');
+    console.log('  - data.pagoConfirmado === true:', data.pagoConfirmado === true);
+    console.log('  - Condición completa:', !!(data.sessionId && data.estadoPago === 'approved' && data.pagoConfirmado === true));
+    
+    if (data.sessionId && data.estadoPago === 'approved' && data.pagoConfirmado === true) {
       console.log('✅ Confirmación de pago detectada - procesando...');
       
-      // 1. Verificar pago con MercadoPago
-      const pagoVerificado = verificarPagoConMercadoPago(data.paymentId);
+      // Solo verificar con MercadoPago si tenemos un paymentId válido
+      console.log('🔍 Verificando condición de paymentId válido:');
+      console.log('  - data.paymentId existe:', !!data.paymentId);
+      console.log('  - data.paymentId !== "N/A":', data.paymentId !== 'N/A');
+      console.log('  - data.paymentId !== "null":', data.paymentId !== 'null');
+      console.log('  - Condición completa:', !!(data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null'));
       
-      if (pagoVerificado.success) {
-        console.log('✅ Pago verificado con MercadoPago');
+      if (data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null') {
+        console.log('🔍 Verificando pago con MercadoPago para paymentId:', data.paymentId);
+        const pagoVerificado = verificarPagoConMercadoPago(data.paymentId);
         
-        // 2. Buscar y actualizar la línea existente
-        const datosActualizados = {
-          ...data,
-          pagoVerificado: true,
-          fechaVerificacion: new Date().toISOString(),
-          estadoFinal: 'approved'
-        };
-        
-        const resultadoActualizacion = actualizarPagoEnGoogleSheets(datosActualizados);
-        
-        if (resultadoActualizacion.success) {
-          console.log('✅ Datos actualizados en Google Sheets');
-          
-          // 3. Enviar email de confirmación
-          const emailEnviado = enviarEmailConfirmacionInicial(datosActualizados);
-          
-          return ContentService
-            .createTextOutput(JSON.stringify({ 
-              success: true, 
-              message: 'Pago confirmado y procesado correctamente',
-              emailSent: emailEnviado.success,
-              emailMessage: emailEnviado.message
-            }))
-            .setMimeType(ContentService.MimeType.JSON);
-        } else {
-          console.log('❌ Error actualizando datos:', resultadoActualizacion.error);
+        if (!pagoVerificado.success) {
+          console.log('❌ Pago no verificado con MercadoPago:', pagoVerificado.error);
           return ContentService
             .createTextOutput(JSON.stringify({ 
               success: false, 
-              error: 'Error actualizando datos en Google Sheets',
-              details: resultadoActualizacion.error 
+              error: 'Pago no verificado con MercadoPago',
+              details: pagoVerificado.error 
             }))
             .setMimeType(ContentService.MimeType.JSON);
         }
       } else {
-        console.log('❌ Pago no verificado con MercadoPago:', pagoVerificado.error);
+        console.log('⚠️ No se verificará con MercadoPago - paymentId no válido:', data.paymentId);
+      }
+      
+      // Guardar como nuevo registro con confirmación de pago
+      console.log('💾 Guardando registro con confirmación de pago...');
+      const result = guardarEnGoogleSheets(data);
+      
+      if (result.success) {
+        console.log('✅ Registro guardado exitosamente con confirmación de pago');
+        
+        // Enviar email de confirmación
+        const emailEnviado = enviarEmailConfirmacionInicial(data);
+        
+        return ContentService
+          .createTextOutput(JSON.stringify({ 
+            success: true, 
+            message: 'Pago confirmado y procesado correctamente',
+            emailSent: emailEnviado.success,
+            emailMessage: emailEnviado.message
+          }))
+          .setMimeType(ContentService.MimeType.JSON);
+      } else {
+        console.log('❌ Error guardando registro:', result.error);
         return ContentService
           .createTextOutput(JSON.stringify({ 
             success: false, 
-            error: 'Pago no verificado con MercadoPago',
-            details: pagoVerificado.error 
+            error: 'Error guardando datos en Google Sheets',
+            details: result.error 
           }))
           .setMimeType(ContentService.MimeType.JSON);
       }
