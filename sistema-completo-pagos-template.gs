@@ -94,24 +94,64 @@ function guardarEnGoogleSheets(data) {
       throw new Error('No se encontró la hoja especificada');
     }
     
-    const timestamp = new Date();
-    const rowData = [
-      timestamp,                    // Fecha y Hora
-      data.sessionId || 'N/A',     // Session ID
-      data.nombre || '',           // Nombre
-      data.apellido || '',         // Apellido
-      data.email || '',            // Email
-      data.dni || '',              // DNI
-      data.telefono || '',         // Teléfono
-      data.cantidadChances || 0,   // Cantidad de Chances
-      data.precioTotal || 0,       // Precio Total
-      'PENDIENTE',                 // Estado Pago
-      false,                       // Pago Confirmado
-      'N/A',                       // Payment ID
-      '',                          // Fecha Confirmación
-      data.observaciones || ''     // Observaciones
-    ];
+    // Obtener los headers de la hoja para mapear correctamente
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
     
+    // Crear array de datos basado en los headers exactos
+    const rowData = [];
+    
+    // Mapear cada header con su valor correspondiente
+    headers.forEach(header => {
+      switch(header) {
+        case 'Timestamp':
+          rowData.push(new Date());
+          break;
+        case 'Nombre':
+          rowData.push(data.nombre || '');
+          break;
+        case 'Apellido':
+          rowData.push(data.apellido || '');
+          break;
+        case 'Email':
+          rowData.push(data.email || '');
+          break;
+        case 'DNI':
+          rowData.push(data.dni || '');
+          break;
+        case 'Teléfono':
+          rowData.push(data.telefono || '');
+          break;
+        case 'Cantidad de Chances':
+          rowData.push(data.cantidadChances || '');
+          break;
+        case 'Pago Confirmado':
+          rowData.push(data.pagoConfirmado ? 'TRUE' : 'FALSE');
+          break;
+        case 'Fecha de Registro':
+          rowData.push(data.fechaRegistro || new Date().toISOString());
+          break;
+        case 'Observaciones':
+          rowData.push(data.observaciones || '');
+          break;
+        case 'Estado Pago':
+          rowData.push(data.estadoPago || 'PENDIENTE');
+          break;
+        case 'Session ID':
+          rowData.push(data.sessionId || '');
+          break;
+        case 'Payment ID':
+          rowData.push(data.paymentId || 'N/A');
+          break;
+        case 'Fecha Confirmación':
+          rowData.push(data.fechaConfirmacion || '');
+          break;
+        default:
+          rowData.push(''); // Para headers no reconocidos
+      }
+    });
+    
+    console.log('📊 Datos a guardar:', rowData);
     sheet.appendRow(rowData);
     console.log('✅ Datos guardados correctamente');
     
@@ -135,14 +175,36 @@ function actualizarPagoExistente(data) {
       throw new Error('No se encontró la hoja especificada');
     }
     
+    // Obtener los headers para encontrar las columnas correctas
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
+    
+    // Encontrar los índices de las columnas
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    console.log('🔍 Índices encontrados:', {
+      sessionId: sessionIdIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex
+    });
+    
+    if (sessionIdIndex === -1) {
+      throw new Error('No se encontró la columna Session ID');
+    }
+    
     // Buscar la fila por Session ID
     const dataRange = sheet.getDataRange();
     const values = dataRange.getValues();
-    const sessionIdColumn = 1; // Columna B (índice 1)
     
     let rowIndex = -1;
     for (let i = 1; i < values.length; i++) { // Empezar desde la fila 2 (después del header)
-      if (values[i][sessionIdColumn] === data.sessionId) {
+      if (values[i][sessionIdIndex] === data.sessionId) {
         rowIndex = i + 1; // +1 porque getValues() devuelve índices basados en 0
         break;
       }
@@ -152,16 +214,21 @@ function actualizarPagoExistente(data) {
       throw new Error('No se encontró el Session ID en la hoja');
     }
     
-    // Actualizar solo las columnas de pago
-    const pagoConfirmadoColumn = 10; // Columna K
-    const estadoPagoColumn = 11;     // Columna L
-    const paymentIdColumn = 12;      // Columna M
-    const fechaConfirmacionColumn = 13; // Columna N
+    console.log('✅ Fila encontrada:', rowIndex);
     
-    sheet.getRange(rowIndex, pagoConfirmadoColumn).setValue(true);
-    sheet.getRange(rowIndex, estadoPagoColumn).setValue('CONFIRMADO');
-    sheet.getRange(rowIndex, paymentIdColumn).setValue(data.paymentId || 'N/A');
-    sheet.getRange(rowIndex, fechaConfirmacionColumn).setValue(new Date());
+    // Actualizar solo las columnas de pago
+    if (pagoConfirmadoIndex !== -1) {
+      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+    }
+    if (estadoPagoIndex !== -1) {
+      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
+    }
+    if (paymentIdIndex !== -1 && data.paymentId) {
+      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(data.paymentId);
+    }
+    if (fechaConfirmacionIndex !== -1) {
+      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+    }
     
     console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
     
@@ -185,6 +252,27 @@ function verificarPagosPendientes() {
       throw new Error('No se encontró la hoja especificada');
     }
     
+    // Obtener los headers para encontrar las columnas correctas
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
+    
+    // Encontrar los índices de las columnas
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    const emailIndex = headers.indexOf('Email');
+    
+    console.log('🔍 Índices encontrados:', {
+      sessionId: sessionIdIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex,
+      email: emailIndex
+    });
+    
     const dataRange = sheet.getDataRange();
     const values = dataRange.getValues();
     
@@ -192,11 +280,11 @@ function verificarPagosPendientes() {
     
     // Empezar desde la fila 2 (después del header)
     for (let i = 1; i < values.length; i++) {
-      const estadoPago = values[i][10]; // Columna K
-      const pagoConfirmado = values[i][9]; // Columna J
-      const sessionId = values[i][1]; // Columna B
+      const estadoPago = values[i][estadoPagoIndex];
+      const pagoConfirmado = values[i][pagoConfirmadoIndex];
+      const sessionId = values[i][sessionIdIndex];
       
-      if (estadoPago === 'PENDIENTE' && !pagoConfirmado && sessionId) {
+      if (estadoPago === 'PENDIENTE' && pagoConfirmado === 'FALSE' && sessionId) {
         console.log(`🔍 Verificando pago para sessionId: ${sessionId}`);
         
         const resultado = verificarPagoEnMercadoPago(sessionId);
@@ -204,16 +292,24 @@ function verificarPagosPendientes() {
         if (resultado.confirmado) {
           // Actualizar la fila
           const rowIndex = i + 1;
-          sheet.getRange(rowIndex, 10).setValue(true); // Pago Confirmado
-          sheet.getRange(rowIndex, 11).setValue('CONFIRMADO'); // Estado Pago
-          sheet.getRange(rowIndex, 12).setValue(resultado.paymentId); // Payment ID
-          sheet.getRange(rowIndex, 13).setValue(new Date()); // Fecha Confirmación
+          if (pagoConfirmadoIndex !== -1) {
+            sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+          }
+          if (estadoPagoIndex !== -1) {
+            sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
+          }
+          if (paymentIdIndex !== -1) {
+            sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(resultado.paymentId);
+          }
+          if (fechaConfirmacionIndex !== -1) {
+            sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+          }
           
           console.log(`✅ Pago confirmado para sessionId: ${sessionId}`);
           pagosActualizados++;
           
           // Enviar email de confirmación
-          const email = values[i][4]; // Columna E
+          const email = values[i][emailIndex];
           if (email) {
             enviarEmailConfirmacion(email, sessionId, resultado.paymentId);
           }
@@ -363,6 +459,61 @@ function buscarPagosUsuario() {
 }
 
 /**
+ * Función de prueba para verificar el mapeo de columnas
+ */
+function probarMapeoColumnas() {
+  try {
+    console.log('🧪 Probando mapeo de columnas...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
+    
+    // Encontrar los índices de las columnas importantes
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    console.log('🔍 Índices encontrados:', {
+      sessionId: sessionIdIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex
+    });
+    
+    // Verificar que todas las columnas necesarias existen
+    const columnasRequeridas = ['Session ID', 'Pago Confirmado', 'Estado Pago', 'Payment ID', 'Fecha Confirmación'];
+    const columnasFaltantes = columnasRequeridas.filter(col => headers.indexOf(col) === -1);
+    
+    if (columnasFaltantes.length > 0) {
+      console.log('❌ Columnas faltantes:', columnasFaltantes);
+      return { success: false, error: 'Columnas faltantes: ' + columnasFaltantes.join(', ') };
+    }
+    
+    console.log('✅ Todas las columnas requeridas están presentes');
+    return { success: true, headers, indices: {
+      sessionId: sessionIdIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex
+    }};
+    
+  } catch (error) {
+    console.error('❌ Error probando mapeo:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
  * Prueba la conexión con MercadoPago
  */
 function probarMercadoPago() {
@@ -450,6 +601,69 @@ function ejecutarSistema() {
   }
 }
 
+/**
+ * Función para probar el flujo completo con datos simulados
+ */
+function probarFlujoCompleto() {
+  try {
+    console.log('🧪 Probando flujo completo con datos simulados...');
+    
+    // Simular datos iniciales (PENDIENTE)
+    const datosIniciales = {
+      nombre: 'Federico Sebastián',
+      apellido: 'Rizzo',
+      email: 'rizzofs@gmail.com',
+      dni: '31608123',
+      telefono: '234652913',
+      cantidadChances: '1',
+      estadoPago: 'PENDIENTE',
+      pagoConfirmado: false,
+      fechaRegistro: new Date().toISOString(),
+      sessionId: 'TEST_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+      paymentId: 'N/A'
+    };
+    
+    console.log('📊 Datos iniciales:', datosIniciales);
+    
+    // Guardar datos iniciales
+    const resultadoInicial = guardarEnGoogleSheets(datosIniciales);
+    if (!resultadoInicial.success) {
+      throw new Error('Error guardando datos iniciales: ' + resultadoInicial.error);
+    }
+    
+    console.log('✅ Datos iniciales guardados correctamente');
+    
+    // Simular datos de confirmación
+    const datosConfirmacion = {
+      sessionId: datosIniciales.sessionId,
+      estadoPago: 'CONFIRMADO',
+      pagoConfirmado: true,
+      paymentId: 'TEST_PAY_' + Date.now(),
+      fechaConfirmacion: new Date().toISOString()
+    };
+    
+    console.log('📊 Datos de confirmación:', datosConfirmacion);
+    
+    // Actualizar datos
+    const resultadoConfirmacion = actualizarPagoExistente(datosConfirmacion);
+    if (!resultadoConfirmacion.success) {
+      throw new Error('Error actualizando datos: ' + resultadoConfirmacion.error);
+    }
+    
+    console.log('✅ Datos de confirmación actualizados correctamente');
+    
+    return { 
+      success: true, 
+      sessionId: datosIniciales.sessionId,
+      message: 'Flujo completo probado exitosamente' 
+    };
+    
+  } catch (error) {
+    console.error('❌ Error probando flujo completo:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 // ===========================================
 // INSTRUCCIONES DE CONFIGURACIÓN
 // ===========================================
@@ -458,7 +672,14 @@ function ejecutarSistema() {
 2. Reemplaza TU_SHEET_ID_AQUI con el ID de tu Google Sheet
 3. Reemplaza TU_NOMBRE_DE_HOJA_AQUI con el nombre de la hoja donde guardar los datos
 4. Copia este archivo a Google Apps Script
-5. Ejecuta configurarTrigger() una vez para configurar la verificación automática
-6. Ejecuta probarMercadoPago() para verificar la conexión
-7. Ejecuta buscarPagosUsuario() para ver los pagos recibidos
+5. Ejecuta las siguientes funciones en orden para verificar el sistema:
+
+   A. probarMapeoColumnas() - Verifica que las columnas estén correctamente mapeadas
+   B. probarMercadoPago() - Verifica la conexión con MercadoPago
+   C. probarFlujoCompleto() - Prueba el flujo completo con datos simulados
+   D. configurarTrigger() - Configura la verificación automática (una sola vez)
+   E. buscarPagosUsuario() - Para ver los pagos recibidos
+
+6. Si hay errores, revisa los logs para identificar el problema específico
+7. Para depurar pagos reales, ejecuta verificarPagosPendientes() después de un pago real
 */ 

@@ -210,7 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 sessionId: datos.sessionId,
                 estadoPago: 'CONFIRMADO',
                 pagoConfirmado: true,
-                paymentId: paymentId || 'N/A'
+                paymentId: paymentId || 'N/A',
+                fechaConfirmacion: new Date().toISOString()
             };
             
             // Enviar actualización a Google Sheets
@@ -236,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Configuración de Google Sheets ---
     // URL de tu Google Apps Script
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOxMXytFzphjVGZ13jIFZxZ8HNCWABjjLTQC2Lpiiac2Vw9nwqlNsn82hK5_yCUQxbjw/exec';
+    const GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz'; // Reemplaza con la nueva URL del web app
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
@@ -526,7 +527,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 pagoConfirmado: false,
                 fechaRegistro: new Date().toISOString(),
                 timestamp: new Date().getTime(),
-                sessionId: sessionId
+                sessionId: sessionId,
+                paymentId: 'N/A' // Valor inicial
             };
             
             console.log('📊 Datos a enviar:', formData);

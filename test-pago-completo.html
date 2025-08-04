@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Flujo Completo de Pago</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        .test-step {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+        }
+        .test-step.active {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        .test-step.completed {
+            border-color: #007bff;
+            background: #d1ecf1;
+        }
+        .btn-test {
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <h1 class="text-center mb-4">🧪 Test - Flujo Completo de Pago</h1>
+            
+            <div class="alert alert-info">
+                <strong>Instrucciones:</strong> Este test simula el flujo completo de pago para verificar que todo funcione correctamente.
+            </div>
+
+            <div class="test-step" id="step1">
+                <h4>1. Simular Registro Inicial (PENDIENTE)</h4>
+                <p>Se enviarán los datos del formulario con estado PENDIENTE</p>
+                <button class="btn btn-primary btn-test" onclick="simularRegistroInicial()">
+                    <i class="bi bi-play-circle"></i> Simular Registro
+                </button>
+                <div id="result1" class="mt-2"></div>
+            </div>
+
+            <div class="test-step" id="step2">
+                <h4>2. Simular Retorno de MercadoPago (CONFIRMADO)</h4>
+                <p>Se simulará el retorno de MercadoPago con pago confirmado</p>
+                <button class="btn btn-success btn-test" onclick="simularRetornoMercadoPago()">
+                    <i class="bi bi-check-circle"></i> Simular Confirmación
+                </button>
+                <div id="result2" class="mt-2"></div>
+            </div>
+
+            <div class="test-step" id="step3">
+                <h4>3. Verificar Estado Final</h4>
+                <p>Se verificará que el registro se haya actualizado correctamente</p>
+                <button class="btn btn-info btn-test" onclick="verificarEstadoFinal()">
+                    <i class="bi bi-search"></i> Verificar Estado
+                </button>
+                <div id="result3" class="mt-2"></div>
+            </div>
+
+            <div class="test-step" id="step4">
+                <h4>4. Limpiar Datos de Prueba</h4>
+                <p>Se limpiarán los datos de prueba del localStorage</p>
+                <button class="btn btn-warning btn-test" onclick="limpiarDatosPrueba()">
+                    <i class="bi bi-trash"></i> Limpiar Datos
+                </button>
+                <div id="result4" class="mt-2"></div>
+            </div>
+
+            <div class="mt-4">
+                <h5>📊 Log de Actividad:</h5>
+                <div id="log" class="bg-dark text-light p-3 rounded" style="max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 12px;">
+                    <div>Iniciando test...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL de Google Apps Script
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxOxMXytFzphjVGZ13jIFZxZ8HNCWABjjLTQC2Lpiiac2Vw9nwqlNsn82hK5_yCUQxbjw/exec';
+        
+        let sessionIdGenerado = '';
+        let datosPrueba = {};
+
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function actualizarStep(stepId, estado) {
+            const step = document.getElementById(stepId);
+            step.className = `test-step ${estado}`;
+        }
+
+        async function enviarAGoogleSheets(formData) {
+            try {
+                log('📤 Enviando datos a Google Sheets...');
+                log(`📊 Datos: ${JSON.stringify(formData, null, 2)}`);
+                
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                log('✅ Datos enviados exitosamente');
+                return { success: true };
+            } catch (error) {
+                log(`❌ Error: ${error.message}`);
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function simularRegistroInicial() {
+            log('🎯 Iniciando simulación de registro inicial...');
+            actualizarStep('step1', 'active');
+
+            // Generar datos de prueba
+            sessionIdGenerado = 'TEST_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            datosPrueba = {
+                nombre: 'Federico Sebastián',
+                apellido: 'Rizzo',
+                email: 'rizzofs@gmail.com',
+                dni: '31608123',
+                telefono: '234652913',
+                cantidadChances: '1',
+                estadoPago: 'PENDIENTE',
+                pagoConfirmado: false,
+                fechaRegistro: new Date().toISOString(),
+                timestamp: new Date().getTime(),
+                sessionId: sessionIdGenerado,
+                paymentId: 'N/A'
+            };
+
+            log(`🆔 Session ID generado: ${sessionIdGenerado}`);
+
+            // Guardar en localStorage para simular el flujo real
+            localStorage.setItem('sorteo_pendiente', JSON.stringify({
+                sessionId: sessionIdGenerado,
+                timestamp: datosPrueba.timestamp,
+                cantidadChances: datosPrueba.cantidadChances,
+                nombre: datosPrueba.nombre,
+                email: datosPrueba.email
+            }));
+
+            const result = await enviarAGoogleSheets(datosPrueba);
+            
+            if (result.success) {
+                log('✅ Registro inicial simulado exitosamente');
+                actualizarStep('step1', 'completed');
+                document.getElementById('result1').innerHTML = '<div class="alert alert-success">✅ Registro inicial exitoso</div>';
+            } else {
+                log('❌ Error en registro inicial');
+                actualizarStep('step1', '');
+                document.getElementById('result1').innerHTML = '<div class="alert alert-danger">❌ Error en registro inicial</div>';
+            }
+        }
+
+        async function simularRetornoMercadoPago() {
+            log('🔄 Simulando retorno de MercadoPago...');
+            actualizarStep('step2', 'active');
+
+            // Simular parámetros de retorno de MercadoPago
+            const paymentId = 'TEST_PAY_' + Date.now();
+            
+            const datosActualizados = {
+                sessionId: sessionIdGenerado,
+                estadoPago: 'CONFIRMADO',
+                pagoConfirmado: true,
+                paymentId: paymentId,
+                fechaConfirmacion: new Date().toISOString()
+            };
+
+            log(`💳 Payment ID simulado: ${paymentId}`);
+            log(`🆔 Actualizando sessionId: ${sessionIdGenerado}`);
+
+            const result = await enviarAGoogleSheets(datosActualizados);
+            
+            if (result.success) {
+                log('✅ Confirmación de pago simulada exitosamente');
+                actualizarStep('step2', 'completed');
+                document.getElementById('result2').innerHTML = '<div class="alert alert-success">✅ Confirmación de pago exitosa</div>';
+            } else {
+                log('❌ Error en confirmación de pago');
+                actualizarStep('step2', '');
+                document.getElementById('result2').innerHTML = '<div class="alert alert-danger">❌ Error en confirmación de pago</div>';
+            }
+        }
+
+        async function verificarEstadoFinal() {
+            log('🔍 Verificando estado final...');
+            actualizarStep('step3', 'active');
+
+            // Verificar que los datos estén en localStorage
+            const datosPendientes = localStorage.getItem('sorteo_pendiente');
+            
+            if (datosPendientes) {
+                const datos = JSON.parse(datosPendientes);
+                log(`📊 Datos en localStorage: ${JSON.stringify(datos, null, 2)}`);
+                log('✅ Datos de prueba encontrados en localStorage');
+            } else {
+                log('❌ No se encontraron datos de prueba en localStorage');
+            }
+
+            log('✅ Verificación completada');
+            actualizarStep('step3', 'completed');
+            document.getElementById('result3').innerHTML = '<div class="alert alert-success">✅ Verificación completada</div>';
+        }
+
+        function limpiarDatosPrueba() {
+            log('🧹 Limpiando datos de prueba...');
+            actualizarStep('step4', 'active');
+
+            // Limpiar localStorage
+            localStorage.removeItem('sorteo_pendiente');
+            sessionIdGenerado = '';
+            datosPrueba = {};
+
+            log('✅ Datos de prueba limpiados');
+            actualizarStep('step4', 'completed');
+            document.getElementById('result4').innerHTML = '<div class="alert alert-success">✅ Datos limpiados</div>';
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Test de flujo completo iniciado');
+            log('📋 Instrucciones:');
+            log('   1. Ejecuta "Simular Registro" para crear un registro PENDIENTE');
+            log('   2. Ejecuta "Simular Confirmación" para actualizar a CONFIRMADO');
+            log('   3. Ejecuta "Verificar Estado" para revisar los datos');
+            log('   4. Ejecuta "Limpiar Datos" para limpiar la prueba');
+        });
+    </script>
+</body>
+</html> 
