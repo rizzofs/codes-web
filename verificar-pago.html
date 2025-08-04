@@ -286,8 +286,12 @@
                             <span class="detail-value">${result.data.paymentMethod || 'N/A'}</span>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">Email:</span>
-                            <span class="detail-value">${result.data.email || 'N/A'}</span>
+                            <span class="detail-label">Email del Pago:</span>
+                            <span class="detail-value">${result.data.payerEmail || 'N/A'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Método de Búsqueda:</span>
+                            <span class="detail-value">${result.data.searchMethod || 'N/A'}</span>
                         </div>
                     `;
                 } else {

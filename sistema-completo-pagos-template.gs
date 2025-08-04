@@ -55,10 +55,10 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Verificar si es una actualización de pago existente
-    if (data.sessionId && !data.nombre && !data.apellido && !data.email) {
-      console.log('🔄 Actualizando pago existente...');
-      const result = actualizarPagoExistente(data);
+    // Verificar si es una actualización de pago existente (confirmación de pago)
+    if (data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado)) {
+      console.log('🔄 Actualizando pago existente con confirmación...');
+      const result = actualizarPagoEnGoogleSheets(data);
       
       if (result.success) {
         return ContentService
@@ -493,6 +493,8 @@ function verificarPagoPorDatos(data) {
     
     // Buscar pago que coincida con el email
     let pagoEncontrado = null;
+    let searchMethod = '';
+    
     for (const pago of responseData.results) {
       console.log('🔍 Revisando pago:', {
         id: pago.id,
@@ -506,12 +508,45 @@ function verificarPagoPorDatos(data) {
       if (pago.payer && pago.payer.email && pago.payer.email.toLowerCase() === data.email.toLowerCase()) {
         console.log('✅ Pago encontrado por email:', pago.id);
         pagoEncontrado = pago;
+        searchMethod = 'email';
         break;
       }
     }
     
+    // Si no se encontró por email, buscar por external_reference si tenemos sessionId
+    if (!pagoEncontrado && data.sessionId) {
+      console.log('🔍 Buscando pago por external_reference:', data.sessionId);
+      for (const pago of responseData.results) {
+        if (pago.external_reference === data.sessionId) {
+          console.log('✅ Pago encontrado por external_reference:', pago.id);
+          pagoEncontrado = pago;
+          searchMethod = 'external_reference';
+          break;
+        }
+      }
+    }
+    
+    // Si aún no se encontró, buscar por monto y fecha (pago más reciente en el rango)
     if (!pagoEncontrado) {
-      return { success: false, error: 'No se encontró un pago aprobado para este email' };
+      console.log('🔍 Buscando pago por monto y fecha...');
+      // Ordenar por fecha de creación (más reciente primero)
+      const pagosOrdenados = responseData.results.sort((a, b) => 
+        new Date(b.date_created) - new Date(a.date_created)
+      );
+      
+      // Tomar el pago más reciente que esté aprobado
+      for (const pago of pagosOrdenados) {
+        if (pago.status === 'approved') {
+          console.log('✅ Pago encontrado por fecha (más reciente):', pago.id);
+          pagoEncontrado = pago;
+          searchMethod = 'fecha_reciente';
+          break;
+        }
+      }
+    }
+    
+    if (!pagoEncontrado) {
+      return { success: false, error: 'No se encontró un pago aprobado para este período' };
     }
     
     // Generar sessionId si no existe
@@ -538,7 +573,10 @@ function verificarPagoPorDatos(data) {
       // Datos del usuario para búsqueda
       email: data.email,
       nombre: data.nombre,
-      apellido: data.apellido
+      apellido: data.apellido,
+      // Información de búsqueda
+      searchMethod: searchMethod,
+      payerEmail: pagoEncontrado.payer?.email || 'N/A'
     };
     
     console.log('📊 Datos actualizados para Google Sheets:', datosActualizados);
@@ -587,6 +625,11 @@ function actualizarPagoEnGoogleSheets(datos) {
     const estadoPagoIndex = headers.indexOf('Estado Pago');
     const paymentIdIndex = headers.indexOf('Payment ID');
     const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    const nombreIndex = headers.indexOf('Nombre');
+    const apellidoIndex = headers.indexOf('Apellido');
+    const dniIndex = headers.indexOf('DNI');
+    const telefonoIndex = headers.indexOf('Teléfono');
+    const cantidadChancesIndex = headers.indexOf('Cantidad de Chances');
     
     console.log('🔍 Índices encontrados:', {
       sessionId: sessionIdIndex,
@@ -594,7 +637,12 @@ function actualizarPagoEnGoogleSheets(datos) {
       pagoConfirmado: pagoConfirmadoIndex,
       estadoPago: estadoPagoIndex,
       paymentId: paymentIdIndex,
-      fechaConfirmacion: fechaConfirmacionIndex
+      fechaConfirmacion: fechaConfirmacionIndex,
+      nombre: nombreIndex,
+      apellido: apellidoIndex,
+      dni: dniIndex,
+      telefono: telefonoIndex,
+      cantidadChances: cantidadChancesIndex
     });
     
     // Buscar fila por sessionId o email
@@ -626,6 +674,38 @@ function actualizarPagoEnGoogleSheets(datos) {
       }
     }
     
+    // Si aún no se encontró, buscar por fecha de registro (más reciente sin pago confirmado)
+    if (rowIndex === -1) {
+      console.log('🔍 Buscando registro por fecha (más reciente sin pago confirmado)...');
+      const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
+      const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+      
+      if (fechaRegistroIndex !== -1 && pagoConfirmadoIndex !== -1) {
+        // Ordenar filas por fecha de registro (más reciente primero)
+        const filasConFechas = [];
+        for (let i = 1; i < values.length; i++) {
+          const fechaRegistro = values[i][fechaRegistroIndex];
+          const pagoConfirmado = values[i][pagoConfirmadoIndex];
+          
+          if (fechaRegistro && pagoConfirmado !== 'TRUE') {
+            filasConFechas.push({
+              rowIndex: i + 1,
+              fecha: new Date(fechaRegistro)
+            });
+          }
+        }
+        
+        // Ordenar por fecha (más reciente primero)
+        filasConFechas.sort((a, b) => b.fecha - a.fecha);
+        
+        if (filasConFechas.length > 0) {
+          rowIndex = filasConFechas[0].rowIndex;
+          searchMethod = 'fecha_reciente';
+          console.log('✅ Registro encontrado por fecha (más reciente):', rowIndex);
+        }
+      }
+    }
+    
     if (rowIndex === -1) {
       throw new Error('No se encontró el registro en la hoja');
     }
@@ -647,6 +727,23 @@ function actualizarPagoEnGoogleSheets(datos) {
     }
     if (sessionIdIndex !== -1 && datos.sessionId) {
       sheet.getRange(rowIndex, sessionIdIndex + 1).setValue(datos.sessionId);
+    }
+    
+    // Actualizar campos del formulario si están presentes en los datos
+    if (nombreIndex !== -1 && datos.nombre) {
+      sheet.getRange(rowIndex, nombreIndex + 1).setValue(datos.nombre);
+    }
+    if (apellidoIndex !== -1 && datos.apellido) {
+      sheet.getRange(rowIndex, apellidoIndex + 1).setValue(datos.apellido);
+    }
+    if (dniIndex !== -1 && datos.dni) {
+      sheet.getRange(rowIndex, dniIndex + 1).setValue(datos.dni);
+    }
+    if (telefonoIndex !== -1 && datos.telefono) {
+      sheet.getRange(rowIndex, telefonoIndex + 1).setValue(datos.telefono);
+    }
+    if (cantidadChancesIndex !== -1 && datos.cantidadChances) {
+      sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(datos.cantidadChances);
     }
     
     console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
@@ -899,30 +996,235 @@ function enviarEmailConfirmacion(email, sessionId, paymentId) {
     console.log(`📧 Enviando email de confirmación a: ${email}`);
     
     const subject = '🎉 ¡Tu participación en el sorteo ha sido confirmada!';
-    const body = `
-¡Gracias por participar en nuestro sorteo! 🎉
-
-✅ Tu pago ha sido confirmado con éxito.
-🧾 ID de pago: ${paymentId}
-
-🎁 Estás participando por una Tablet.
-📅 El sorteo se realizará el 30/09/2025.
-Te notificaremos por este medio en cuanto tengamos los resultados.
-
-🙏 Gracias por apoyar nuestro viaje al CACIC 2025.
-¡Tu ayuda nos acerca un paso más!
-
-Saludos cordiales,
-Codes++
+    
+    // HTML con diseño mejorado
+    const htmlBody = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Pago - Sorteo Codes++</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header .subtitle {
+            margin-top: 10px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .success-section {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .payment-details {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .payment-details h3 {
+            margin-top: 0;
+            color: #495057;
+            font-size: 18px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .detail-value {
+            color: #6c757d;
+        }
+        .prize-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .prize-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .date-section {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .thank-you-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .footer p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+        .highlight {
+            color: #007bff;
+            font-weight: 600;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎉 ¡Confirmación Exitosa!</h1>
+            <div class="subtitle">Tu participación en el sorteo ha sido confirmada</div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Success Section -->
+            <div class="success-section">
+                <div class="success-icon">✅</div>
+                <h2 style="margin: 0; color: #155724;">¡Pago Confirmado!</h2>
+                <p style="margin: 10px 0 0 0; color: #155724;">Tu pago ha sido procesado exitosamente</p>
+            </div>
+            
+            <!-- Payment Details -->
+            <div class="payment-details">
+                <h3>📋 Detalles del Pago</h3>
+                <div class="detail-row">
+                    <span class="detail-label">ID de Pago:</span>
+                    <span class="detail-value highlight">${paymentId}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Estado:</span>
+                    <span class="detail-value" style="color: #28a745; font-weight: 600;">✅ Confirmado</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Fecha:</span>
+                    <span class="detail-value">${new Date().toLocaleDateString('es-AR')}</span>
+                </div>
+            </div>
+            
+            <!-- Prize Section -->
+            <div class="prize-section">
+                <div class="prize-icon">🎁</div>
+                <h3 style="margin: 0; color: #856404;">¡Estás Participando!</h3>
+                <p style="margin: 10px 0 0 0; color: #856404;">
+                    <strong>Premio:</strong> Una Tablet de última generación
+                </p>
+            </div>
+            
+            <!-- Date Section -->
+            <div class="date-section">
+                <h3 style="margin: 0; color: #0c5460;">📅 Fecha del Sorteo</h3>
+                <p style="margin: 10px 0 0 0; color: #0c5460; font-size: 18px; font-weight: 600;">
+                    30 de Septiembre de 2025
+                </p>
+                <p style="margin: 5px 0 0 0; color: #0c5460; font-size: 14px;">
+                    Te notificaremos por este medio en cuanto tengamos los resultados
+                </p>
+            </div>
+            
+            <!-- Thank You Section -->
+            <div class="thank-you-section">
+                <h3 style="margin: 0; color: #721c24;">🙏 ¡Gracias por tu Apoyo!</h3>
+                <p style="margin: 10px 0 0 0; color: #721c24;">
+                    Tu ayuda nos acerca un paso más a nuestro viaje al <strong>CACIC 2025</strong>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <h3>Codes++</h3>
+            <p>Centro de Estudiantes de Informática</p>
+            <p>Universidad Nacional del Sur</p>
+            <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">
+                Este es un email automático. Por favor, no respondas a este mensaje.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
     `;
     
     MailApp.sendEmail({
       to: email,
       subject: subject,
-      htmlBody: body
+      htmlBody: htmlBody
     });
     
-    console.log('✅ Email de confirmación enviado');
+    console.log('✅ Email de confirmación enviado con diseño mejorado');
     
   } catch (error) {
     console.error('❌ Error enviando email:', error);
