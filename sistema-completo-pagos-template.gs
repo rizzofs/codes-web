@@ -176,7 +176,38 @@ function doGet(e) {
  */
 function doPost(e) {
   try {
-    console.log('📥 Datos recibidos:', e.postData.contents);
+    console.log('📥 Evento recibido:', e);
+    console.log('📥 Tipo de evento:', typeof e);
+    console.log('📥 Propiedades del evento:', Object.keys(e));
+    
+    // Verificar si e.postData existe
+    if (!e.postData) {
+      console.log('❌ e.postData es undefined');
+      return ContentService
+        .createTextOutput(JSON.stringify({ 
+          success: false, 
+          error: 'No se recibieron datos POST' 
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    console.log('📥 e.postData existe:', e.postData);
+    console.log('📥 Propiedades de e.postData:', Object.keys(e.postData));
+    
+    // Verificar si e.postData.contents existe
+    if (!e.postData.contents) {
+      console.log('❌ e.postData.contents es undefined');
+      return ContentService
+        .createTextOutput(JSON.stringify({ 
+          success: false, 
+          error: 'No se encontraron contenidos en los datos POST' 
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    console.log('📥 Contenidos recibidos:', e.postData.contents);
+    console.log('📥 Tipo de contenidos:', typeof e.postData.contents);
+    
     const data = JSON.parse(e.postData.contents);
     
     console.log('🔍 Analizando datos recibidos:');

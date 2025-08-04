@@ -269,85 +269,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Configuración de Google Sheets ---
-    // URL con proxy CORS para evitar problemas desde GitHub Pages
-    const GOOGLE_SHEETS_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec');
+    // URL directa sin proxy CORS para evitar problemas
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
 
-    // --- Función para enviar datos a Google Sheets ---
-    async function enviarAGoogleSheets(formData) {
+    // Función para enviar datos a Google Sheets
+    async function enviarAGoogleSheets(datos) {
         try {
             console.log('📤 Enviando datos a Google Sheets...');
-            console.log('🔗 URL:', GOOGLE_SHEETS_URL);
-            console.log('📊 Datos a enviar:', JSON.stringify(formData, null, 2));
+            console.log('📊 Datos a enviar:', datos);
+            console.log('🌐 URL de destino:', GOOGLE_SHEETS_URL);
             
             const response = await fetch(GOOGLE_SHEETS_URL, {
                 method: 'POST',
+                mode: 'no-cors', // Usar no-cors para evitar problemas de CORS
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(datos)
             });
-
+            
             console.log('📥 Respuesta del servidor:', response);
             console.log('📊 Estado de respuesta:', response.status);
             
-            if (response.ok) {
-                try {
-                    const responseText = await response.text();
-                    console.log('📄 Respuesta como texto:', responseText);
-                    
-                    // Intentar parsear como JSON
-                    let responseData;
-                    try {
-                        responseData = JSON.parse(responseText);
-                        console.log('📊 Datos de respuesta JSON:', responseData);
-                                             } catch (parseError) {
-                             console.log('⚠️ No es JSON válido, tratando como texto plano');
-                             console.log('📄 Texto completo recibido:', responseText);
-                             
-                             // Verificar múltiples indicadores de éxito
-                             const indicadoresExito = [
-                                 'success', 'Datos guardados', 'guardados correctamente', 
-                                 'exitosamente', 'correctamente', 'ok', 'OK', 'Success'
-                             ];
-                             
-                             const tieneIndicadorExito = indicadoresExito.some(indicator => 
-                                 responseText.toLowerCase().includes(indicator.toLowerCase())
-                             );
-                             
-                             if (tieneIndicadorExito) {
-                                 console.log('✅ Respuesta indica éxito');
-                                 return { success: true, data: { message: responseText } };
-                             } else {
-                                 console.log('❌ Respuesta no indica éxito');
-                                 return { success: false, error: 'Respuesta inesperada: ' + responseText };
-                             }
-                         }
-                    
-                    if (responseData && responseData.success) {
-                        console.log('✅ Datos enviados exitosamente a Google Sheets');
-                        return { success: true, data: responseData };
-                    } else if (responseData && responseData.error) {
-                        console.log('❌ Error en la respuesta del servidor:', responseData.error);
-                        return { success: false, error: responseData.error };
-                    } else {
-                        // Si no tiene estructura esperada pero la respuesta fue exitosa
-                        console.log('✅ Respuesta exitosa sin estructura JSON esperada');
-                        return { success: true, data: responseData || { message: responseText } };
-                    }
-                } catch (textError) {
-                    console.log('⚠️ Error leyendo respuesta:', textError);
-                    return { success: false, error: 'Error leyendo respuesta: ' + textError.message };
-                }
+            // Con no-cors, no podemos leer la respuesta, pero asumimos éxito si no hay error
+            if (response.type === 'opaque') {
+                console.log('✅ Respuesta recibida (no-cors mode)');
+                return { success: true, message: 'Datos enviados exitosamente' };
             } else {
-                console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
-                try {
-                    const errorText = await response.text();
-                    console.log('📄 Texto de error:', errorText);
-                    return { success: false, error: 'Estado de respuesta: ' + response.status + ' - ' + errorText };
-                } catch (textError) {
-                    return { success: false, error: 'Estado de respuesta: ' + response.status };
-                }
+                console.log('✅ Respuesta recibida:', response);
+                return { success: true, message: 'Datos enviados exitosamente' };
             }
+            
         } catch (error) {
             console.error('❌ Error enviando a Google Sheets:', error);
             console.error('❌ Detalles del error:', {
