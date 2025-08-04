@@ -130,148 +130,42 @@ function verificarEstadoColumnaEmailEnviado() {
   }
 }
 
+
+
 /**
- * Función para manejar solicitudes GET (acceso directo al script)
+ * Función para manejar peticiones GET (para testing)
  */
 function doGet(e) {
   try {
-    console.log('🌐 Acceso directo al script detectado');
+    console.log('📥 Petición GET recibida');
+    console.log('📊 Parámetros:', e.parameter);
     
-    // Crear una página HTML simple que explique cómo usar el script
-    const htmlOutput = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Sistema de Pagos - Codes++</title>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              max-width: 800px;
-              margin: 0 auto;
-              padding: 20px;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              min-height: 100vh;
-            }
-            .container {
-              background: rgba(255, 255, 255, 0.1);
-              padding: 30px;
-              border-radius: 15px;
-              backdrop-filter: blur(10px);
-              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-              text-align: center;
-              margin-bottom: 30px;
-              color: #fff;
-              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            }
-            .status {
-              background: rgba(0, 255, 0, 0.2);
-              padding: 15px;
-              border-radius: 10px;
-              margin: 20px 0;
-              border-left: 4px solid #4CAF50;
-            }
-            .info {
-              background: rgba(255, 255, 255, 0.1);
-              padding: 15px;
-              border-radius: 10px;
-              margin: 15px 0;
-            }
-            .warning {
-              background: rgba(255, 193, 7, 0.2);
-              padding: 15px;
-              border-radius: 10px;
-              margin: 15px 0;
-              border-left: 4px solid #FFC107;
-            }
-            .function-list {
-              background: rgba(255, 255, 255, 0.05);
-              padding: 20px;
-              border-radius: 10px;
-              margin: 20px 0;
-            }
-            .function-item {
-              margin: 10px 0;
-              padding: 10px;
-              background: rgba(255, 255, 255, 0.1);
-              border-radius: 5px;
-            }
-            .function-name {
-              font-weight: bold;
-              color: #FFD700;
-            }
-            .function-desc {
-              margin-top: 5px;
-              font-size: 0.9em;
-              opacity: 0.9;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>🚀 Sistema de Pagos - Codes++</h1>
-            
-            <div class="status">
-              <strong>✅ Script funcionando correctamente</strong><br>
-              El sistema está activo y listo para procesar pagos.
-            </div>
-            
-            <div class="info">
-              <strong>ℹ️ ¿Qué es esto?</strong><br>
-              Este es el backend del sistema de pagos para el sorteo de tablets. 
-              No está diseñado para acceso directo desde el navegador.
-            </div>
-            
-            <div class="warning">
-              <strong>⚠️ Uso correcto</strong><br>
-              Este script debe ser llamado desde las páginas web del sorteo, 
-              no directamente desde el navegador.
-            </div>
-            
-            <div class="function-list">
-              <strong>🔧 Funciones disponibles:</strong>
-              <div class="function-item">
-                <div class="function-name">doPost()</div>
-                <div class="function-desc">Procesa confirmaciones de pago y envía emails automáticamente</div>
-              </div>
-              <div class="function-item">
-                <div class="function-name">verificarPagosAutomaticamente()</div>
-                <div class="function-desc">Verifica pagos pendientes en MercadoPago</div>
-              </div>
-              <div class="function-item">
-                <div class="function-name">completarDatosFaltantes()</div>
-                <div class="function-desc">Completa datos faltantes en la hoja de cálculo</div>
-              </div>
-              <div class="function-item">
-                <div class="function-name">probarConfiguracion()</div>
-                <div class="function-desc">Prueba la configuración del sistema</div>
-              </div>
-            </div>
-            
-            <div class="info">
-              <strong>📊 Estado del sistema:</strong><br>
-              • Google Sheets: Conectado<br>
-              • MercadoPago API: Conectado<br>
-              • Email automático: Activo<br>
-              • Verificación automática: Configurada
-            </div>
-          </div>
-        </body>
-      </html>
-    `;
+    // Si hay parámetro action=test, ejecutar test
+    if (e.parameter.action === 'test') {
+      console.log('🧪 Ejecutando test desde GET...');
+      const result = testScript();
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
     
-    return HtmlService.createHtmlOutput(htmlOutput);
-    
+    // Respuesta por defecto
+    return ContentService
+      .createTextOutput(JSON.stringify({ 
+        success: true, 
+        message: 'Google Apps Script funcionando correctamente',
+        method: 'GET',
+        parameters: e.parameter
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+      
   } catch (error) {
     console.error('❌ Error en doGet:', error);
     return ContentService
       .createTextOutput(JSON.stringify({ 
-        error: 'Error accediendo al script', 
-        message: error.message 
+        success: false, 
+        error: error.message 
       }))
       .setMimeType(ContentService.MimeType.JSON);
   }
