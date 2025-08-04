@@ -263,7 +263,7 @@
 
     <script>
         // URL de tu Google Apps Script
-        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWVlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Aplicar modo oscuro guardado
@@ -328,7 +328,7 @@
                     // Actualizar estado del pago con TODOS los datos
                     const datosActualizados = {
                         sessionId: datos.sessionId,
-                        estadoPago: 'CONFIRMADO',
+                        estadoPago: 'approved', // Cambiar a 'approved' para que coincida con el script
                         pagoConfirmado: true,
                         fechaConfirmacion: new Date().toISOString(),
                         paymentId: paymentId || 'N/A', // Enviar 'N/A' en lugar de null para evitar problemas
@@ -413,9 +413,7 @@
                 
                 const response = await fetch(GOOGLE_SHEETS_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    // Remover headers para evitar problemas de CORS
                     body: JSON.stringify(formData)
                 });
 
