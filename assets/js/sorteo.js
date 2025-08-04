@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Configuración de Google Sheets ---
-    const GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz';
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
@@ -280,24 +280,40 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const response = await fetch(GOOGLE_SHEETS_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Importante para Google Apps Script
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                // Sin headers para evitar problemas de CORS
                 body: JSON.stringify(formData)
             });
 
             console.log('📥 Respuesta del servidor:', response);
             console.log('📊 Estado de respuesta:', response.status);
-            console.log('📊 Tipo de respuesta:', response.type);
             
-            // Verificar si la respuesta es exitosa
-            if (response.status === 0 || response.ok) {
-                console.log('✅ Datos enviados exitosamente a Google Sheets');
-                return { success: true };
+            if (response.ok) {
+                try {
+                    const responseData = await response.json();
+                    console.log('📊 Datos de respuesta JSON:', responseData);
+                    
+                    if (responseData.success) {
+                        console.log('✅ Datos enviados exitosamente a Google Sheets');
+                        return { success: true, data: responseData };
+                    } else {
+                        console.log('❌ Error en la respuesta del servidor:', responseData.error);
+                        return { success: false, error: responseData.error };
+                    }
+                } catch (jsonError) {
+                    console.log('⚠️ Error parseando JSON de respuesta:', jsonError);
+                    const responseText = await response.text();
+                    console.log('📄 Respuesta como texto:', responseText);
+                    return { success: false, error: 'Error parseando respuesta: ' + jsonError.message };
+                }
             } else {
                 console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
-                return { success: false, error: 'Estado de respuesta: ' + response.status };
+                try {
+                    const errorText = await response.text();
+                    console.log('📄 Texto de error:', errorText);
+                    return { success: false, error: 'Estado de respuesta: ' + response.status + ' - ' + errorText };
+                } catch (textError) {
+                    return { success: false, error: 'Estado de respuesta: ' + response.status };
+                }
             }
         } catch (error) {
             console.error('❌ Error enviando a Google Sheets:', error);
@@ -328,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
             goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando...';
             goToPayBtn.disabled = true;
             
-            console.log('📤 Enviando datos a Google Sheets (PENDIENTE DE PAGO)...');
+            console.log('📤 Guardando datos en localStorage para pago posterior...');
             
             // Obtener datos del formulario
             const nombre = document.getElementById('nombre').value;
@@ -340,71 +356,50 @@ document.addEventListener('DOMContentLoaded', function() {
             // Generar Session ID único
             const sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
-            const formData = {
+            const datosPendientes = {
+                sessionId: sessionId,
+                timestamp: new Date().getTime(),
+                cantidadChances: cantidadChances,
                 nombre: nombre,
                 apellido: apellido,
                 email: email,
                 dni: dni,
                 telefono: telefono,
-                cantidadChances: cantidadChances,
-                estadoPago: 'PENDIENTE', // Estado inicial
+                estadoPago: 'PENDIENTE',
                 pagoConfirmado: false,
-                fechaRegistro: new Date().toISOString(),
-                timestamp: new Date().getTime(),
-                sessionId: sessionId,
-                paymentId: 'N/A' // Valor inicial
+                fechaRegistro: new Date().toISOString()
             };
             
-            console.log('📊 Datos a enviar:', formData);
+            console.log('📊 Datos a guardar en localStorage:', datosPendientes);
             
-            // Enviar datos a Google Sheets (PENDIENTE)
-            enviarAGoogleSheets(formData).then(result => {
-                if (result.success) {
-                    console.log('✅ Datos enviados exitosamente (PENDIENTE) - Redirigiendo a MercadoPago');
+            // Guardar datos en localStorage para tracking
+            localStorage.setItem('sorteo_pendiente', JSON.stringify(datosPendientes));
+            
+            console.log('✅ Datos guardados en localStorage - Redirigiendo a MercadoPago');
+            
+            // Redirigir al link de pago correspondiente
+            setTimeout(() => {
+                console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
+                console.log('📋 Enlaces disponibles:', paymentLinks);
+                
+                const paymentLink = paymentLinks[cantidadChances];
+                console.log('🔗 Enlace encontrado:', paymentLink);
+                
+                if (paymentLink) {
+                    console.log('🌐 Abriendo MercadoPago:', paymentLink);
+                    console.log('✅ Redirigiendo a:', paymentLink);
                     
-                    // Guardar datos en localStorage para tracking
-                    localStorage.setItem('sorteo_pendiente', JSON.stringify({
-                        sessionId: sessionId,
-                        timestamp: formData.timestamp,
-                        cantidadChances: cantidadChances,
-                        nombre: nombre,
-                        apellido: apellido,
-                        email: email,
-                        dni: dni,
-                        telefono: telefono
-                    }));
-                    
-                    // Redirigir al link de pago correspondiente
-                    setTimeout(() => {
-                        console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
-                        console.log('📋 Enlaces disponibles:', paymentLinks);
-                        
-                        const paymentLink = paymentLinks[cantidadChances];
-                        console.log('🔗 Enlace encontrado:', paymentLink);
-                        
-                        if (paymentLink) {
-                            console.log('🌐 Abriendo MercadoPago:', paymentLink);
-                            console.log('✅ Redirigiendo a:', paymentLink);
-                            
-                            // Redirigir a MercadoPago
-                            window.location.href = paymentLink;
-                            
-                        } else {
-                            console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
-                            console.log('📋 Enlaces disponibles:', Object.keys(paymentLinks));
-                            alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
-                            goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
-                            goToPayBtn.disabled = false;
-                        }
-                    }, 500);
+                    // Redirigir a MercadoPago
+                    window.location.href = paymentLink;
                     
                 } else {
-                    console.log('❌ Error enviando datos:', result.error);
-                    alert('Error al registrar los datos. Por favor intenta nuevamente.');
+                    console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
+                    console.log('📋 Enlaces disponibles:', Object.keys(paymentLinks));
+                    alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
                     goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
                     goToPayBtn.disabled = false;
                 }
-            });
+            }, 500);
             
         } else {
             console.log('❌ No se encontró el botón de pago');
