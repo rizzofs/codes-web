@@ -54,9 +54,10 @@ APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374
 
 ## Links de Pago
 
-- **1 chance ($1)**: `https://mpago.la/2n46a5E`
-- **3 chances ($2.800)**: `https://mpago.la/2YQW3HX`
-- **4 chances ($4.000)**: `https://mpago.la/2YQW3HX`
+- **Chance de prueba ($1)**: `https://mpago.la/2n46a5E`
+- **1 chance ($1000)**: `https://mpago.la/1rXwpEV`
+- **3 chances ($2.800)**: `https://mpago.la/1eSB8pw`
+- **4 chances ($4.000)**: `https://mpago.la/1kM9Q6y`
 
 ## Notas Importantes
 

@@ -8,9 +8,10 @@ class SorteoApp {
         this.currentStep = 1;
         this.participantData = {};
         this.paymentLinks = {
-            1: 'https://mpago.la/2n46a5E', // Link para 1 peso
-            3: 'https://mpago.la/2YQW3HX', // Link para 3 chances
-            4: 'https://mpago.la/2YQW3HX'  // Link para 4 chances
+            test: 'https://mpago.la/2n46a5E', // $1 (prueba)
+            1: 'https://mpago.la/1rXwpEV', // $1000
+            3: 'https://mpago.la/1eSB8pw', // $2800
+            4: 'https://mpago.la/1kM9Q6y'  // $4000
         };
         this.GOOGLE_SHEETS_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiUKT6nPfnUtE8onqWCg5ojrldjgY8gHmZhmShcmCL-2m1Tbhus4QnXVEbSy8g4WkqTP_LRTX3WvYEfqYeCGwaWbmCrJjaz00m-OTbWOGaQ0gqCmmjbAFkhrjRnPjyIcY27UIB2lIiVCu7lva37awyyruF0kUVELfJR0LxRi2ibmFOt6Cutc7TecE-RhsFBMebc4WURON1SkF6YzjnxKR0F-NRYCEGwh0RIvVSaIF9Dudk0v-X1mVhiQfWmhwXBgXkc30yFpVO9CVGqEsjvwDRfs_hoP5_iyBjn0ZfF&lib=MmjvtSJTRZSQXgdqiqV3z0zrlVmA1-hzz';
         this.init();
@@ -229,9 +230,9 @@ class SorteoApp {
 
         if (select && goToPayContainer && goToPayBtn) {
             const value = select.value;
-            const prices = { 1: 1000, 3: 2800, 4: 4000 };
+            const prices = { test: 1, 1: 1000, 3: 2800, 4: 4000 };
 
-            if (["1", "3", "4"].includes(value)) {
+            if (["test", "1", "3", "4"].includes(value)) {
                 goToPayContainer.style.display = "block";
                 goToPayBtn.disabled = false;
                 goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${value} chance${value == "1" ? "" : "s"})`;
@@ -260,7 +261,7 @@ class SorteoApp {
         e.preventDefault();
         const btn = e.target;
         const select = document.getElementById('cantidadChances');
-        const value = select ? select.value : '1';
+        const value = select ? select.value : 'test';
 
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Redirigiendo...';
         btn.disabled = true;

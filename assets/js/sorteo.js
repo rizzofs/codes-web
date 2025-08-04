@@ -186,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalPrecio = document.getElementById('totalPrecio');
         
         const precios = {
-            '1': 1,
+            'test': 1,
+            '1': 1000,
             '3': 2800,
             '4': 4000
         };
@@ -207,10 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Links de pago según la cantidad de chances
     const paymentLinks = {
-        1: 'https://mpago.la/2n46a5E', // Link para 1 peso
-        3: 'https://mpago.la/2YQW3HX', // Usar el mismo link por ahora
-        4: 'https://mpago.la/2YQW3HX'  // Usar el mismo link por ahora
+        test: 'https://mpago.la/2n46a5E', // $1 (prueba)
+        1: 'https://mpago.la/1rXwpEV', // $1000
+        3: 'https://mpago.la/1eSB8pw', // $2800
+        4: 'https://mpago.la/1kM9Q6y'  // $4000
     };
+    
+    console.log('🔗 Enlaces de pago cargados:', paymentLinks);
 
     // Función para validar que el formulario esté completo
     function validarFormularioCompleto() {
@@ -229,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formularioCompleto = validarFormularioCompleto();
         const cantidadChances = document.getElementById('cantidadChances').value;
         
-        if (formularioCompleto && ["1","3","4"].includes(cantidadChances)) {
+        if (formularioCompleto && ["test","1","3","4"].includes(cantidadChances)) {
             console.log('✅ Formulario completo - Mostrando botón de pago para', cantidadChances, 'chances');
             goToPayContainer.style.display = "block";
             goToPayBtn.disabled = false;
@@ -372,15 +376,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Redirigir al link de pago correspondiente
                     setTimeout(() => {
+                        console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
+                        console.log('📋 Enlaces disponibles:', paymentLinks);
+                        
                         const paymentLink = paymentLinks[cantidadChances];
+                        console.log('🔗 Enlace encontrado:', paymentLink);
+                        
                         if (paymentLink) {
                             console.log('🌐 Abriendo MercadoPago:', paymentLink);
+                            console.log('✅ Redirigiendo a:', paymentLink);
                             
                             // Redirigir a MercadoPago
                             window.location.href = paymentLink;
                             
                         } else {
                             console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');
+                            console.log('📋 Enlaces disponibles:', Object.keys(paymentLinks));
                             alert('Error: No se encontró el link de pago. Por favor selecciona otra cantidad de chances.');
                             goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
                             goToPayBtn.disabled = false;

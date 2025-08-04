@@ -630,6 +630,7 @@ function actualizarPagoEnGoogleSheets(datos) {
     const dniIndex = headers.indexOf('DNI');
     const telefonoIndex = headers.indexOf('Teléfono');
     const cantidadChancesIndex = headers.indexOf('Cantidad de Chances');
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     
     console.log('🔍 Índices encontrados:', {
       sessionId: sessionIdIndex,
@@ -746,6 +747,15 @@ function actualizarPagoEnGoogleSheets(datos) {
       sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(datos.cantidadChances);
     }
     
+    // Marcar email como enviado si no está marcado ya
+    if (emailEnviadoIndex !== -1) {
+      const emailEnviadoActual = sheet.getRange(rowIndex, emailEnviadoIndex + 1).getValue();
+      if (emailEnviadoActual !== 'TRUE') {
+        sheet.getRange(rowIndex, emailEnviadoIndex + 1).setValue('TRUE');
+        console.log('✅ Email marcado como enviado en fila:', rowIndex);
+      }
+    }
+    
     console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
     
     return { success: true };
@@ -781,6 +791,7 @@ function verificarPagosAutomaticamente() {
     const paymentIdIndex = headers.indexOf('Payment ID');
     const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
     const sessionIdIndex = headers.indexOf('Session ID');
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     
     console.log('🔍 Índices encontrados:', {
       email: emailIndex,
@@ -791,7 +802,8 @@ function verificarPagosAutomaticamente() {
       estadoPago: estadoPagoIndex,
       paymentId: paymentIdIndex,
       fechaConfirmacion: fechaConfirmacionIndex,
-      sessionId: sessionIdIndex
+      sessionId: sessionIdIndex,
+      emailEnviado: emailEnviadoIndex
     });
     
     const dataRange = sheet.getDataRange();
@@ -885,6 +897,7 @@ function completarDatosFaltantes() {
     const paymentIdIndex = headers.indexOf('Payment ID');
     const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
     const sessionIdIndex = headers.indexOf('Session ID');
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     
     const dataRange = sheet.getDataRange();
     const values = dataRange.getValues();
@@ -993,6 +1006,40 @@ function ejecutarVerificacionManual() {
  */
 function enviarEmailConfirmacion(email, sessionId, paymentId) {
   try {
+    console.log(`📧 Verificando si ya se envió email de confirmación a: ${email}`);
+    
+    // Verificar si ya se envió un email para este pago
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const emailIndex = headers.indexOf('Email');
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
+    
+    // Buscar si ya existe un registro con este email y payment ID
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    for (let i = 1; i < values.length; i++) {
+      const rowEmail = values[i][emailIndex];
+      const rowSessionId = values[i][sessionIdIndex];
+      const rowPaymentId = values[i][paymentIdIndex];
+      const rowEmailEnviado = values[i][emailEnviadoIndex];
+      
+      // Si encontramos un registro con el mismo email y payment ID, y ya se envió email
+      if (rowEmail === email && 
+          ((rowPaymentId === paymentId && rowPaymentId) || 
+           (rowSessionId === sessionId && rowSessionId)) && 
+          rowEmailEnviado === 'TRUE') {
+        console.log(`📧 Email ya fue enviado anteriormente para: ${email} - Payment ID: ${paymentId}`);
+        return { success: true, message: 'Email ya enviado anteriormente' };
+      }
+    }
+    
     console.log(`📧 Enviando email de confirmación a: ${email}`);
     
     const subject = '🎉 ¡Tu participación en el sorteo ha sido confirmada!';
@@ -1178,8 +1225,8 @@ function enviarEmailConfirmacion(email, sessionId, paymentId) {
             <!-- Prize Section -->
             <div class="prize-section">
                 <div class="prize-icon">🎁</div>
-                <h3 style="margin: 0; color: #856404;">¡Estás Participando!</h3>
-                <p style="margin: 10px 0 0 0; color: #856404;">
+                <h3 style="margin: 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">¡Estás Participando!</h3>
+                <p style="margin: 10px 0 0 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1); font-weight: 600;">
                     <strong>Premio:</strong> Una Tablet de última generación
                 </p>
             </div>
@@ -1223,6 +1270,32 @@ function enviarEmailConfirmacion(email, sessionId, paymentId) {
       subject: subject,
       htmlBody: htmlBody
     });
+    
+    // Marcar que se envió el email en la hoja
+    try {
+      const dataRange = sheet.getDataRange();
+      const values = dataRange.getValues();
+      
+      for (let i = 1; i < values.length; i++) {
+        const rowEmail = values[i][emailIndex];
+        const rowSessionId = values[i][sessionIdIndex];
+        const rowPaymentId = values[i][paymentIdIndex];
+        
+        // Encontrar la fila correspondiente y marcar email como enviado
+        if (rowEmail === email && 
+            ((rowPaymentId === paymentId && rowPaymentId) || 
+             (rowSessionId === sessionId && rowSessionId))) {
+          
+          if (emailEnviadoIndex !== -1) {
+            sheet.getRange(i + 1, emailEnviadoIndex + 1).setValue('TRUE');
+            console.log(`✅ Marcado email como enviado en fila ${i + 1}`);
+          }
+          break;
+        }
+      }
+    } catch (error) {
+      console.error('⚠️ Error marcando email como enviado:', error);
+    }
     
     console.log('✅ Email de confirmación enviado con diseño mejorado');
     
