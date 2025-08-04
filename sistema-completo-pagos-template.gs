@@ -1,21 +1,282 @@
+
 // ===========================================
-// SISTEMA COMPLETO DE PAGOS - TEMPLATE
+// SISTEMA COMPLETO DE PAGOS - CONFIGURACIÓN REAL
 // ===========================================
-// IMPORTANTE: Reemplaza los valores de configuración con tus datos reales
-// NO subas este archivo con tokens reales al repositorio
+// IMPORTANTE: Este archivo contiene datos sensibles - NO subir al repositorio
 
 // CONFIGURACIÓN DE MERCADOPAGO
-const MERCADOPAGO_ACCESS_TOKEN = 'TU_ACCESS_TOKEN_AQUI'; // Reemplaza con tu token real
-const GOOGLE_SHEET_ID = 'TU_SHEET_ID_AQUI'; // Reemplaza con tu ID de Google Sheet
-const GOOGLE_SHEET_NAME = 'TU_NOMBRE_DE_HOJA_AQUI'; // Reemplaza con el nombre de tu hoja
+const MERCADOPAGO_ACCESS_TOKEN = 'APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374';
+const GOOGLE_SHEET_ID = '1rCNIwjzB--xtIyK4gMvqIxJGLETra4VqnF5aL8lRTMk';
+const GOOGLE_SHEET_NAME = 'Registros_Sorteo';
 
 // CONFIGURACIÓN DE COLECTOR
 const COLLECTOR_ID = 2142366374; // Tu ID de colector en MercadoPago
 const COLLECTOR_EMAIL = 'rizzofs.eu@gmail.com'; // Tu email de MercadoPago
 
 // ===========================================
+// FUNCIÓN DE INICIALIZACIÓN AUTOMÁTICA
+// ===========================================
+
+/**
+ * Función que se ejecuta automáticamente al abrir el script
+ * Verifica y agrega la columna "Email Enviado" si no existe
+ */
+function onOpen() {
+  try {
+    console.log('🚀 Inicializando sistema...');
+    verificarYAgregarColumnaEmailEnviado();
+    console.log('✅ Sistema inicializado correctamente');
+  } catch (error) {
+    console.error('❌ Error en inicialización:', error);
+  }
+}
+
+// ===========================================
 // FUNCIONES PRINCIPALES
 // ===========================================
+
+/**
+ * Función manual para verificar y agregar la columna "Email Enviado"
+ * Puedes ejecutar esta función desde el editor de Apps Script
+ */
+function verificarYAgregarColumnaEmailEnviado() {
+  try {
+    console.log('🔍 Verificando si existe la columna "Email Enviado"...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers actuales
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers actuales:', headers);
+    
+    // Verificar si ya existe la columna "Email Enviado"
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
+    
+    if (emailEnviadoIndex === -1) {
+      console.log('➕ Agregando columna "Email Enviado"...');
+      
+      // Agregar la nueva columna al final
+      const nuevaColumna = sheet.getLastColumn() + 1;
+      sheet.getRange(1, nuevaColumna).setValue('Email Enviado');
+      
+      // Rellenar todas las filas existentes con 'FALSE'
+      const ultimaFila = sheet.getLastRow();
+      if (ultimaFila > 1) {
+        const rangoRellenar = sheet.getRange(2, nuevaColumna, ultimaFila - 1, 1);
+        rangoRellenar.setValue('FALSE');
+      }
+      
+      console.log('✅ Columna "Email Enviado" agregada correctamente');
+      return true;
+    } else {
+      console.log('✅ La columna "Email Enviado" ya existe');
+      return false;
+    }
+    
+  } catch (error) {
+    console.error('❌ Error verificando/agregando columna Email Enviado:', error);
+    return false;
+  }
+}
+
+/**
+ * Función para verificar el estado de la columna "Email Enviado"
+ * Ejecuta esta función desde el editor de Apps Script para ver el estado
+ */
+function verificarEstadoColumnaEmailEnviado() {
+  try {
+    console.log('🔍 Verificando estado de la columna "Email Enviado"...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers actuales
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers actuales:', headers);
+    
+    // Verificar si existe la columna "Email Enviado"
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
+    
+    if (emailEnviadoIndex === -1) {
+      console.log('❌ La columna "Email Enviado" NO existe');
+      console.log('💡 Ejecuta la función verificarYAgregarColumnaEmailEnviado() para agregarla');
+      return false;
+    } else {
+      console.log('✅ La columna "Email Enviado" existe en la posición:', emailEnviadoIndex + 1);
+      
+      // Contar cuántos emails han sido enviados
+      const ultimaFila = sheet.getLastRow();
+      if (ultimaFila > 1) {
+        const valoresEmailEnviado = sheet.getRange(2, emailEnviadoIndex + 1, ultimaFila - 1, 1).getValues();
+        const emailsEnviados = valoresEmailEnviado.filter(valor => valor[0] === 'TRUE').length;
+        const emailsNoEnviados = valoresEmailEnviado.filter(valor => valor[0] === 'FALSE').length;
+        
+        console.log('📊 Estadísticas de emails:');
+        console.log('   - Emails enviados:', emailsEnviados);
+        console.log('   - Emails no enviados:', emailsNoEnviados);
+        console.log('   - Total de registros:', ultimaFila - 1);
+      }
+      
+      return true;
+    }
+    
+  } catch (error) {
+    console.error('❌ Error verificando estado de la columna:', error);
+    return false;
+  }
+}
+
+/**
+ * Función para manejar solicitudes GET (acceso directo al script)
+ */
+function doGet(e) {
+  try {
+    console.log('🌐 Acceso directo al script detectado');
+    
+    // Crear una página HTML simple que explique cómo usar el script
+    const htmlOutput = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Sistema de Pagos - Codes++</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              min-height: 100vh;
+            }
+            .container {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 30px;
+              border-radius: 15px;
+              backdrop-filter: blur(10px);
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              text-align: center;
+              margin-bottom: 30px;
+              color: #fff;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .status {
+              background: rgba(0, 255, 0, 0.2);
+              padding: 15px;
+              border-radius: 10px;
+              margin: 20px 0;
+              border-left: 4px solid #4CAF50;
+            }
+            .info {
+              background: rgba(255, 255, 255, 0.1);
+              padding: 15px;
+              border-radius: 10px;
+              margin: 15px 0;
+            }
+            .warning {
+              background: rgba(255, 193, 7, 0.2);
+              padding: 15px;
+              border-radius: 10px;
+              margin: 15px 0;
+              border-left: 4px solid #FFC107;
+            }
+            .function-list {
+              background: rgba(255, 255, 255, 0.05);
+              padding: 20px;
+              border-radius: 10px;
+              margin: 20px 0;
+            }
+            .function-item {
+              margin: 10px 0;
+              padding: 10px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 5px;
+            }
+            .function-name {
+              font-weight: bold;
+              color: #FFD700;
+            }
+            .function-desc {
+              margin-top: 5px;
+              font-size: 0.9em;
+              opacity: 0.9;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🚀 Sistema de Pagos - Codes++</h1>
+            
+            <div class="status">
+              <strong>✅ Script funcionando correctamente</strong><br>
+              El sistema está activo y listo para procesar pagos.
+            </div>
+            
+            <div class="info">
+              <strong>ℹ️ ¿Qué es esto?</strong><br>
+              Este es el backend del sistema de pagos para el sorteo de tablets. 
+              No está diseñado para acceso directo desde el navegador.
+            </div>
+            
+            <div class="warning">
+              <strong>⚠️ Uso correcto</strong><br>
+              Este script debe ser llamado desde las páginas web del sorteo, 
+              no directamente desde el navegador.
+            </div>
+            
+            <div class="function-list">
+              <strong>🔧 Funciones disponibles:</strong>
+              <div class="function-item">
+                <div class="function-name">doPost()</div>
+                <div class="function-desc">Procesa confirmaciones de pago y envía emails automáticamente</div>
+              </div>
+              <div class="function-item">
+                <div class="function-name">verificarPagosAutomaticamente()</div>
+                <div class="function-desc">Verifica pagos pendientes en MercadoPago</div>
+              </div>
+              <div class="function-item">
+                <div class="function-name">completarDatosFaltantes()</div>
+                <div class="function-desc">Completa datos faltantes en la hoja de cálculo</div>
+              </div>
+              <div class="function-item">
+                <div class="function-name">probarConfiguracion()</div>
+                <div class="function-desc">Prueba la configuración del sistema</div>
+              </div>
+            </div>
+            
+            <div class="info">
+              <strong>📊 Estado del sistema:</strong><br>
+              • Google Sheets: Conectado<br>
+              • MercadoPago API: Conectado<br>
+              • Email automático: Activo<br>
+              • Verificación automática: Configurada
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    return HtmlService.createHtmlOutput(htmlOutput);
+    
+  } catch (error) {
+    console.error('❌ Error en doGet:', error);
+    return ContentService
+      .createTextOutput(JSON.stringify({ 
+        error: 'Error accediendo al script', 
+        message: error.message 
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
 
 /**
  * Función principal para recibir datos del formulario
@@ -24,6 +285,9 @@ function doPost(e) {
   try {
     console.log('📥 Datos recibidos:', e.postData.contents);
     const data = JSON.parse(e.postData.contents);
+    
+    // Verificar y agregar columna "Email Enviado" si no existe
+    verificarYAgregarColumnaEmailEnviado();
     
     // Verificar si es una verificación de pago
     if (data.action === 'verificarPago') {
@@ -55,15 +319,54 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Verificar si es una actualización de pago existente (confirmación de pago)
+    // CONFIRMACIÓN INICIAL DE PAGO - ÚNICO LUGAR DONDE SE ENVÍA EMAIL
     if (data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado)) {
-      console.log('🔄 Actualizando pago existente con confirmación...');
+      console.log('🔄 CONFIRMACIÓN INICIAL DE PAGO - Actualizando datos y enviando email...');
+      
+      // Primero actualizar los datos en la hoja
       const result = actualizarPagoEnGoogleSheets(data);
       
       if (result.success) {
-        return ContentService
-          .createTextOutput(JSON.stringify({ success: true, message: 'Pago actualizado correctamente' }))
-          .setMimeType(ContentService.MimeType.JSON);
+        // SOLO ENVIAR EMAIL SI HAY EMAIL Y DATOS VÁLIDOS
+        if (data.email && data.sessionId) {
+          console.log('📧 ENVIANDO EMAIL DE CONFIRMACIÓN INICIAL...');
+          const emailResult = enviarEmailConfirmacionInicial(data.email, data.sessionId, data.paymentId);
+          
+          if (emailResult.success) {
+            return ContentService
+              .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: 'Pago confirmado y email enviado correctamente',
+                emailSent: true 
+              }))
+              .setMimeType(ContentService.MimeType.JSON);
+          } else if (emailResult.alreadySent) {
+            return ContentService
+              .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: 'Pago confirmado (email ya fue enviado anteriormente)',
+                emailSent: false 
+              }))
+              .setMimeType(ContentService.MimeType.JSON);
+          } else {
+            return ContentService
+              .createTextOutput(JSON.stringify({ 
+                success: true, 
+                message: 'Pago confirmado (error enviando email)',
+                emailSent: false,
+                emailError: emailResult.error 
+              }))
+              .setMimeType(ContentService.MimeType.JSON);
+          }
+        } else {
+          return ContentService
+            .createTextOutput(JSON.stringify({ 
+              success: true, 
+              message: 'Pago confirmado (sin email para enviar)',
+              emailSent: false 
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+        }
       } else {
         return ContentService
           .createTextOutput(JSON.stringify({ success: false, error: result.error }))
@@ -320,6 +623,7 @@ function verificarPagosPendientes() {
     const paymentIdIndex = headers.indexOf('Payment ID');
     const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
     const emailIndex = headers.indexOf('Email');
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     
     console.log('🔍 Índices encontrados:', {
       sessionId: sessionIdIndex,
@@ -327,7 +631,8 @@ function verificarPagosPendientes() {
       estadoPago: estadoPagoIndex,
       paymentId: paymentIdIndex,
       fechaConfirmacion: fechaConfirmacionIndex,
-      email: emailIndex
+      email: emailIndex,
+      emailEnviado: emailEnviadoIndex
     });
     
     const dataRange = sheet.getDataRange();
@@ -365,11 +670,10 @@ function verificarPagosPendientes() {
           console.log(`✅ Pago confirmado para sessionId: ${sessionId}`);
           pagosActualizados++;
           
-          // Enviar email de confirmación
+          // NO ENVIAR EMAIL DURANTE VERIFICACIÓN DE PAGOS PENDIENTES
+          // Los emails solo se envían en la confirmación inicial
           const email = values[i][emailIndex];
-          if (email) {
-            enviarEmailConfirmacion(email, sessionId, resultado.paymentId);
-          }
+          console.log(`📧 Email no enviado durante verificación de pagos pendientes para: ${email}`);
         }
       }
     }
@@ -747,14 +1051,9 @@ function actualizarPagoEnGoogleSheets(datos) {
       sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(datos.cantidadChances);
     }
     
-    // Marcar email como enviado si no está marcado ya
-    if (emailEnviadoIndex !== -1) {
-      const emailEnviadoActual = sheet.getRange(rowIndex, emailEnviadoIndex + 1).getValue();
-      if (emailEnviadoActual !== 'TRUE') {
-        sheet.getRange(rowIndex, emailEnviadoIndex + 1).setValue('TRUE');
-        console.log('✅ Email marcado como enviado en fila:', rowIndex);
-      }
-    }
+    // NO ENVIAR EMAIL DESDE ESTA FUNCIÓN
+    // Los emails solo se envían desde doPost en la confirmación inicial
+    console.log('📧 Email no enviado desde actualizarPagoEnGoogleSheets - solo se envía desde doPost');
     
     console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
     
@@ -843,10 +1142,9 @@ function verificarPagosAutomaticamente() {
           
           pagosConfirmados++;
           
-          // Enviar email de confirmación si está disponible
-          if (typeof enviarEmailConfirmacion === 'function') {
-            enviarEmailConfirmacion(email, resultado.data.sessionId, resultado.data.paymentId);
-          }
+          // NO ENVIAR EMAIL DURANTE VERIFICACIÓN AUTOMÁTICA
+          // Los emails solo se envían en la confirmación inicial
+          console.log(`📧 Email no enviado durante verificación automática para: ${email}`);
         } else {
           console.log(`❌ No se pudo verificar pago para: ${email} - ${resultado.error}`);
         }
@@ -1001,306 +1299,241 @@ function ejecutarVerificacionManual() {
   return resultado;
 }
 
+// ===========================================
+// FUNCIÓN CENTRALIZADA DE ENVÍO DE EMAILS
+// ===========================================
+
 /**
- * Envía email de confirmación
+ * Función centralizada para enviar email de confirmación
+ * SOLO se debe llamar desde la confirmación inicial
+ * @param {string} email - Email del usuario
+ * @param {string} sessionId - ID de sesión
+ * @param {string} paymentId - ID de pago
+ * @returns {Object} Resultado del envío
  */
-function enviarEmailConfirmacion(email, sessionId, paymentId) {
+function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
   try {
-    console.log(`📧 Verificando si ya se envió email de confirmación a: ${email}`);
+    console.log(`📧 ENVÍO CENTRALIZADO - Verificando si se debe enviar email a: ${email}`);
     
-    // Verificar si ya se envió un email para este pago
     const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
     if (!sheet) {
       throw new Error('No se encontró la hoja especificada');
     }
     
+    // Obtener headers frescos de la hoja
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     const emailIndex = headers.indexOf('Email');
     const sessionIdIndex = headers.indexOf('Session ID');
-    const paymentIdIndex = headers.indexOf('Payment ID');
-    const emailEnviadoIndex = headers.indexOf('Email Enviado');
     
-    // Buscar si ya existe un registro con este email y payment ID
+    if (emailEnviadoIndex === -1) {
+      console.log('❌ Columna "Email Enviado" no encontrada');
+      return { success: false, error: 'Columna Email Enviado no existe' };
+    }
+    
+    // Buscar la fila específica por email Y sessionId para mayor precisión
     const dataRange = sheet.getDataRange();
     const values = dataRange.getValues();
     
+    let rowIndex = -1;
     for (let i = 1; i < values.length; i++) {
       const rowEmail = values[i][emailIndex];
       const rowSessionId = values[i][sessionIdIndex];
-      const rowPaymentId = values[i][paymentIdIndex];
-      const rowEmailEnviado = values[i][emailEnviadoIndex];
       
-      // Si encontramos un registro con el mismo email y payment ID, y ya se envió email
-      if (rowEmail === email && 
-          ((rowPaymentId === paymentId && rowPaymentId) || 
-           (rowSessionId === sessionId && rowSessionId)) && 
-          rowEmailEnviado === 'TRUE') {
-        console.log(`📧 Email ya fue enviado anteriormente para: ${email} - Payment ID: ${paymentId}`);
-        return { success: true, message: 'Email ya enviado anteriormente' };
+      if (rowEmail === email && rowSessionId === sessionId) {
+        rowIndex = i + 1;
+        break;
       }
     }
     
-    console.log(`📧 Enviando email de confirmación a: ${email}`);
+    if (rowIndex === -1) {
+      console.log(`❌ No se encontró fila para email: ${email} y sessionId: ${sessionId}`);
+      return { success: false, error: 'Fila no encontrada' };
+    }
     
-    const subject = '🎉 ¡Tu participación en el sorteo ha sido confirmada!';
+    // Leer el estado actual de "Email Enviado" directamente de la hoja
+    const emailEnviadoActual = sheet.getRange(rowIndex, emailEnviadoIndex + 1).getValue();
+    console.log(`📧 Estado actual de Email Enviado para ${email}: ${emailEnviadoActual}`);
     
-    // HTML con diseño mejorado
-    const htmlBody = `
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de Pago - Sorteo Codes++</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .email-container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 600;
-        }
-        .header .subtitle {
-            margin-top: 10px;
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 30px 20px;
-        }
-        .success-section {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .success-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-        .payment-details {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .payment-details h3 {
-            margin-top: 0;
-            color: #495057;
-            font-size: 18px;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 8px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        .detail-label {
-            font-weight: 600;
-            color: #495057;
-        }
-        .detail-value {
-            color: #6c757d;
-        }
-        .prize-section {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .prize-icon {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-        .date-section {
-            background-color: #e3f2fd;
-            border: 1px solid #bbdefb;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .thank-you-section {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .footer {
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .footer h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-        }
-        .footer p {
-            margin: 5px 0;
-            opacity: 0.8;
-        }
-        .highlight {
-            color: #007bff;
-            font-weight: 600;
-        }
-        .emoji {
-            font-size: 1.2em;
-        }
-        @media (max-width: 600px) {
+    if (emailEnviadoActual === 'TRUE') {
+      console.log(`📧 Email ya fue enviado anteriormente a: ${email}`);
+      return { 
+        success: false, 
+        message: 'Email ya enviado anteriormente',
+        alreadySent: true 
+      };
+    }
+    
+    // ENVIAR EMAIL SOLO SI NO HA SIDO ENVIADO
+    console.log(`📧 ENVIANDO EMAIL DE CONFIRMACIÓN INICIAL a: ${email}`);
+    
+    const emailContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirmación de Pago - Sorteo Tablet</title>
+        <style>
             body {
-                padding: 10px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f8f9fa;
             }
-            .header h1 {
+            .email-container {
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #e9ecef;
+            }
+            .logo {
                 font-size: 24px;
+                font-weight: bold;
+                color: #007bff;
+                margin-bottom: 10px;
             }
-            .content {
-                padding: 20px 15px;
+            .success-icon {
+                font-size: 48px;
+                margin-bottom: 20px;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="email-container">
-        <!-- Header -->
-        <div class="header">
-            <h1>🎉 ¡Confirmación Exitosa!</h1>
-            <div class="subtitle">Tu participación en el sorteo ha sido confirmada</div>
-        </div>
-        
-        <!-- Content -->
-        <div class="content">
-            <!-- Success Section -->
-            <div class="success-section">
+            .main-content {
+                margin-bottom: 30px;
+            }
+            .payment-details {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+                border-left: 4px solid #28a745;
+            }
+            .prize-section {
+                background: linear-gradient(135deg, #ffd700, #ffed4e);
+                padding: 25px;
+                border-radius: 10px;
+                text-align: center;
+                margin: 25px 0;
+                border: 2px solid #ffc107;
+            }
+            .prize-icon {
+                font-size: 36px;
+                margin-bottom: 15px;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #e9ecef;
+                color: #6c757d;
+                font-size: 14px;
+            }
+            .highlight {
+                color: #007bff;
+                font-weight: 600;
+            }
+            .success-text {
+                color: #28a745;
+                font-weight: 600;
+            }
+            .prize-text {
+                color: #2c3e50 !important;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                font-weight: 600;
+            }
+            @media (max-width: 600px) {
+                body {
+                    padding: 10px;
+                }
+                .email-container {
+                    padding: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">Codes++</div>
                 <div class="success-icon">✅</div>
-                <h2 style="margin: 0; color: #155724;">¡Pago Confirmado!</h2>
-                <p style="margin: 10px 0 0 0; color: #155724;">Tu pago ha sido procesado exitosamente</p>
+                <h1 style="margin: 0; color: #28a745;">¡Pago Confirmado!</h1>
             </div>
             
-            <!-- Payment Details -->
-            <div class="payment-details">
-                <h3>📋 Detalles del Pago</h3>
-                <div class="detail-row">
-                    <span class="detail-label">ID de Pago:</span>
-                    <span class="detail-value highlight">${paymentId}</span>
+            <!-- Main Content -->
+            <div class="main-content">
+                <p>¡Gracias por participar en nuestro sorteo! 🎉</p>
+                
+                <div class="payment-details">
+                    <h3 style="margin-top: 0; color: #495057;">Detalles del Pago</h3>
+                    <p><strong>Estado:</strong> <span class="success-text">CONFIRMADO</span></p>
+                    <p><strong>ID de Pago:</strong> <span class="highlight">${paymentId || 'N/A'}</span></p>
+                    <p><strong>Fecha:</strong> <span class="highlight">${new Date().toLocaleDateString('es-AR')}</span></p>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Estado:</span>
-                    <span class="detail-value" style="color: #28a745; font-weight: 600;">✅ Confirmado</span>
+                
+                <!-- Prize Section -->
+                <div class="prize-section">
+                    <div class="prize-icon">🎁</div>
+                    <h3 style="margin: 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1);" class="prize-text">¡Estás Participando!</h3>
+                    <p style="margin: 10px 0 0 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1); font-weight: 600;" class="prize-text">
+                        <strong>Premio:</strong> Una Tablet de última generación
+                    </p>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Fecha:</span>
-                    <span class="detail-value">${new Date().toLocaleDateString('es-AR')}</span>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0; color: #1976d2;">📅 Próximos Pasos</h3>
+                    <p><strong>Fecha del Sorteo:</strong> 30/09/2025</p>
+                    <p>Te notificaremos por este medio en cuanto tengamos los resultados.</p>
                 </div>
+                
+                <p>🙏 Gracias por apoyar nuestro viaje al CACIC 2025.</p>
+                <p>¡Tu ayuda nos acerca un paso más!</p>
             </div>
             
-            <!-- Prize Section -->
-            <div class="prize-section">
-                <div class="prize-icon">🎁</div>
-                <h3 style="margin: 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">¡Estás Participando!</h3>
-                <p style="margin: 10px 0 0 0; color: #2c3e50; text-shadow: 0 1px 2px rgba(0,0,0,0.1); font-weight: 600;">
-                    <strong>Premio:</strong> Una Tablet de última generación
-                </p>
-            </div>
-            
-            <!-- Date Section -->
-            <div class="date-section">
-                <h3 style="margin: 0; color: #0c5460;">📅 Fecha del Sorteo</h3>
-                <p style="margin: 10px 0 0 0; color: #0c5460; font-size: 18px; font-weight: 600;">
-                    30 de Septiembre de 2025
-                </p>
-                <p style="margin: 5px 0 0 0; color: #0c5460; font-size: 14px;">
-                    Te notificaremos por este medio en cuanto tengamos los resultados
-                </p>
-            </div>
-            
-            <!-- Thank You Section -->
-            <div class="thank-you-section">
-                <h3 style="margin: 0; color: #721c24;">🙏 ¡Gracias por tu Apoyo!</h3>
-                <p style="margin: 10px 0 0 0; color: #721c24;">
-                    Tu ayuda nos acerca un paso más a nuestro viaje al <strong>CACIC 2025</strong>
+            <!-- Footer -->
+            <div class="footer">
+                <p><strong>Saludos cordiales,</strong></p>
+                <p><strong>Codes++</strong></p>
+                <p style="font-size: 12px; margin-top: 20px;">
+                    Este es un email automático. Por favor, no respondas a este mensaje.
                 </p>
             </div>
         </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <h3>Codes++</h3>
-            <p>Centro de Estudiantes de Informática</p>
-            <p>Universidad Nacional del Sur</p>
-            <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">
-                Este es un email automático. Por favor, no respondas a este mensaje.
-            </p>
-        </div>
-    </div>
-</body>
-</html>
+    </body>
+    </html>
     `;
     
+    // Enviar el email
     MailApp.sendEmail({
       to: email,
-      subject: subject,
-      htmlBody: htmlBody
+      subject: '✅ Pago Confirmado - Sorteo Tablet Codes++',
+      htmlBody: emailContent
     });
     
-    // Marcar que se envió el email en la hoja
-    try {
-      const dataRange = sheet.getDataRange();
-      const values = dataRange.getValues();
-      
-      for (let i = 1; i < values.length; i++) {
-        const rowEmail = values[i][emailIndex];
-        const rowSessionId = values[i][sessionIdIndex];
-        const rowPaymentId = values[i][paymentIdIndex];
-        
-        // Encontrar la fila correspondiente y marcar email como enviado
-        if (rowEmail === email && 
-            ((rowPaymentId === paymentId && rowPaymentId) || 
-             (rowSessionId === sessionId && rowSessionId))) {
-          
-          if (emailEnviadoIndex !== -1) {
-            sheet.getRange(i + 1, emailEnviadoIndex + 1).setValue('TRUE');
-            console.log(`✅ Marcado email como enviado en fila ${i + 1}`);
-          }
-          break;
-        }
-      }
-    } catch (error) {
-      console.error('⚠️ Error marcando email como enviado:', error);
-    }
+    // MARCAR COMO ENVIADO INMEDIATAMENTE
+    sheet.getRange(rowIndex, emailEnviadoIndex + 1).setValue('TRUE');
+    console.log(`✅ Email enviado y marcado como enviado en fila: ${rowIndex}`);
     
-    console.log('✅ Email de confirmación enviado con diseño mejorado');
+    return { 
+      success: true, 
+      message: 'Email enviado correctamente',
+      rowIndex: rowIndex 
+    };
     
   } catch (error) {
-    console.error('❌ Error enviando email:', error);
+    console.error('❌ Error enviando email centralizado:', error);
+    return { 
+      success: false, 
+      error: error.message 
+    };
   }
 }
 
@@ -1560,22 +1793,74 @@ function probarFlujoCompleto() {
   }
 }
 
-// ===========================================
-// INSTRUCCIONES DE CONFIGURACIÓN
-// ===========================================
-/*
-1. Reemplaza TU_ACCESS_TOKEN_AQUI con tu token real de MercadoPago
-2. Reemplaza TU_SHEET_ID_AQUI con el ID de tu Google Sheet
-3. Reemplaza TU_NOMBRE_DE_HOJA_AQUI con el nombre de la hoja donde guardar los datos
-4. Copia este archivo a Google Apps Script
-5. Ejecuta las siguientes funciones en orden para verificar el sistema:
+/**
+ * Función para probar la configuración del sistema
+ * Ejecuta esta función desde el editor de Apps Script para verificar que todo esté configurado correctamente
+ */
+function probarConfiguracion() {
+  try {
+    console.log('🔍 Probando configuración del sistema...');
+    
+    // Verificar que las constantes estén definidas
+    if (!GOOGLE_SHEET_ID) {
+      throw new Error('❌ GOOGLE_SHEET_ID no está configurado correctamente');
+    }
+    
+    if (!MERCADOPAGO_ACCESS_TOKEN) {
+      throw new Error('❌ MERCADOPAGO_ACCESS_TOKEN no está configurado correctamente');
+    }
+    
+    console.log('✅ Constantes configuradas correctamente');
+    
+    // Probar conexión a Google Sheets
+    console.log('🔍 Probando conexión a Google Sheets...');
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('❌ No se pudo conectar a Google Sheets');
+    }
+    console.log('✅ Conexión a Google Sheets: OK');
+    
+    // Probar conexión a MercadoPago
+    console.log('🔍 Probando conexión a MercadoPago...');
+    const url = 'https://api.mercadopago.com/v1/payments/search?limit=1';
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    const response = UrlFetchApp.fetch(url, options);
+    const responseCode = response.getResponseCode();
+    
+    if (responseCode !== 200) {
+      throw new Error(`❌ Error en conexión a MercadoPago. Código: ${responseCode}`);
+    }
+    
+    console.log('✅ Conexión a MercadoPago: OK');
+    
+    // Probar función de email
+    console.log('🔍 Probando función de email...');
+    const emailTest = enviarEmailConfirmacionInicial('test@example.com', 'TEST_SESSION', 'TEST_PAYMENT');
+    console.log('✅ Función de email: OK');
+    
+    console.log('🎉 ¡Configuración correcta! El sistema está listo para usar.');
+    return { 
+      success: true, 
+      message: 'Configuración correcta',
+      googleSheets: 'OK',
+      mercadopago: 'OK',
+      email: 'OK'
+    };
+    
+  } catch (error) {
+    console.error('❌ Error en configuración:', error);
+    return { 
+      success: false, 
+      error: error.message,
+      message: 'Revisa la configuración según las instrucciones en CONFIGURACION_GOOGLE_APPS_SCRIPT.md'
+    };
+  }
+}
 
-   A. probarMapeoColumnas() - Verifica que las columnas estén correctamente mapeadas
-   B. probarMercadoPago() - Verifica la conexión con MercadoPago
-   C. probarFlujoCompleto() - Prueba el flujo completo con datos simulados
-   D. configurarTrigger() - Configura la verificación automática (una sola vez)
-   E. buscarPagosUsuario() - Para ver los pagos recibidos
-
-6. Si hay errores, revisa los logs para identificar el problema específico
-7. Para depurar pagos reales, ejecuta verificarPagosPendientes() después de un pago real
-*/ 

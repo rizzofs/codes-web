@@ -1,44 +1,29 @@
-# Sensitive data and configuration files
-.env
-config.php
-secrets.php
-*.key
-*.pem
-*.p12
+# Archivos de configuración con datos sensibles
+sistema-completo-pagos-template.gs
 
-# MercadoPago configuration files
-mercadopago-config.php
-mercadopago-secrets.php
+# Archivos de configuración de base de datos
+config/database.php
 
-# Google Apps Script files with sensitive data
-sistema-completo-pagos.gs
-sistema-pagos-simple.gs
-verificacion-pagos-simple.gs
-test-configuracion.gs
-verificacion-manual.gs
-
-# Backup files
-*.bak
-*.backup
-
-# Log files
+# Archivos de log
 *.log
 
-# Temporary files
+# Archivos temporales
 *.tmp
 *.temp
 
-# IDE files
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db 
+# Archivos de node_modules (si se agregan en el futuro)
+node_modules/
+
+# Archivos de configuración local
+.env
+.env.local 
