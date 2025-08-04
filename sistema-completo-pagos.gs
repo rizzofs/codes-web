@@ -1,6 +1,6 @@
 /**
- * Sistema Completo de Verificación de Pagos - MercadoPago + Google Sheets
- * Este script incluye: configuración, verificación real, emails y triggers automáticos
+ * Sistema Simple de Pagos - CODES++
+ * Maneja el registro y verificación de pagos del sorteo
  */
 
 // ============================================================================
@@ -12,27 +12,47 @@ const SHEET_NAME = 'Registros_Sorteo';
 const MERCADOPAGO_ACCESS_TOKEN = 'APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374';
 
 // ============================================================================
-// FUNCIÓN PRINCIPAL - RECEPCIÓN DE DATOS DEL FORMULARIO
+// RECEPCIÓN DE DATOS DEL FORMULARIO
 // ============================================================================
 
 function doPost(e) {
   try {
     console.log('📥 Recibiendo datos del formulario...');
     
-    // Parsear los datos recibidos
     const data = JSON.parse(e.postData.contents);
     console.log('📊 Datos recibidos:', data);
     
-    // Validar datos requeridos
+    // Verificar si es una actualización de pago (solo tiene sessionId y datos de pago)
+    if (data.sessionId && !data.nombre && !data.apellido && !data.email) {
+      console.log('🔄 Actualizando pago existente...');
+      const result = actualizarPagoExistente(data);
+      
+      if (result.success) {
+        console.log('✅ Pago actualizado exitosamente');
+        return ContentService.createTextOutput(JSON.stringify({
+          success: true,
+          sessionId: data.sessionId,
+          message: 'Pago actualizado correctamente'
+        })).setMimeType(ContentService.MimeType.JSON);
+      } else {
+        console.error('❌ Error actualizando pago:', result.error);
+        return ContentService.createTextOutput(JSON.stringify({
+          success: false,
+          error: result.error
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
+    // Validar datos requeridos para nuevo registro
     if (!data.nombre || !data.apellido || !data.email || !data.dni || !data.telefono || !data.cantidadChances) {
-      console.error('❌ Datos incompletos recibidos');
+      console.error('❌ Datos incompletos');
       return ContentService.createTextOutput(JSON.stringify({
         success: false,
         error: 'Datos incompletos'
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Generar Session ID si no existe
+    // Generar Session ID único
     if (!data.sessionId) {
       data.sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
@@ -71,7 +91,80 @@ function doPost(e) {
 }
 
 // ============================================================================
-// FUNCIÓN PARA GUARDAR EN GOOGLE SHEETS
+// ACTUALIZAR PAGO EXISTENTE
+// ============================================================================
+
+function actualizarPagoExistente(data) {
+  try {
+    console.log('🔄 Actualizando pago existente con sessionId:', data.sessionId);
+    
+    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    
+    if (!sheet) {
+      console.error('❌ Hoja no encontrada:', SHEET_NAME);
+      return { success: false, error: 'Hoja no encontrada' };
+    }
+    
+    const dataRange = sheet.getDataRange().getValues();
+    const headers = dataRange[0];
+    
+    // Encontrar índices de columnas
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    if (sessionIdIndex === -1) {
+      console.error('❌ Columna Session ID no encontrada');
+      return { success: false, error: 'Columna Session ID no encontrada' };
+    }
+    
+    // Buscar la fila con el sessionId
+    let rowIndex = -1;
+    for (let i = 1; i < dataRange.length; i++) {
+      if (dataRange[i][sessionIdIndex] === data.sessionId) {
+        rowIndex = i + 1; // +1 porque las filas en Sheets empiezan en 1
+        break;
+      }
+    }
+    
+    if (rowIndex === -1) {
+      console.error('❌ No se encontró registro con sessionId:', data.sessionId);
+      return { success: false, error: 'Registro no encontrado' };
+    }
+    
+    console.log('✅ Registro encontrado en fila:', rowIndex);
+    
+    // Actualizar campos específicos
+    if (pagoConfirmadoIndex !== -1) {
+      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+    }
+    
+    if (estadoPagoIndex !== -1) {
+      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
+    }
+    
+    if (paymentIdIndex !== -1 && data.paymentId) {
+      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(data.paymentId);
+    }
+    
+    if (fechaConfirmacionIndex !== -1) {
+      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+    }
+    
+    console.log('✅ Pago actualizado exitosamente');
+    return { success: true };
+    
+  } catch (error) {
+    console.error('❌ Error actualizando pago:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+// ============================================================================
+// GUARDAR EN GOOGLE SHEETS
 // ============================================================================
 
 function guardarEnGoogleSheets(data) {
@@ -129,7 +222,7 @@ function guardarEnGoogleSheets(data) {
 }
 
 // ============================================================================
-// FUNCIÓN PRINCIPAL - VERIFICACIÓN DE PAGOS
+// VERIFICACIÓN DE PAGOS PENDIENTES
 // ============================================================================
 
 function verificarPagosPendientes() {
@@ -144,18 +237,17 @@ function verificarPagosPendientes() {
       return;
     }
     
-    // Obtener todos los datos
     const data = sheet.getDataRange().getValues();
     const headers = data[0];
     
     console.log('📊 Headers encontrados:', headers);
+    console.log('📊 Total de filas:', data.length);
     
-    // Encontrar índices de columnas importantes
+    // Encontrar índices de columnas
     const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
     const estadoPagoIndex = headers.indexOf('Estado Pago');
     const sessionIdIndex = headers.indexOf('Session ID');
     const paymentIdIndex = headers.indexOf('Payment ID');
-    const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
     const emailIndex = headers.indexOf('Email');
     const nombreIndex = headers.indexOf('Nombre');
     
@@ -164,7 +256,6 @@ function verificarPagosPendientes() {
       estadoPago: estadoPagoIndex,
       sessionId: sessionIdIndex,
       paymentId: paymentIdIndex,
-      fechaRegistro: fechaRegistroIndex,
       email: emailIndex,
       nombre: nombreIndex
     });
@@ -177,33 +268,42 @@ function verificarPagosPendientes() {
     let pagosActualizados = 0;
     let pagosPendientes = 0;
     
-    // Procesar cada fila (empezando desde la fila 2)
+    // Procesar cada fila
     for (let i = 1; i < data.length; i++) {
       const row = data[i];
+      
       const pagoConfirmado = row[pagoConfirmadoIndex];
       const estadoPago = row[estadoPagoIndex];
-      const sessionId = row[sessionIdIndex] || '';
-      const paymentId = row[paymentIdIndex] || '';
-      const email = row[emailIndex] || '';
-      const nombre = row[nombreIndex] || '';
+      const sessionId = sessionIdIndex !== -1 ? (row[sessionIdIndex] || '') : '';
+      const paymentId = paymentIdIndex !== -1 ? (row[paymentIdIndex] || '') : '';
+      const email = emailIndex !== -1 ? (row[emailIndex] || '') : '';
+      const nombre = nombreIndex !== -1 ? (row[nombreIndex] || '') : '';
+      
+      console.log(`\n📊 Procesando fila ${i + 1}:`);
+      console.log(`  👤 Nombre: ${nombre}`);
+      console.log(`  📧 Email: ${email}`);
+      console.log(`  💳 Pago Confirmado: ${pagoConfirmado}`);
+      console.log(`  📋 Estado Pago: ${estadoPago}`);
+      console.log(`  🔑 Session ID: ${sessionId}`);
+      console.log(`  🆔 Payment ID: ${paymentId}`);
       
       // Solo verificar pagos pendientes
       if (pagoConfirmado === 'FALSE' && estadoPago === 'PENDIENTE') {
         pagosPendientes++;
         console.log(`🔍 Verificando pago pendiente ${pagosPendientes}:`, sessionId);
         
-        // Verificar pago real en MercadoPago
+        // Verificar pago en MercadoPago
         const pagoConfirmado = verificarPagoEnMercadoPago(sessionId, paymentId, email);
         
         if (pagoConfirmado) {
           console.log('✅ Pago confirmado:', sessionId);
           
           // Actualizar el registro
-          const rowIndex = i + 1; // +1 porque getValues() es 0-indexed
+          const rowIndex = i + 1;
           sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
           sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
           
-          // Actualizar fecha de confirmación si existe la columna
+          // Actualizar fecha de confirmación
           const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
           if (fechaConfirmacionIndex !== -1) {
             sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
@@ -217,6 +317,10 @@ function verificarPagosPendientes() {
         } else {
           console.log('⏳ Pago aún pendiente:', sessionId);
         }
+      } else if (pagoConfirmado === 'TRUE') {
+        console.log('✅ Pago ya confirmado');
+      } else {
+        console.log('❓ Estado desconocido');
       }
     }
     
@@ -228,16 +332,16 @@ function verificarPagosPendientes() {
 }
 
 // ============================================================================
-// VERIFICACIÓN REAL EN MERCADOPAGO
+// VERIFICACIÓN EN MERCADOPAGO
 // ============================================================================
 
 function verificarPagoEnMercadoPago(sessionId, paymentId, email) {
   try {
-    console.log(`🔍 Verificando pago real en MercadoPago: sessionId=${sessionId}, paymentId=${paymentId}, email=${email}`);
+    console.log(`🔍 Verificando pago: sessionId=${sessionId}, paymentId=${paymentId}, email=${email}`);
     
-    // Si tenemos paymentId válido, buscarlo directamente
+    // Buscar por Payment ID
     if (paymentId && paymentId !== 'N/A' && paymentId !== '') {
-      console.log(`🔍 Buscando pago por Payment ID: ${paymentId}`);
+      console.log(`🔍 Buscando por Payment ID: ${paymentId}`);
       
       const url = `https://api.mercadopago.com/v1/payments/${paymentId}`;
       const response = UrlFetchApp.fetch(url, {
@@ -250,24 +354,19 @@ function verificarPagoEnMercadoPago(sessionId, paymentId, email) {
       
       if (response.getResponseCode() === 200) {
         const paymentData = JSON.parse(response.getContentText());
-        console.log(`📊 Datos del pago encontrado:`, paymentData);
+        console.log(`📊 Pago encontrado por Payment ID:`, paymentData);
         
-        // Verificar si el pago está aprobado
         const isApproved = paymentData.status === 'approved' || 
                           paymentData.collection_status === 'approved';
         
-        console.log(`✅ Estado del pago: ${paymentData.status}, Collection: ${paymentData.collection_status}`);
-        console.log(`🎯 Resultado: ${isApproved ? 'CONFIRMADO' : 'PENDIENTE'}`);
-        
+        console.log(`✅ Estado: ${paymentData.status}, Aprobado: ${isApproved}`);
         return isApproved;
-      } else {
-        console.log(`❌ Error al buscar pago por ID: ${response.getResponseCode()}`);
       }
     }
     
-    // Si no tenemos paymentId, buscar por external_reference (sessionId)
+    // Buscar por Session ID
     if (sessionId && sessionId !== 'N/A' && sessionId !== '') {
-      console.log(`🔍 Buscando pago por external_reference: ${sessionId}`);
+      console.log(`🔍 Buscando por Session ID: ${sessionId}`);
       
       const url = `https://api.mercadopago.com/v1/payments/search?external_reference=${sessionId}`;
       const response = UrlFetchApp.fetch(url, {
@@ -280,33 +379,28 @@ function verificarPagoEnMercadoPago(sessionId, paymentId, email) {
       
       if (response.getResponseCode() === 200) {
         const searchData = JSON.parse(response.getContentText());
-        console.log(`📊 Resultados de búsqueda:`, searchData);
         
         if (searchData.results && searchData.results.length > 0) {
           const payment = searchData.results[0];
-          console.log(`📊 Pago encontrado:`, payment);
+          console.log(`📊 Pago encontrado por Session ID:`, payment);
           
-          // Verificar si el pago está aprobado
           const isApproved = payment.status === 'approved' || 
                             payment.collection_status === 'approved';
           
-          console.log(`✅ Estado del pago: ${payment.status}, Collection: ${payment.collection_status}`);
-          console.log(`🎯 Resultado: ${isApproved ? 'CONFIRMADO' : 'PENDIENTE'}`);
-          
+          console.log(`✅ Estado: ${payment.status}, Aprobado: ${isApproved}`);
           return isApproved;
-        } else {
-          console.log(`❌ No se encontraron pagos para sessionId: ${sessionId}`);
         }
-      } else {
-        console.log(`❌ Error al buscar pago por sessionId: ${response.getResponseCode()}`);
       }
     }
     
-    // Buscar por email (último recurso)
-    if (email && email !== 'N/A' && email !== '') {
-      console.log(`🔍 Buscando pago por email: ${email}`);
+        // Buscar por collector_id (pagos que te hacen a ti)
+    const collectorId = 2142366374;
+    
+    if (collectorId) {
+      console.log(`🔍 Buscando por collector_id: ${collectorId}`);
       
-      const url = `https://api.mercadopago.com/v1/payments/search?payer.email=${email}`;
+             // Obtener todos los pagos y filtrar por collector_id
+       const url = `https://api.mercadopago.com/v1/payments/search?limit=200`;
       const response = UrlFetchApp.fetch(url, {
         method: 'GET',
         headers: {
@@ -318,34 +412,35 @@ function verificarPagoEnMercadoPago(sessionId, paymentId, email) {
       if (response.getResponseCode() === 200) {
         const searchData = JSON.parse(response.getContentText());
         
-        if (searchData.results && searchData.results.length > 0) {
-          console.log(`✅ Pago encontrado por email`);
-          console.log(`📊 Total de pagos: ${searchData.results.length}`);
+        // Filtrar pagos por collector_id (pagos que te hacen a ti)
+        const pagosRecibidos = searchData.results.filter(payment => 
+          payment.collector_id === collectorId
+        );
+        
+        if (pagosRecibidos.length > 0) {
+          console.log(`✅ Pago encontrado por collector_id: ${collectorId}`);
+          console.log(`📊 Total de pagos recibidos: ${pagosRecibidos.length}`);
           
           // Buscar el pago más reciente aprobado
-          const pagoAprobado = searchData.results.find(payment => 
+          const pagoAprobado = pagosRecibidos.find(payment => 
             payment.status === 'approved' || payment.collection_status === 'approved'
           );
           
           if (pagoAprobado) {
-            console.log(`✅ Pago aprobado encontrado por email:`, pagoAprobado);
+            console.log(`✅ Pago aprobado encontrado:`, pagoAprobado);
             return true;
-          } else {
-            console.log(`❌ No se encontraron pagos aprobados para el email`);
           }
-        } else {
-          console.log(`❌ No se encontraron pagos para el email`);
         }
       } else {
-        console.log(`❌ Error buscando por email: ${response.getResponseCode()}`);
+        console.log(`❌ Error en API para collector_id ${collectorId}: ${response.getResponseCode()}`);
       }
     }
     
-    console.log(`❌ No se pudo verificar el pago: sin paymentId, sessionId ni email válidos`);
+    console.log(`❌ No se pudo verificar el pago`);
     return false;
     
   } catch (error) {
-    console.error(`❌ Error verificando pago en MercadoPago:`, error);
+    console.error(`❌ Error verificando pago:`, error);
     return false;
   }
 }
@@ -356,7 +451,6 @@ function verificarPagoEnMercadoPago(sessionId, paymentId, email) {
 
 function enviarEmailConfirmacion(rowData, headers) {
   try {
-    // Buscar índices de nombre y email
     const nombreIndex = headers.indexOf('Nombre');
     const emailIndex = headers.indexOf('Email');
     
@@ -387,87 +481,107 @@ function enviarEmailConfirmacion(rowData, headers) {
 }
 
 // ============================================================================
-// CONFIGURACIÓN DE ESTRUCTURA DE HOJA
+// FUNCIONES DE PRUEBA
 // ============================================================================
 
-function actualizarEstructuraHoja() {
+function probarConexion() {
   try {
-    console.log('📊 Actualizando estructura de la hoja...');
+    console.log('🔍 Probando conexión básica...');
     
     const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     const sheet = spreadsheet.getSheetByName(SHEET_NAME);
     
-    if (!sheet) {
-      console.error('❌ Hoja no encontrada:', SHEET_NAME);
-      return;
+    if (sheet) {
+      console.log('✅ Conexión a Google Sheets exitosa');
+      console.log('📊 Total de filas:', sheet.getLastRow());
+      console.log('📊 Total de columnas:', sheet.getLastColumn());
+    } else {
+      console.log('❌ No se pudo acceder a la hoja');
     }
     
-    // Obtener headers actuales
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    console.log('📋 Headers actuales:', headers);
+  } catch (error) {
+    console.error('❌ Error en conexión:', error);
+  }
+}
+
+function probarMercadoPago() {
+  try {
+    console.log('🔍 Probando API de MercadoPago...');
     
-    // Columnas que necesitamos agregar
-    const columnasNecesarias = [
-      'Estado Pago',
-      'Session ID', 
-      'Payment ID',
-      'Fecha Confirmación'
-    ];
-    
-    let columnaActual = headers.length + 1;
-    
-    columnasNecesarias.forEach(columna => {
-      if (headers.indexOf(columna) === -1) {
-        console.log(`➕ Agregando columna: ${columna} en posición ${columnaActual}`);
-        sheet.getRange(1, columnaActual).setValue(columna);
-        columnaActual++;
-      } else {
-        console.log(`✅ Columna ya existe: ${columna}`);
+    const url = 'https://api.mercadopago.com/v1/payments/search?limit=1';
+    const response = UrlFetchApp.fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
       }
     });
     
-    // Actualizar registros existentes con valores por defecto
-    const ultimaFila = sheet.getLastRow();
-    if (ultimaFila > 1) {
-      console.log('🔄 Actualizando registros existentes...');
-      
-      // Buscar índices de las nuevas columnas
-      const headersActualizados = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-      const estadoPagoIndex = headersActualizados.indexOf('Estado Pago');
-      const sessionIdIndex = headersActualizados.indexOf('Session ID');
-      const paymentIdIndex = headersActualizados.indexOf('Payment ID');
-      
-      // Actualizar registros existentes
-      for (let fila = 2; fila <= ultimaFila; fila++) {
-        // Estado Pago por defecto: PENDIENTE
-        if (estadoPagoIndex !== -1) {
-          const pagoConfirmado = sheet.getRange(fila, headersActualizados.indexOf('Pago Confirmado') + 1).getValue();
-          const estadoPago = pagoConfirmado === 'TRUE' ? 'CONFIRMADO' : 'PENDIENTE';
-          sheet.getRange(fila, estadoPagoIndex + 1).setValue(estadoPago);
-        }
-        
-        // Session ID por defecto
-        if (sessionIdIndex !== -1) {
-          const sessionId = sheet.getRange(fila, sessionIdIndex + 1).getValue();
-          if (!sessionId) {
-            sheet.getRange(fila, sessionIdIndex + 1).setValue('SES_' + Date.now() + '_' + fila);
-          }
-        }
-        
-        // Payment ID por defecto
-        if (paymentIdIndex !== -1) {
-          const paymentId = sheet.getRange(fila, paymentIdIndex + 1).getValue();
-          if (!paymentId) {
-            sheet.getRange(fila, paymentIdIndex + 1).setValue('N/A');
-          }
-        }
-      }
+    if (response.getResponseCode() === 200) {
+      console.log('✅ Conexión a MercadoPago exitosa');
+      const data = JSON.parse(response.getContentText());
+      console.log('📊 Total de pagos disponibles:', data.paging?.total || 'N/A');
+    } else {
+      console.log('❌ Error en API de MercadoPago:', response.getResponseCode());
     }
     
-    console.log('✅ Estructura de hoja actualizada');
+  } catch (error) {
+    console.error('❌ Error probando MercadoPago:', error);
+  }
+}
+
+function buscarPagosUsuario() {
+  try {
+    console.log('🔍 Buscando pagos recibidos...');
+    console.log('👤 Usuario: RF20241206142733');
+    console.log('📧 Email MercadoPago: rizzofs.eu@gmail.com');
+    console.log('📱 Teléfono: +542346612609');
+    console.log('🏪 Collector ID: 2142366374');
+    
+    console.log(`\n💰 Buscando pagos recibidos como vendedor...`);
+    
+    // Obtener todos los pagos y filtrar por collector_id (tus pagos recibidos)
+    const url = `https://api.mercadopago.com/v1/payments/search?limit=200`;
+    const response = UrlFetchApp.fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.getResponseCode() === 200) {
+      const searchData = JSON.parse(response.getContentText());
+      
+      console.log(`📊 Total de pagos disponibles: ${searchData.results.length}`);
+      
+      // Filtrar solo los pagos que te hacen a ti (collector_id: 2142366374)
+      const pagosRecibidos = searchData.results.filter(payment => 
+        payment.collector_id === 2142366374
+      );
+      
+      console.log(`📊 Pagos recibidos (collector_id: 2142366374): ${pagosRecibidos.length}`);
+      
+      if (pagosRecibidos.length > 0) {
+        pagosRecibidos.forEach((payment, index) => {
+          console.log(`\n📊 Pago recibido ${index + 1}:`);
+          console.log(`  🆔 ID: ${payment.id}`);
+          console.log(`  📊 Estado: ${payment.status}`);
+          console.log(`  💰 Monto: ${payment.transaction_amount}`);
+          console.log(`  📅 Fecha: ${payment.date_created}`);
+          console.log(`  🔑 External Reference: ${payment.external_reference || 'N/A'}`);
+          console.log(`  📧 Email del pagador: ${payment.payer?.email || 'N/A'}`);
+          console.log(`  🏪 Collector ID: ${payment.collector_id}`);
+        });
+      } else {
+        console.log(`❌ No se encontraron pagos recibidos`);
+      }
+    } else {
+      console.log(`❌ Error en API: ${response.getResponseCode()}`);
+    }
     
   } catch (error) {
-    console.error('❌ Error actualizando estructura:', error);
+    console.error('❌ Error buscando pagos:', error);
   }
 }
 
@@ -500,144 +614,14 @@ function configurarTrigger() {
 }
 
 // ============================================================================
-// LIMPIEZA DE REGISTROS ANTIGUOS
+// FUNCIÓN PRINCIPAL
 // ============================================================================
 
-function limpiarRegistrosAntiguos() {
-  try {
-    console.log('🧹 Iniciando limpieza de registros antiguos...');
-    
-    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
-    
-    const data = sheet.getDataRange().getValues();
-    const headers = data[0];
-    
-    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
-    const estadoPagoIndex = headers.indexOf('Estado Pago');
-    const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
-    
-    const ahora = new Date();
-    const limite24h = new Date(ahora.getTime() - (24 * 60 * 60 * 1000));
-    
-    let registrosLimpiados = 0;
-    
-    // Procesar desde el final para evitar problemas con índices
-    for (let i = data.length - 1; i >= 1; i--) {
-      const row = data[i];
-      const pagoConfirmado = row[pagoConfirmadoIndex];
-      const estadoPago = row[estadoPagoIndex];
-      const fechaRegistro = row[fechaRegistroIndex];
-      
-      // Solo limpiar registros pendientes de más de 24 horas
-      if (pagoConfirmado === 'FALSE' && estadoPago === 'PENDIENTE') {
-        if (fechaRegistro) {
-          const fechaRegistroDate = new Date(fechaRegistro);
-          if (fechaRegistroDate < limite24h) {
-            console.log(`🗑️ Limpiando registro antiguo en fila ${i + 1}`);
-            
-            // Marcar como cancelado en lugar de eliminar
-            const rowIndex = i + 1;
-            sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('FALSE');
-            sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CANCELADO');
-            
-            registrosLimpiados++;
-          }
-        }
-      }
-    }
-    
-    console.log(`✅ Limpieza completada: ${registrosLimpiados} registros marcados como cancelados`);
-    
-  } catch (error) {
-    console.error('❌ Error en limpieza:', error);
-  }
-}
-
-// ============================================================================
-// FUNCIONES DE PRUEBA Y DIAGNÓSTICO
-// ============================================================================
-
-function probarConexionBasica() {
-  try {
-    console.log('🔍 Probando conexión básica...');
-    
-    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
-    
-    if (sheet) {
-      console.log('✅ Conexión a Google Sheets exitosa');
-      console.log('📊 Total de filas:', sheet.getLastRow());
-      console.log('📊 Total de columnas:', sheet.getLastColumn());
-    } else {
-      console.log('❌ No se pudo acceder a la hoja');
-    }
-    
-  } catch (error) {
-    console.error('❌ Error en conexión básica:', error);
-  }
-}
-
-function probarAPIMercadoPago() {
-  try {
-    console.log('🔍 Probando API de MercadoPago...');
-    
-    const url = 'https://api.mercadopago.com/v1/payments/search?limit=1';
-    const response = UrlFetchApp.fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    if (response.getResponseCode() === 200) {
-      console.log('✅ Conexión a MercadoPago exitosa');
-      const data = JSON.parse(response.getContentText());
-      console.log('📊 Total de pagos disponibles:', data.paging?.total || 'N/A');
-    } else {
-      console.log('❌ Error en API de MercadoPago:', response.getResponseCode());
-    }
-    
-  } catch (error) {
-    console.error('❌ Error probando API de MercadoPago:', error);
-  }
-}
-
-function probarTodo() {
-  console.log('🧪 Iniciando pruebas completas...');
-  
-  probarConexionBasica();
-  probarAPIMercadoPago();
-  actualizarEstructuraHoja();
-  verificarPagosPendientes();
-  
-  console.log('✅ Pruebas completadas');
-}
-
-function configurarTodo() {
-  console.log('⚙️ Configurando sistema completo...');
-  
-  actualizarEstructuraHoja();
-  configurarTrigger();
-  
-  console.log('✅ Sistema configurado correctamente');
-}
-
-// ============================================================================
-// FUNCIÓN PRINCIPAL DE EJECUCIÓN
-// ============================================================================
-
-function ejecutarSistemaCompleto() {
-  console.log('🚀 Ejecutando sistema completo de pagos...');
+function ejecutarSistema() {
+  console.log('🚀 Ejecutando sistema de pagos...');
   
   try {
-    // 1. Limpiar registros antiguos
-    limpiarRegistrosAntiguos();
-    
-    // 2. Verificar pagos pendientes
     verificarPagosPendientes();
-    
     console.log('✅ Sistema ejecutado correctamente');
     
   } catch (error) {

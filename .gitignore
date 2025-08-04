@@ -1,0 +1,44 @@
+# Sensitive data and configuration files
+.env
+config.php
+secrets.php
+*.key
+*.pem
+*.p12
+
+# MercadoPago configuration files
+mercadopago-config.php
+mercadopago-secrets.php
+
+# Google Apps Script files with sensitive data
+sistema-completo-pagos.gs
+sistema-pagos-simple.gs
+verificacion-pagos-simple.gs
+test-configuracion.gs
+verificacion-manual.gs
+
+# Backup files
+*.bak
+*.backup
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

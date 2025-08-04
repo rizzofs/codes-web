@@ -205,15 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const datos = JSON.parse(datosPendientes);
             console.log('📊 Datos pendientes encontrados:', datos);
             
-            // Actualizar estado del pago
+            // Actualizar estado del pago (solo datos de actualización, sin datos personales)
             const datosActualizados = {
                 sessionId: datos.sessionId,
                 estadoPago: 'CONFIRMADO',
                 pagoConfirmado: true,
-                fechaConfirmacion: new Date().toISOString(),
-                paymentId: paymentId || 'N/A',
-                collectionStatus: collectionStatus || 'N/A',
-                status: status || 'N/A'
+                paymentId: paymentId || 'N/A'
             };
             
             // Enviar actualización a Google Sheets
