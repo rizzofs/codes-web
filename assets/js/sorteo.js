@@ -293,21 +293,51 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (response.ok) {
                 try {
-                    const responseData = await response.json();
-                    console.log('📊 Datos de respuesta JSON:', responseData);
-                    
-                    if (responseData.success) {
-                        console.log('✅ Datos enviados exitosamente a Google Sheets');
-                        return { success: true, data: responseData };
-                    } else {
-                        console.log('❌ Error en la respuesta del servidor:', responseData.error);
-                        return { success: false, error: responseData.error };
-                    }
-                } catch (jsonError) {
-                    console.log('⚠️ Error parseando JSON de respuesta:', jsonError);
                     const responseText = await response.text();
                     console.log('📄 Respuesta como texto:', responseText);
-                    return { success: false, error: 'Error parseando respuesta: ' + jsonError.message };
+                    
+                    // Intentar parsear como JSON
+                    let responseData;
+                    try {
+                        responseData = JSON.parse(responseText);
+                        console.log('📊 Datos de respuesta JSON:', responseData);
+                                             } catch (parseError) {
+                             console.log('⚠️ No es JSON válido, tratando como texto plano');
+                             console.log('📄 Texto completo recibido:', responseText);
+                             
+                             // Verificar múltiples indicadores de éxito
+                             const indicadoresExito = [
+                                 'success', 'Datos guardados', 'guardados correctamente', 
+                                 'exitosamente', 'correctamente', 'ok', 'OK', 'Success'
+                             ];
+                             
+                             const tieneIndicadorExito = indicadoresExito.some(indicator => 
+                                 responseText.toLowerCase().includes(indicator.toLowerCase())
+                             );
+                             
+                             if (tieneIndicadorExito) {
+                                 console.log('✅ Respuesta indica éxito');
+                                 return { success: true, data: { message: responseText } };
+                             } else {
+                                 console.log('❌ Respuesta no indica éxito');
+                                 return { success: false, error: 'Respuesta inesperada: ' + responseText };
+                             }
+                         }
+                    
+                    if (responseData && responseData.success) {
+                        console.log('✅ Datos enviados exitosamente a Google Sheets');
+                        return { success: true, data: responseData };
+                    } else if (responseData && responseData.error) {
+                        console.log('❌ Error en la respuesta del servidor:', responseData.error);
+                        return { success: false, error: responseData.error };
+                    } else {
+                        // Si no tiene estructura esperada pero la respuesta fue exitosa
+                        console.log('✅ Respuesta exitosa sin estructura JSON esperada');
+                        return { success: true, data: responseData || { message: responseText } };
+                    }
+                } catch (textError) {
+                    console.log('⚠️ Error leyendo respuesta:', textError);
+                    return { success: false, error: 'Error leyendo respuesta: ' + textError.message };
                 }
             } else {
                 console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
