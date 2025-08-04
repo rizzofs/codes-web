@@ -308,13 +308,30 @@
                 if (pagoExitoso) {
                     console.log('✅ Pago confirmado - Actualizando estado');
                     
+                    // Verificar que el external_reference coincida con el sessionId
+                    if (externalReference && externalReference !== datos.sessionId) {
+                        console.log('⚠️ External reference no coincide con sessionId:', {
+                            externalReference,
+                            sessionId: datos.sessionId
+                        });
+                    }
+                    
+                    // Debug: Verificar qué datos tenemos disponibles
+                    console.log('🔍 Datos disponibles para actualización:', {
+                        sessionId: datos.sessionId,
+                        paymentId: paymentId,
+                        externalReference: externalReference,
+                        collectionStatus: collectionStatus,
+                        status: status
+                    });
+                    
                     // Actualizar estado del pago
                     const datosActualizados = {
                         sessionId: datos.sessionId,
                         estadoPago: 'CONFIRMADO',
                         pagoConfirmado: true,
                         fechaConfirmacion: new Date().toISOString(),
-                        paymentId: paymentId || 'N/A',
+                        paymentId: paymentId || null, // Enviar null en lugar de 'N/A' para que el Apps Script lo maneje
                         collectionStatus: collectionStatus || 'N/A',
                         status: status || 'N/A',
                         nombre: datos.nombre,

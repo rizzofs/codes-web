@@ -45,6 +45,16 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
+    // Verificar si es para completar datos faltantes
+    if (data.action === 'completarDatosFaltantes') {
+      console.log('🔧 Completando datos faltantes...');
+      const result = completarDatosFaltantes();
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // Verificar si es una actualización de pago existente
     if (data.sessionId && !data.nombre && !data.apellido && !data.email) {
       console.log('🔄 Actualizando pago existente...');
@@ -243,7 +253,7 @@ function actualizarPagoExistente(data) {
     if (estadoPagoIndex !== -1) {
       sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
     }
-    if (paymentIdIndex !== -1 && data.paymentId) {
+    if (paymentIdIndex !== -1 && data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== null) {
       sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(data.paymentId);
     }
     if (fechaConfirmacionIndex !== -1) {
@@ -398,90 +408,227 @@ function verificarPagoEnMercadoPago(sessionId) {
 }
 
 /**
- * Verifica un pago por email y fecha específicos
+ * Verifica un pago específico usando datos del usuario
  */
 function verificarPagoPorDatos(data) {
   try {
-    console.log(`🔍 Verificando pago por datos:`, data);
+    console.log('🔍 Verificando pago por datos:', data);
     
-    const email = data.email;
-    const fecha = data.fecha;
-    
-    if (!email || !fecha) {
-      return {
-        success: false,
-        error: 'Email y fecha son requeridos'
-      };
+    if (!data.email || !data.fechaRegistro) {
+      return { success: false, error: 'Email y fecha de registro son requeridos' };
     }
     
-    const url = `https://api.mercadopago.com/v1/payments/search?limit=200`;
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
-      }
-    };
+    // Configurar fecha de búsqueda con tolerancia de ±1 día
+    const fechaRegistro = new Date(data.fechaRegistro);
+    const fechaInicio = new Date(fechaRegistro.getTime() - 24 * 60 * 60 * 1000); // -1 día
+    const fechaFin = new Date(fechaRegistro.getTime() + 24 * 60 * 60 * 1000); // +1 día
     
-    const response = UrlFetchApp.fetch(url, options);
-    const searchData = JSON.parse(response.getContentText());
-    
-    console.log(`📊 Total de pagos encontrados: ${searchData.results.length}`);
-    
-    // Filtrar por collector_id
-    const collectorId = 2142366374;
-    const pagosRecibidos = searchData.results.filter(payment => 
-      payment.collector_id === collectorId
-    );
-    
-    console.log(`📊 Pagos recibidos por collector_id ${collectorId}: ${pagosRecibidos.length}`);
-    
-    // Buscar pagos que coincidan con el email y fecha
-    const pagosCoincidentes = pagosRecibidos.filter(payment => {
-      // Verificar email del pagador
-      const emailCoincide = payment.payer && payment.payer.email && 
-                           payment.payer.email.toLowerCase() === email.toLowerCase();
-      
-      // Verificar fecha
-      const paymentDate = new Date(payment.date_created);
-      const targetDate = new Date(fecha);
-      const fechaCoincide = paymentDate.toDateString() === targetDate.toDateString();
-      
-      // Verificar que el pago esté aprobado
-      const statusAprobado = payment.status === 'approved';
-      
-      return emailCoincide && fechaCoincide && statusAprobado;
+    console.log('📅 Rango de fechas para búsqueda:', {
+      fechaRegistro: fechaRegistro.toISOString(),
+      fechaInicio: fechaInicio.toISOString(),
+      fechaFin: fechaFin.toISOString()
     });
     
-    console.log(`📊 Pagos coincidentes encontrados: ${pagosCoincidentes.length}`);
+    // Buscar pagos en MercadoPago
+    const url = `https://api.mercadopago.com/v1/payments/search`;
+    const params = {
+      'collector.id': COLLECTOR_ID,
+      'date_created.from': fechaInicio.toISOString(),
+      'date_created.to': fechaFin.toISOString(),
+      'status': 'approved'
+    };
     
-    if (pagosCoincidentes.length > 0) {
-      const pago = pagosCoincidentes[0]; // Tomar el primer pago coincidente
+    console.log('🔗 URL de búsqueda:', url);
+    console.log('📋 Parámetros:', params);
+    
+    const response = UrlFetchApp.fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + MERCADOPAGO_ACCESS_TOKEN,
+        'Content-Type': 'application/json'
+      },
+      muteHttpExceptions: true
+    });
+    
+    console.log('📥 Respuesta de MercadoPago:', response.getResponseCode());
+    
+    if (response.getResponseCode() !== 200) {
+      console.error('❌ Error en respuesta de MercadoPago:', response.getContentText());
+      return { success: false, error: 'Error comunicándose con MercadoPago' };
+    }
+    
+    const responseData = JSON.parse(response.getContentText());
+    console.log('📊 Pagos encontrados:', responseData.results?.length || 0);
+    
+    if (!responseData.results || responseData.results.length === 0) {
+      return { success: false, error: 'No se encontraron pagos aprobados para este período' };
+    }
+    
+    // Buscar pago que coincida con el email
+    let pagoEncontrado = null;
+    for (const pago of responseData.results) {
+      console.log('🔍 Revisando pago:', {
+        id: pago.id,
+        external_reference: pago.external_reference,
+        payer_email: pago.payer?.email,
+        status: pago.status,
+        amount: pago.transaction_amount
+      });
       
+      // Verificar si el email coincide
+      if (pago.payer && pago.payer.email && pago.payer.email.toLowerCase() === data.email.toLowerCase()) {
+        console.log('✅ Pago encontrado por email:', pago.id);
+        pagoEncontrado = pago;
+        break;
+      }
+    }
+    
+    if (!pagoEncontrado) {
+      return { success: false, error: 'No se encontró un pago aprobado para este email' };
+    }
+    
+    // Generar sessionId si no existe
+    let sessionId = data.sessionId;
+    if (!sessionId) {
+      sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      console.log('🆔 Session ID generado:', sessionId);
+    }
+    
+    // Preparar datos para actualizar Google Sheets
+    const datosActualizados = {
+      sessionId: sessionId,
+      paymentId: pagoEncontrado.id.toString(),
+      estadoPago: 'CONFIRMADO',
+      pagoConfirmado: true,
+      fechaConfirmacion: new Date().toISOString(),
+      collectionStatus: 'approved',
+      status: pagoEncontrado.status,
+      // Datos adicionales del pago
+      paymentMethod: pagoEncontrado.payment_method?.type || 'N/A',
+      installments: pagoEncontrado.installments || 1,
+      currency: pagoEncontrado.currency_id || 'ARS',
+      amount: pagoEncontrado.transaction_amount || 0,
+      // Datos del usuario para búsqueda
+      email: data.email,
+      nombre: data.nombre,
+      apellido: data.apellido
+    };
+    
+    console.log('📊 Datos actualizados para Google Sheets:', datosActualizados);
+    
+    // Actualizar Google Sheets
+    const result = actualizarPagoEnGoogleSheets(datosActualizados);
+    
+    if (result.success) {
+      console.log('✅ Pago verificado y actualizado exitosamente');
       return {
         success: true,
-        pagoEncontrado: true,
-        paymentId: pago.id,
-        status: pago.status,
-        amount: pago.transaction_amount,
-        fecha: pago.date_created,
-        email: pago.payer.email,
-        externalReference: pago.external_reference
+        message: 'Pago verificado y actualizado',
+        data: datosActualizados
       };
     } else {
-      return {
-        success: true,
-        pagoEncontrado: false,
-        message: 'No se encontró un pago confirmado con los datos proporcionados'
-      };
+      console.error('❌ Error actualizando Google Sheets:', result.error);
+      return { success: false, error: result.error };
     }
     
   } catch (error) {
-    console.error('❌ Error verificando pago por datos:', error);
-    return {
-      success: false,
-      error: error.message
-    };
+    console.error('❌ Error en verificarPagoPorDatos:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Actualiza un pago en Google Sheets usando sessionId o email
+ */
+function actualizarPagoEnGoogleSheets(datos) {
+  try {
+    console.log('📝 Actualizando pago en Google Sheets:', datos);
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
+    
+    // Encontrar índices de columnas
+    const sessionIdIndex = headers.indexOf('Session ID');
+    const emailIndex = headers.indexOf('Email');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    console.log('🔍 Índices encontrados:', {
+      sessionId: sessionIdIndex,
+      email: emailIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex
+    });
+    
+    // Buscar fila por sessionId o email
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    let rowIndex = -1;
+    let searchMethod = '';
+    
+    // Primero buscar por sessionId si existe
+    if (datos.sessionId && sessionIdIndex !== -1) {
+      for (let i = 1; i < values.length; i++) {
+        if (values[i][sessionIdIndex] === datos.sessionId) {
+          rowIndex = i + 1;
+          searchMethod = 'sessionId';
+          break;
+        }
+      }
+    }
+    
+    // Si no se encontró por sessionId, buscar por email
+    if (rowIndex === -1 && datos.email && emailIndex !== -1) {
+      for (let i = 1; i < values.length; i++) {
+        if (values[i][emailIndex] && values[i][emailIndex].toLowerCase() === datos.email.toLowerCase()) {
+          rowIndex = i + 1;
+          searchMethod = 'email';
+          break;
+        }
+      }
+    }
+    
+    if (rowIndex === -1) {
+      throw new Error('No se encontró el registro en la hoja');
+    }
+    
+    console.log('✅ Fila encontrada:', rowIndex, 'por método:', searchMethod);
+    
+    // Actualizar columnas
+    if (pagoConfirmadoIndex !== -1) {
+      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+    }
+    if (estadoPagoIndex !== -1) {
+      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
+    }
+    if (paymentIdIndex !== -1 && datos.paymentId) {
+      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(datos.paymentId);
+    }
+    if (fechaConfirmacionIndex !== -1) {
+      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+    }
+    if (sessionIdIndex !== -1 && datos.sessionId) {
+      sheet.getRange(rowIndex, sessionIdIndex + 1).setValue(datos.sessionId);
+    }
+    
+    console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
+    
+    return { success: true };
+    
+  } catch (error) {
+    console.error('❌ Error actualizando pago en Google Sheets:', error);
+    return { success: false, error: error.message };
   }
 }
 
@@ -502,11 +649,26 @@ function verificarPagosAutomaticamente() {
     
     // Encontrar los índices de las columnas
     const emailIndex = headers.indexOf('Email');
+    const nombreIndex = headers.indexOf('Nombre');
+    const apellidoIndex = headers.indexOf('Apellido');
     const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
     const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
     const estadoPagoIndex = headers.indexOf('Estado Pago');
     const paymentIdIndex = headers.indexOf('Payment ID');
     const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    const sessionIdIndex = headers.indexOf('Session ID');
+    
+    console.log('🔍 Índices encontrados:', {
+      email: emailIndex,
+      nombre: nombreIndex,
+      apellido: apellidoIndex,
+      fechaRegistro: fechaRegistroIndex,
+      pagoConfirmado: pagoConfirmadoIndex,
+      estadoPago: estadoPagoIndex,
+      paymentId: paymentIdIndex,
+      fechaConfirmacion: fechaConfirmacionIndex,
+      sessionId: sessionIdIndex
+    });
     
     const dataRange = sheet.getDataRange();
     const values = dataRange.getValues();
@@ -517,9 +679,12 @@ function verificarPagosAutomaticamente() {
     // Empezar desde la fila 2 (después del header)
     for (let i = 1; i < values.length; i++) {
       const email = values[i][emailIndex];
+      const nombre = values[i][nombreIndex];
+      const apellido = values[i][apellidoIndex];
       const fechaRegistro = values[i][fechaRegistroIndex];
       const pagoConfirmado = values[i][pagoConfirmadoIndex];
       const estadoPago = values[i][estadoPagoIndex];
+      const sessionId = values[i][sessionIdIndex];
       
       // Solo verificar pagos que no estén confirmados
       if (pagoConfirmado !== 'TRUE' && email && fechaRegistro) {
@@ -527,30 +692,27 @@ function verificarPagosAutomaticamente() {
         
         const resultado = verificarPagoPorDatos({
           email: email,
-          fecha: fechaRegistro.split('T')[0] // Solo la fecha, sin hora
+          nombre: nombre,
+          apellido: apellido,
+          fechaRegistro: fechaRegistro,
+          sessionId: sessionId
         });
         
-        if (resultado.success && resultado.pagoEncontrado) {
-          // Actualizar la fila
-          const rowIndex = i + 1;
-          if (pagoConfirmadoIndex !== -1) {
-            sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
-          }
-          if (estadoPagoIndex !== -1) {
-            sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
-          }
-          if (paymentIdIndex !== -1) {
-            sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(resultado.paymentId);
-          }
-          if (fechaConfirmacionIndex !== -1) {
-            sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
-          }
-          
+        if (resultado.success) {
           console.log(`✅ Pago confirmado para: ${email}`);
+          console.log(`   - Payment ID: ${resultado.data.paymentId}`);
+          console.log(`   - Session ID: ${resultado.data.sessionId}`);
+          console.log(`   - Status: ${resultado.data.status}`);
+          console.log(`   - Amount: $${resultado.data.amount}`);
+          
           pagosConfirmados++;
           
-          // Enviar email de confirmación
-          enviarEmailConfirmacion(email, resultado.externalReference, resultado.paymentId);
+          // Enviar email de confirmación si está disponible
+          if (typeof enviarEmailConfirmacion === 'function') {
+            enviarEmailConfirmacion(email, resultado.data.sessionId, resultado.data.paymentId);
+          }
+        } else {
+          console.log(`❌ No se pudo verificar pago para: ${email} - ${resultado.error}`);
         }
         
         pagosVerificados++;
@@ -569,6 +731,91 @@ function verificarPagosAutomaticamente() {
     
   } catch (error) {
     console.error('❌ Error en verificación automática:', error);
+    return { 
+      success: false, 
+      error: error.message 
+    };
+  }
+}
+
+/**
+ * Completa datos faltantes en registros existentes
+ */
+function completarDatosFaltantes() {
+  try {
+    console.log('🔧 Completando datos faltantes en registros existentes...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers para encontrar las columnas correctas
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    
+    // Encontrar los índices de las columnas
+    const emailIndex = headers.indexOf('Email');
+    const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    const sessionIdIndex = headers.indexOf('Session ID');
+    
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    let registrosCompletados = 0;
+    
+    // Empezar desde la fila 2 (después del header)
+    for (let i = 1; i < values.length; i++) {
+      const email = values[i][emailIndex];
+      const fechaRegistro = values[i][fechaRegistroIndex];
+      const pagoConfirmado = values[i][pagoConfirmadoIndex];
+      const estadoPago = values[i][estadoPagoIndex];
+      const sessionId = values[i][sessionIdIndex];
+      const paymentId = values[i][paymentIdIndex];
+      
+      // Buscar registros con Pago Confirmado = TRUE pero datos faltantes
+      if (pagoConfirmado === 'TRUE' && 
+          (!sessionId || sessionId === '' || sessionId === 'N/A' || 
+           !paymentId || paymentId === '' || paymentId === 'N/A')) {
+        
+        console.log(`🔍 Completando datos para: ${email}`);
+        
+        const resultado = verificarPagoPorDatos({
+          email: email,
+          fechaRegistro: fechaRegistro.split('T')[0]
+        });
+        
+        if (resultado.success && resultado.pagoEncontrado) {
+          const rowIndex = i + 1;
+          
+          // Completar Session ID si está vacío
+          if (sessionIdIndex !== -1 && (!sessionId || sessionId === '' || sessionId === 'N/A')) {
+            sheet.getRange(rowIndex, sessionIdIndex + 1).setValue(resultado.sessionId);
+            console.log(`📝 Session ID completado: ${resultado.sessionId}`);
+          }
+          
+          // Completar Payment ID si está vacío
+          if (paymentIdIndex !== -1 && (!paymentId || paymentId === '' || paymentId === 'N/A')) {
+            sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(resultado.paymentId);
+            console.log(`📝 Payment ID completado: ${resultado.paymentId}`);
+          }
+          
+          registrosCompletados++;
+        }
+      }
+    }
+    
+    console.log(`📊 Registros completados: ${registrosCompletados}`);
+    return { 
+      success: true, 
+      registrosCompletados 
+    };
+    
+  } catch (error) {
+    console.error('❌ Error completando datos:', error);
     return { 
       success: false, 
       error: error.message 
@@ -626,13 +873,20 @@ function enviarEmailConfirmacion(email, sessionId, paymentId) {
     
     const subject = '🎉 ¡Tu participación en el sorteo ha sido confirmada!';
     const body = `
-      <h2>¡Gracias por participar!</h2>
-      <p>Tu pago ha sido confirmado exitosamente.</p>
-      <p><strong>Session ID:</strong> ${sessionId}</p>
-      <p><strong>Payment ID:</strong> ${paymentId}</p>
-      <p>Te notificaremos cuando se realice el sorteo.</p>
-      <br>
-      <p>Saludos,<br>Equipo del Sorteo</p>
+¡Gracias por participar en nuestro sorteo! 🎉
+
+✅ Tu pago ha sido confirmado con éxito.
+🧾 ID de pago: ${paymentId}
+
+🎁 Estás participando por una Tablet.
+📅 El sorteo se realizará el 30/09/2025.
+Te notificaremos por este medio en cuanto tengamos los resultados.
+
+🙏 Gracias por apoyar nuestro viaje al CACIC 2025.
+¡Tu ayuda nos acerca un paso más!
+
+Saludos cordiales,
+Codes++
     `;
     
     MailApp.sendEmail({
