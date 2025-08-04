@@ -269,7 +269,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Configuración de Google Sheets ---
-    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
+    // URL original del Google Apps Script
+    const GOOGLE_SHEETS_ORIGINAL_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
+    
+    // URL con proxy CORS para GitHub Pages
+    const GOOGLE_SHEETS_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(GOOGLE_SHEETS_ORIGINAL_URL);
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
