@@ -260,6 +260,33 @@ function actualizarPagoExistente(data) {
       sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
     }
     
+    // Actualizar datos del formulario si están disponibles
+    const nombreIndex = headers.indexOf('Nombre');
+    const apellidoIndex = headers.indexOf('Apellido');
+    const emailIndex = headers.indexOf('Email');
+    const dniIndex = headers.indexOf('DNI');
+    const telefonoIndex = headers.indexOf('Teléfono');
+    const cantidadChancesIndex = headers.indexOf('Cantidad de Chances');
+    
+    if (nombreIndex !== -1 && data.nombre) {
+      sheet.getRange(rowIndex, nombreIndex + 1).setValue(data.nombre);
+    }
+    if (apellidoIndex !== -1 && data.apellido) {
+      sheet.getRange(rowIndex, apellidoIndex + 1).setValue(data.apellido);
+    }
+    if (emailIndex !== -1 && data.email) {
+      sheet.getRange(rowIndex, emailIndex + 1).setValue(data.email);
+    }
+    if (dniIndex !== -1 && data.dni) {
+      sheet.getRange(rowIndex, dniIndex + 1).setValue(data.dni);
+    }
+    if (telefonoIndex !== -1 && data.telefono) {
+      sheet.getRange(rowIndex, telefonoIndex + 1).setValue(data.telefono);
+    }
+    if (cantidadChancesIndex !== -1 && data.cantidadChances) {
+      sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(data.cantidadChances);
+    }
+    
     console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
     
     return { success: true };

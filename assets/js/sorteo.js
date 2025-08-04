@@ -364,7 +364,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         timestamp: formData.timestamp,
                         cantidadChances: cantidadChances,
                         nombre: nombre,
-                        email: email
+                        apellido: apellido,
+                        email: email,
+                        dni: dni,
+                        telefono: telefono
                     }));
                     
                     // Redirigir al link de pago correspondiente

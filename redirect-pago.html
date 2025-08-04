@@ -325,7 +325,7 @@
                         status: status
                     });
                     
-                    // Actualizar estado del pago
+                    // Actualizar estado del pago con TODOS los datos
                     const datosActualizados = {
                         sessionId: datos.sessionId,
                         estadoPago: 'CONFIRMADO',
@@ -334,8 +334,13 @@
                         paymentId: paymentId || null, // Enviar null en lugar de 'N/A' para que el Apps Script lo maneje
                         collectionStatus: collectionStatus || 'N/A',
                         status: status || 'N/A',
+                        // Recuperar TODOS los datos del formulario original
                         nombre: datos.nombre,
-                        email: datos.email
+                        apellido: datos.apellido,
+                        email: datos.email,
+                        dni: datos.dni,
+                        telefono: datos.telefono,
+                        cantidadChances: datos.cantidadChances
                     };
                     
                     // Enviar actualización a Google Sheets
