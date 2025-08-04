@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Función para ir a pagar con Mercado Pago real
-    window.irAPagar = function() {
+    window.irAPagar = async function() {
         console.log('💳 Iniciando proceso de pago...');
         
         // Validar que el formulario esté completo
@@ -374,10 +374,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (goToPayBtn) {
             // Cambiar el texto del botón
-            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando...';
+            goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Enviando datos...';
             goToPayBtn.disabled = true;
             
-            console.log('📤 Guardando datos en localStorage para pago posterior...');
+            console.log('📤 Enviando datos iniciales a Google Sheets...');
             
             // Obtener datos del formulario
             const nombre = document.getElementById('nombre').value;
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Generar Session ID único
             const sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
-            const datosPendientes = {
+            const datosIniciales = {
                 sessionId: sessionId,
                 timestamp: new Date().getTime(),
                 cantidadChances: cantidadChances,
@@ -403,14 +403,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 fechaRegistro: new Date().toISOString()
             };
             
-            console.log('📊 Datos a guardar en localStorage:', datosPendientes);
+            console.log('📊 Datos iniciales a enviar:', datosIniciales);
             
-            // Guardar datos en localStorage para tracking posterior
-            localStorage.setItem('sorteo_pendiente', JSON.stringify(datosPendientes));
-            console.log('✅ Datos guardados en localStorage - Redirigiendo a MercadoPago');
-            
-            // Continuar con el proceso de pago
-            continuarConPago(cantidadChances, goToPayBtn);
+            try {
+                // Enviar datos iniciales a Google Sheets
+                const resultado = await enviarAGoogleSheets(datosIniciales);
+                
+                if (resultado.success) {
+                    console.log('✅ Datos iniciales enviados exitosamente a Google Sheets');
+                    
+                    // Guardar datos en localStorage para tracking posterior
+                    localStorage.setItem('sorteo_pendiente', JSON.stringify(datosIniciales));
+                    console.log('✅ Datos guardados en localStorage - Continuando con pago');
+                    
+                    // Continuar con el proceso de pago
+                    continuarConPago(cantidadChances, goToPayBtn);
+                } else {
+                    console.log('❌ Error enviando datos iniciales:', resultado.error);
+                    alert('Error al enviar los datos. Por favor intenta nuevamente.');
+                    
+                    // Restaurar botón
+                    goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                    goToPayBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('❌ Error inesperado enviando datos:', error);
+                alert('Error inesperado. Por favor intenta nuevamente.');
+                
+                // Restaurar botón
+                goToPayBtn.innerHTML = `<i class="bi bi-credit-card me-2"></i> Ir a pagar (${cantidadChances} chance${cantidadChances=="1"?"":"s"})`;
+                goToPayBtn.disabled = false;
+            }
         } else {
             console.log('❌ No se encontró el botón de pago');
         }
@@ -418,6 +441,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para continuar con el proceso de pago después de enviar datos iniciales
     function continuarConPago(cantidadChances, goToPayBtn) {
+        // Cambiar texto del botón a "Procesando..."
+        goToPayBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Procesando...';
+        
         setTimeout(() => {
             console.log('🔍 Buscando enlace de pago para', cantidadChances, 'chances');
             console.log('📋 Enlaces disponibles:', paymentLinks);
