@@ -221,14 +221,15 @@ function doPost(e) {
     if (data.sessionId && data.estadoPago === 'approved' && data.pagoConfirmado === true) {
       console.log('✅ Confirmación de pago detectada - procesando...');
       
-      // Solo verificar con MercadoPago si tenemos un paymentId válido
-      console.log('🔍 Verificando condición de paymentId válido:');
-      console.log('  - data.paymentId existe:', !!data.paymentId);
-      console.log('  - data.paymentId !== "N/A":', data.paymentId !== 'N/A');
-      console.log('  - data.paymentId !== "null":', data.paymentId !== 'null');
-      console.log('  - Condición completa:', !!(data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null'));
-      
-      if (data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null') {
+                   // Solo verificar con MercadoPago si tenemos un paymentId válido
+             console.log('🔍 Verificando condición de paymentId válido:');
+             console.log('  - data.paymentId existe:', !!data.paymentId);
+             console.log('  - data.paymentId !== "N/A":', data.paymentId !== 'N/A');
+             console.log('  - data.paymentId !== "null":', data.paymentId !== 'null');
+             console.log('  - data.paymentId !== "MP_SUCCESS":', data.paymentId !== 'MP_SUCCESS');
+             console.log('  - Condición completa:', !!(data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null' && data.paymentId !== 'MP_SUCCESS'));
+             
+             if (data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== 'null' && data.paymentId !== 'MP_SUCCESS') {
         console.log('🔍 Verificando pago con MercadoPago para paymentId:', data.paymentId);
         const pagoVerificado = verificarPagoConMercadoPago(data.paymentId);
         
@@ -242,9 +243,13 @@ function doPost(e) {
             }))
             .setMimeType(ContentService.MimeType.JSON);
         }
-      } else {
-        console.log('⚠️ No se verificará con MercadoPago - paymentId no válido:', data.paymentId);
-      }
+                   } else {
+               if (data.paymentId === 'MP_SUCCESS') {
+                 console.log('✅ Pago confirmado por URL de éxito de MercadoPago - saltando verificación');
+               } else {
+                 console.log('⚠️ No se verificará con MercadoPago - paymentId no válido:', data.paymentId);
+               }
+             }
       
       // Guardar como nuevo registro con confirmación de pago
       console.log('💾 Guardando registro con confirmación de pago...');

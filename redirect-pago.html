@@ -289,6 +289,15 @@
             const paymentId = urlParams.get('payment_id');
             const externalReference = urlParams.get('external_reference');
             
+            // Verificar si estamos en una URL de éxito de MercadoPago (sin parámetros específicos)
+            const isMercadoPagoSuccess = window.location.href.includes('mercadopago.com.ar') && 
+                                       window.location.href.includes('congrats/approved');
+            
+            console.log('🔍 Verificando tipo de URL:', {
+                isMercadoPagoSuccess,
+                url: window.location.href
+            });
+            
             console.log('📊 Parámetros de MercadoPago:', {
                 collectionStatus,
                 status,
@@ -304,7 +313,7 @@
                 console.log('📊 Datos pendientes encontrados:', datos);
                 
                 // Verificar si el pago fue exitoso
-                const pagoExitoso = collectionStatus === 'approved' || status === 'approved';
+                const pagoExitoso = collectionStatus === 'approved' || status === 'approved' || isMercadoPagoSuccess;
                 
                 if (pagoExitoso) {
                     console.log('✅ Pago confirmado - Actualizando estado');
@@ -342,9 +351,9 @@
                         estadoPago: 'approved', // Cambiar a 'approved' para que coincida con el script
                         pagoConfirmado: true,
                         fechaConfirmacion: new Date().toISOString(),
-                        paymentId: paymentId || 'N/A', // Enviar 'N/A' en lugar de null para evitar problemas
-                        collectionStatus: collectionStatus || 'N/A',
-                        status: status || 'N/A',
+                        paymentId: paymentId || (isMercadoPagoSuccess ? 'MP_SUCCESS' : 'N/A'), // Usar 'MP_SUCCESS' para URLs de éxito sin paymentId
+                        collectionStatus: collectionStatus || (isMercadoPagoSuccess ? 'approved' : 'N/A'),
+                        status: status || (isMercadoPagoSuccess ? 'approved' : 'N/A'),
                         // Recuperar TODOS los datos del formulario original
                         nombre: datos.nombre,
                         apellido: datos.apellido,
