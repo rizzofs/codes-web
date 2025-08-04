@@ -331,7 +331,7 @@
                         estadoPago: 'CONFIRMADO',
                         pagoConfirmado: true,
                         fechaConfirmacion: new Date().toISOString(),
-                        paymentId: paymentId || null, // Enviar null en lugar de 'N/A' para que el Apps Script lo maneje
+                        paymentId: paymentId || 'N/A', // Enviar 'N/A' en lugar de null para evitar problemas
                         collectionStatus: collectionStatus || 'N/A',
                         status: status || 'N/A',
                         // Recuperar TODOS los datos del formulario original
@@ -388,7 +388,6 @@
                 
                 const response = await fetch(GOOGLE_SHEETS_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -397,9 +396,17 @@
 
                 console.log('📥 Respuesta del servidor:', response);
                 
-                if (response.status === 0 || response.ok) {
-                    console.log('✅ Datos enviados exitosamente a Google Sheets');
-                    return { success: true };
+                if (response.ok) {
+                    const responseData = await response.json();
+                    console.log('📊 Datos de respuesta:', responseData);
+                    
+                    if (responseData.success) {
+                        console.log('✅ Datos enviados exitosamente a Google Sheets');
+                        return { success: true, data: responseData };
+                    } else {
+                        console.log('❌ Error en la respuesta del servidor:', responseData.error);
+                        return { success: false, error: responseData.error };
+                    }
                 } else {
                     console.log('⚠️ Respuesta recibida pero con estado no exitoso:', response.status);
                     return { success: false, error: 'Estado de respuesta: ' + response.status };

@@ -1,4 +1,3 @@
-
 // ===========================================
 // SISTEMA COMPLETO DE PAGOS - CONFIGURACIÓN REAL
 // ===========================================
@@ -286,6 +285,13 @@ function doPost(e) {
     console.log('📥 Datos recibidos:', e.postData.contents);
     const data = JSON.parse(e.postData.contents);
     
+    console.log('🔍 Analizando datos recibidos:');
+    console.log('  - sessionId:', data.sessionId);
+    console.log('  - paymentId:', data.paymentId);
+    console.log('  - estadoPago:', data.estadoPago);
+    console.log('  - pagoConfirmado:', data.pagoConfirmado);
+    console.log('  - action:', data.action);
+    
     // Verificar y agregar columna "Email Enviado" si no existe
     verificarYAgregarColumnaEmailEnviado();
     
@@ -319,7 +325,24 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
+    // Test endpoint para verificar que el script está funcionando
+    if (data.action === 'test') {
+      console.log('🧪 Test endpoint llamado');
+      const result = testScript();
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // CONFIRMACIÓN INICIAL DE PAGO - ÚNICO LUGAR DONDE SE ENVÍA EMAIL
+    console.log('🔍 Verificando condición de confirmación de pago:');
+    console.log('  - data.sessionId existe:', !!data.sessionId);
+    console.log('  - data.paymentId existe:', !!data.paymentId);
+    console.log('  - data.estadoPago === "CONFIRMADO":', data.estadoPago === 'CONFIRMADO');
+    console.log('  - data.pagoConfirmado es true:', data.pagoConfirmado === true);
+    console.log('  - Condición completa:', data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado));
+    
     if (data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado)) {
       console.log('🔄 CONFIRMACIÓN INICIAL DE PAGO - Actualizando datos y enviando email...');
       
@@ -375,7 +398,15 @@ function doPost(e) {
     }
     
     // Validar datos requeridos para nuevo registro
+    console.log('🔍 Verificando datos para nuevo registro:');
+    console.log('  - nombre:', !!data.nombre);
+    console.log('  - apellido:', !!data.apellido);
+    console.log('  - email:', !!data.email);
+    console.log('  - telefono:', !!data.telefono);
+    console.log('  - cantidadChances:', !!data.cantidadChances);
+    
     if (!data.nombre || !data.apellido || !data.email || !data.telefono || !data.cantidadChances) {
+      console.log('❌ Faltan datos requeridos para nuevo registro');
       return ContentService
         .createTextOutput(JSON.stringify({ 
           success: false, 
@@ -384,6 +415,7 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
+    console.log('💾 Guardando como nuevo registro...');
     // Guardar en Google Sheets
     const result = guardarEnGoogleSheets(data);
     
@@ -421,6 +453,7 @@ function doPost(e) {
 function guardarEnGoogleSheets(data) {
   try {
     console.log('💾 Guardando datos en Google Sheets...');
+    console.log('📊 Datos recibidos en guardarEnGoogleSheets:', data);
     
     const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
     if (!sheet) {
@@ -497,108 +530,13 @@ function guardarEnGoogleSheets(data) {
 }
 
 /**
- * Actualiza un pago existente en Google Sheets
+ * FUNCIÓN ELIMINADA: actualizarPagoExistente()
+ * 
+ * Esta función ya no se usa porque ahora SIEMPRE creamos nuevas filas
+ * en lugar de actualizar registros existentes.
+ * 
+ * La función actualizarPagoEnGoogleSheets() ahora crea nuevas filas.
  */
-function actualizarPagoExistente(data) {
-  try {
-    console.log('🔄 Actualizando pago existente con sessionId:', data.sessionId);
-    
-    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
-    if (!sheet) {
-      throw new Error('No se encontró la hoja especificada');
-    }
-    
-    // Obtener los headers para encontrar las columnas correctas
-    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    console.log('📋 Headers encontrados:', headers);
-    
-    // Encontrar los índices de las columnas
-    const sessionIdIndex = headers.indexOf('Session ID');
-    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
-    const estadoPagoIndex = headers.indexOf('Estado Pago');
-    const paymentIdIndex = headers.indexOf('Payment ID');
-    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
-    
-    console.log('🔍 Índices encontrados:', {
-      sessionId: sessionIdIndex,
-      pagoConfirmado: pagoConfirmadoIndex,
-      estadoPago: estadoPagoIndex,
-      paymentId: paymentIdIndex,
-      fechaConfirmacion: fechaConfirmacionIndex
-    });
-    
-    if (sessionIdIndex === -1) {
-      throw new Error('No se encontró la columna Session ID');
-    }
-    
-    // Buscar la fila por Session ID
-    const dataRange = sheet.getDataRange();
-    const values = dataRange.getValues();
-    
-    let rowIndex = -1;
-    for (let i = 1; i < values.length; i++) { // Empezar desde la fila 2 (después del header)
-      if (values[i][sessionIdIndex] === data.sessionId) {
-        rowIndex = i + 1; // +1 porque getValues() devuelve índices basados en 0
-        break;
-      }
-    }
-    
-    if (rowIndex === -1) {
-      throw new Error('No se encontró el Session ID en la hoja');
-    }
-    
-    console.log('✅ Fila encontrada:', rowIndex);
-    
-    // Actualizar solo las columnas de pago
-    if (pagoConfirmadoIndex !== -1) {
-      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
-    }
-    if (estadoPagoIndex !== -1) {
-      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
-    }
-    if (paymentIdIndex !== -1 && data.paymentId && data.paymentId !== 'N/A' && data.paymentId !== null) {
-      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(data.paymentId);
-    }
-    if (fechaConfirmacionIndex !== -1) {
-      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
-    }
-    
-    // Actualizar datos del formulario si están disponibles
-    const nombreIndex = headers.indexOf('Nombre');
-    const apellidoIndex = headers.indexOf('Apellido');
-    const emailIndex = headers.indexOf('Email');
-    const dniIndex = headers.indexOf('DNI');
-    const telefonoIndex = headers.indexOf('Teléfono');
-    const cantidadChancesIndex = headers.indexOf('Cantidad de Chances');
-    
-    if (nombreIndex !== -1 && data.nombre) {
-      sheet.getRange(rowIndex, nombreIndex + 1).setValue(data.nombre);
-    }
-    if (apellidoIndex !== -1 && data.apellido) {
-      sheet.getRange(rowIndex, apellidoIndex + 1).setValue(data.apellido);
-    }
-    if (emailIndex !== -1 && data.email) {
-      sheet.getRange(rowIndex, emailIndex + 1).setValue(data.email);
-    }
-    if (dniIndex !== -1 && data.dni) {
-      sheet.getRange(rowIndex, dniIndex + 1).setValue(data.dni);
-    }
-    if (telefonoIndex !== -1 && data.telefono) {
-      sheet.getRange(rowIndex, telefonoIndex + 1).setValue(data.telefono);
-    }
-    if (cantidadChancesIndex !== -1 && data.cantidadChances) {
-      sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(data.cantidadChances);
-    }
-    
-    console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
-    
-    return { success: true };
-    
-  } catch (error) {
-    console.error('❌ Error actualizando pago:', error);
-    return { success: false, error: error.message };
-  }
-}
 
 /**
  * Verifica pagos pendientes en Google Sheets
@@ -885,18 +823,19 @@ function verificarPagoPorDatos(data) {
     
     console.log('📊 Datos actualizados para Google Sheets:', datosActualizados);
     
-    // Actualizar Google Sheets
+    // Crear nueva fila en Google Sheets
     const result = actualizarPagoEnGoogleSheets(datosActualizados);
     
     if (result.success) {
-      console.log('✅ Pago verificado y actualizado exitosamente');
+      console.log('✅ Pago verificado y NUEVA FILA CREADA exitosamente');
       return {
         success: true,
-        message: 'Pago verificado y actualizado',
-        data: datosActualizados
+        message: 'Pago verificado y nueva fila creada',
+        data: datosActualizados,
+        newRowIndex: result.newRowIndex
       };
     } else {
-      console.error('❌ Error actualizando Google Sheets:', result.error);
+      console.error('❌ Error creando nueva fila en Google Sheets:', result.error);
       return { success: false, error: result.error };
     }
     
@@ -907,11 +846,23 @@ function verificarPagoPorDatos(data) {
 }
 
 /**
- * Actualiza un pago en Google Sheets usando sessionId o email
+ * Crea una nueva fila en Google Sheets para un pago confirmado
+ * NUNCA actualiza registros existentes - SIEMPRE crea una nueva fila
  */
 function actualizarPagoEnGoogleSheets(datos) {
   try {
-    console.log('📝 Actualizando pago en Google Sheets:', datos);
+    console.log('📝 CREANDO NUEVA FILA para pago confirmado en Google Sheets');
+    console.log('📊 Datos recibidos en actualizarPagoEnGoogleSheets:', datos);
+    console.log('📊 Datos recibidos:', {
+      sessionId: datos.sessionId,
+      email: datos.email,
+      paymentId: datos.paymentId,
+      nombre: datos.nombre,
+      apellido: datos.apellido,
+      dni: datos.dni,
+      telefono: datos.telefono,
+      cantidadChances: datos.cantidadChances
+    });
     
     const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
     if (!sheet) {
@@ -935,6 +886,8 @@ function actualizarPagoEnGoogleSheets(datos) {
     const telefonoIndex = headers.indexOf('Teléfono');
     const cantidadChancesIndex = headers.indexOf('Cantidad de Chances');
     const emailEnviadoIndex = headers.indexOf('Email Enviado');
+    const timestampIndex = headers.indexOf('Timestamp');
+    const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
     
     console.log('🔍 Índices encontrados:', {
       sessionId: sessionIdIndex,
@@ -947,120 +900,107 @@ function actualizarPagoEnGoogleSheets(datos) {
       apellido: apellidoIndex,
       dni: dniIndex,
       telefono: telefonoIndex,
-      cantidadChances: cantidadChancesIndex
+      cantidadChances: cantidadChancesIndex,
+      timestamp: timestampIndex,
+      fechaRegistro: fechaRegistroIndex
     });
     
-    // Buscar fila por sessionId o email
-    const dataRange = sheet.getDataRange();
-    const values = dataRange.getValues();
+    // SIEMPRE CREAR NUEVA FILA - NUNCA ACTUALIZAR EXISTENTE
+    console.log('➕ CREANDO NUEVA FILA para pago confirmado');
     
-    let rowIndex = -1;
-    let searchMethod = '';
+    // Determinar la nueva fila
+    const lastRow = sheet.getLastRow();
+    const newRowIndex = lastRow + 1;
     
-    // Primero buscar por sessionId si existe
-    if (datos.sessionId && sessionIdIndex !== -1) {
-      for (let i = 1; i < values.length; i++) {
-        if (values[i][sessionIdIndex] === datos.sessionId) {
-          rowIndex = i + 1;
-          searchMethod = 'sessionId';
+    console.log('📊 Estado de la hoja:');
+    console.log('  - Última fila con datos:', lastRow);
+    console.log('  - Nueva fila a crear:', newRowIndex);
+    
+    // Crear array de datos para la nueva fila basado en los headers
+    const newRowData = [];
+    
+    // Mapear cada header con su valor correspondiente
+    headers.forEach(header => {
+      switch(header) {
+        case 'Timestamp':
+          newRowData.push(new Date().toISOString());
           break;
-        }
-      }
-    }
-    
-    // Si no se encontró por sessionId, buscar por email
-    if (rowIndex === -1 && datos.email && emailIndex !== -1) {
-      for (let i = 1; i < values.length; i++) {
-        if (values[i][emailIndex] && values[i][emailIndex].toLowerCase() === datos.email.toLowerCase()) {
-          rowIndex = i + 1;
-          searchMethod = 'email';
+        case 'Nombre':
+          newRowData.push(datos.nombre || '');
           break;
-        }
+        case 'Apellido':
+          newRowData.push(datos.apellido || '');
+          break;
+        case 'Email':
+          newRowData.push(datos.email || '');
+          break;
+        case 'DNI':
+          newRowData.push(datos.dni || '');
+          break;
+        case 'Teléfono':
+          newRowData.push(datos.telefono || '');
+          break;
+        case 'Cantidad de Chances':
+          newRowData.push(datos.cantidadChances || '');
+          break;
+        case 'Pago Confirmado':
+          newRowData.push('TRUE');
+          break;
+        case 'Fecha de Registro':
+          newRowData.push(datos.fechaRegistro || new Date().toISOString());
+          break;
+        case 'Observaciones':
+          newRowData.push(datos.observaciones || '');
+          break;
+        case 'Estado Pago':
+          newRowData.push('CONFIRMADO');
+          break;
+        case 'Session ID':
+          newRowData.push(datos.sessionId || '');
+          break;
+        case 'Payment ID':
+          newRowData.push(datos.paymentId || 'N/A');
+          break;
+        case 'Fecha Confirmación':
+          newRowData.push(new Date().toISOString());
+          break;
+        case 'Email Enviado':
+          newRowData.push('FALSE'); // Se marcará como TRUE cuando se envíe el email
+          break;
+        default:
+          newRowData.push(''); // Para headers no reconocidos
       }
-    }
+    });
     
-    // Si aún no se encontró, buscar por fecha de registro (más reciente sin pago confirmado)
-    if (rowIndex === -1) {
-      console.log('🔍 Buscando registro por fecha (más reciente sin pago confirmado)...');
-      const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
-      const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
-      
-      if (fechaRegistroIndex !== -1 && pagoConfirmadoIndex !== -1) {
-        // Ordenar filas por fecha de registro (más reciente primero)
-        const filasConFechas = [];
-        for (let i = 1; i < values.length; i++) {
-          const fechaRegistro = values[i][fechaRegistroIndex];
-          const pagoConfirmado = values[i][pagoConfirmadoIndex];
-          
-          if (fechaRegistro && pagoConfirmado !== 'TRUE') {
-            filasConFechas.push({
-              rowIndex: i + 1,
-              fecha: new Date(fechaRegistro)
-            });
-          }
-        }
-        
-        // Ordenar por fecha (más reciente primero)
-        filasConFechas.sort((a, b) => b.fecha - a.fecha);
-        
-        if (filasConFechas.length > 0) {
-          rowIndex = filasConFechas[0].rowIndex;
-          searchMethod = 'fecha_reciente';
-          console.log('✅ Registro encontrado por fecha (más reciente):', rowIndex);
-        }
-      }
-    }
+    console.log('📊 Datos de nueva fila:', newRowData);
     
-    if (rowIndex === -1) {
-      throw new Error('No se encontró el registro en la hoja');
-    }
+    // Agregar la nueva fila usando appendRow
+    sheet.appendRow(newRowData);
     
-    console.log('✅ Fila encontrada:', rowIndex, 'por método:', searchMethod);
-    
-    // Actualizar columnas
-    if (pagoConfirmadoIndex !== -1) {
-      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
-    }
-    if (estadoPagoIndex !== -1) {
-      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
-    }
-    if (paymentIdIndex !== -1 && datos.paymentId) {
-      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(datos.paymentId);
-    }
-    if (fechaConfirmacionIndex !== -1) {
-      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
-    }
-    if (sessionIdIndex !== -1 && datos.sessionId) {
-      sheet.getRange(rowIndex, sessionIdIndex + 1).setValue(datos.sessionId);
-    }
-    
-    // Actualizar campos del formulario si están presentes en los datos
-    if (nombreIndex !== -1 && datos.nombre) {
-      sheet.getRange(rowIndex, nombreIndex + 1).setValue(datos.nombre);
-    }
-    if (apellidoIndex !== -1 && datos.apellido) {
-      sheet.getRange(rowIndex, apellidoIndex + 1).setValue(datos.apellido);
-    }
-    if (dniIndex !== -1 && datos.dni) {
-      sheet.getRange(rowIndex, dniIndex + 1).setValue(datos.dni);
-    }
-    if (telefonoIndex !== -1 && datos.telefono) {
-      sheet.getRange(rowIndex, telefonoIndex + 1).setValue(datos.telefono);
-    }
-    if (cantidadChancesIndex !== -1 && datos.cantidadChances) {
-      sheet.getRange(rowIndex, cantidadChancesIndex + 1).setValue(datos.cantidadChances);
-    }
+    console.log('✅ NUEVA FILA CREADA correctamente en fila:', newRowIndex);
+    console.log('📊 Datos escritos:');
+    console.log('  - Timestamp:', newRowData[headers.indexOf('Timestamp')]);
+    console.log('  - Nombre:', newRowData[headers.indexOf('Nombre')]);
+    console.log('  - Apellido:', newRowData[headers.indexOf('Apellido')]);
+    console.log('  - Email:', newRowData[headers.indexOf('Email')]);
+    console.log('  - DNI:', newRowData[headers.indexOf('DNI')]);
+    console.log('  - Teléfono:', newRowData[headers.indexOf('Teléfono')]);
+    console.log('  - Cantidad de Chances:', newRowData[headers.indexOf('Cantidad de Chances')]);
+    console.log('  - Pago Confirmado:', newRowData[headers.indexOf('Pago Confirmado')]);
+    console.log('  - Estado Pago:', newRowData[headers.indexOf('Estado Pago')]);
+    console.log('  - Session ID:', newRowData[headers.indexOf('Session ID')]);
+    console.log('  - Payment ID:', newRowData[headers.indexOf('Payment ID')]);
+    console.log('  - Fecha Confirmación:', newRowData[headers.indexOf('Fecha Confirmación')]);
+    console.log('  - Email Enviado:', newRowData[headers.indexOf('Email Enviado')]);
     
     // NO ENVIAR EMAIL DESDE ESTA FUNCIÓN
     // Los emails solo se envían desde doPost en la confirmación inicial
     console.log('📧 Email no enviado desde actualizarPagoEnGoogleSheets - solo se envía desde doPost');
     
-    console.log('✅ Pago actualizado correctamente en fila:', rowIndex);
-    
-    return { success: true };
+    return { success: true, newRowIndex: newRowIndex };
     
   } catch (error) {
-    console.error('❌ Error actualizando pago en Google Sheets:', error);
+    console.error('❌ Error creando nueva fila en Google Sheets:', error);
     return { success: false, error: error.message };
   }
 }
@@ -1134,11 +1074,12 @@ function verificarPagosAutomaticamente() {
         });
         
         if (resultado.success) {
-          console.log(`✅ Pago confirmado para: ${email}`);
+          console.log(`✅ Pago confirmado y NUEVA FILA CREADA para: ${email}`);
           console.log(`   - Payment ID: ${resultado.data.paymentId}`);
           console.log(`   - Session ID: ${resultado.data.sessionId}`);
           console.log(`   - Status: ${resultado.data.status}`);
           console.log(`   - Amount: $${resultado.data.amount}`);
+          console.log(`   - Nueva fila creada: ${resultado.newRowIndex}`);
           
           pagosConfirmados++;
           
@@ -1223,20 +1164,11 @@ function completarDatosFaltantes() {
           fechaRegistro: fechaRegistro.split('T')[0]
         });
         
-        if (resultado.success && resultado.pagoEncontrado) {
-          const rowIndex = i + 1;
-          
-          // Completar Session ID si está vacío
-          if (sessionIdIndex !== -1 && (!sessionId || sessionId === '' || sessionId === 'N/A')) {
-            sheet.getRange(rowIndex, sessionIdIndex + 1).setValue(resultado.sessionId);
-            console.log(`📝 Session ID completado: ${resultado.sessionId}`);
-          }
-          
-          // Completar Payment ID si está vacío
-          if (paymentIdIndex !== -1 && (!paymentId || paymentId === '' || paymentId === 'N/A')) {
-            sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(resultado.paymentId);
-            console.log(`📝 Payment ID completado: ${resultado.paymentId}`);
-          }
+        if (resultado.success) {
+          console.log(`✅ Datos completados y NUEVA FILA CREADA para: ${email}`);
+          console.log(`   - Session ID: ${resultado.data.sessionId}`);
+          console.log(`   - Payment ID: ${resultado.data.paymentId}`);
+          console.log(`   - Nueva fila creada: ${resultado.newRowIndex}`);
           
           registrosCompletados++;
         }
@@ -1502,6 +1434,7 @@ function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
             <div class="footer">
                 <p><strong>Saludos cordiales,</strong></p>
                 <p><strong>Codes++</strong></p>
+                
                 <p style="font-size: 12px; margin-top: 20px;">
                     Este es un email automático. Por favor, no respondas a este mensaje.
                 </p>
@@ -1731,6 +1664,41 @@ function ejecutarSistema() {
 }
 
 /**
+ * Función para probar si el script está funcionando
+ */
+function testScript() {
+  try {
+    console.log('🧪 Iniciando prueba del script...');
+    
+    // Probar acceso a la hoja
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    console.log('✅ Hoja encontrada correctamente');
+    console.log('📊 Última fila:', sheet.getLastRow());
+    console.log('📊 Última columna:', sheet.getLastColumn());
+    
+    // Probar obtener headers
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    console.log('📋 Headers encontrados:', headers);
+    
+    return {
+      success: true,
+      message: 'Script funcionando correctamente',
+      lastRow: sheet.getLastRow(),
+      lastColumn: sheet.getLastColumn(),
+      headers: headers
+    };
+    
+  } catch (error) {
+    console.error('❌ Error en prueba del script:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
  * Función para probar el flujo completo con datos simulados
  */
 function probarFlujoCompleto() {
@@ -1773,13 +1741,13 @@ function probarFlujoCompleto() {
     
     console.log('📊 Datos de confirmación:', datosConfirmacion);
     
-    // Actualizar datos
-    const resultadoConfirmacion = actualizarPagoExistente(datosConfirmacion);
+    // Crear nueva fila con datos de confirmación
+    const resultadoConfirmacion = actualizarPagoEnGoogleSheets(datosConfirmacion);
     if (!resultadoConfirmacion.success) {
-      throw new Error('Error actualizando datos: ' + resultadoConfirmacion.error);
+      throw new Error('Error creando nueva fila: ' + resultadoConfirmacion.error);
     }
     
-    console.log('✅ Datos de confirmación actualizados correctamente');
+    console.log('✅ Nueva fila creada con datos de confirmación correctamente');
     
     return { 
       success: true, 
