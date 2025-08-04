@@ -13,7 +13,6 @@ const SORTEO_CONFIG = {
 
     // Configuración de precios
     prices: {
-        test: 1,
         1: 1000,
         3: 2800,
         4: 4000
@@ -21,7 +20,6 @@ const SORTEO_CONFIG = {
 
     // Enlaces de pago
     paymentLinks: {
-        test: 'https://mpago.la/2n46a5E',  // $1 (prueba)
         1: 'https://mpago.la/1rXwpEV',  // $1000
         3: 'https://mpago.la/1eSB8pw',  // $2800
         4: 'https://mpago.la/1kM9Q6y'   // $4000
