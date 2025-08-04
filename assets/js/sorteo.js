@@ -269,11 +269,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Configuración de Google Sheets ---
-    // URL original del Google Apps Script
-    const GOOGLE_SHEETS_ORIGINAL_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
-    
-    // URL con proxy CORS para GitHub Pages
-    const GOOGLE_SHEETS_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(GOOGLE_SHEETS_ORIGINAL_URL);
+    // URL directa del Google Apps Script (sin proxy CORS)
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwQABnH9-rpvsOBmiR0UVJfK6u8AxQcbJcXZZWvlc2Q7Jyn5JlBs7e24IqUdExVv3XKiw/exec';
 
     // --- Función para enviar datos a Google Sheets ---
     async function enviarAGoogleSheets(formData) {
@@ -284,7 +281,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const response = await fetch(GOOGLE_SHEETS_URL, {
                 method: 'POST',
-                // Sin headers para evitar problemas de CORS
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(formData)
             });
 

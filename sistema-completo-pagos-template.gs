@@ -312,11 +312,15 @@ function guardarEnGoogleSheets(data) {
   try {
     console.log('💾 Guardando datos en Google Sheets...');
     console.log('📊 Datos recibidos en guardarEnGoogleSheets:', data);
+    console.log('📊 Tipo de datos:', typeof data);
+    console.log('📊 Claves disponibles:', Object.keys(data));
     
     const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
     if (!sheet) {
       throw new Error('No se encontró la hoja especificada');
     }
+    
+    console.log('✅ Hoja encontrada:', GOOGLE_SHEET_NAME);
     
     // Obtener los headers de la hoja para mapear correctamente
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -326,63 +330,91 @@ function guardarEnGoogleSheets(data) {
     const rowData = [];
     
     // Mapear cada header con su valor correspondiente
-    headers.forEach(header => {
+    headers.forEach((header, index) => {
+      console.log(`🔍 Procesando header ${index}: "${header}"`);
+      
       switch(header) {
         case 'Timestamp':
           rowData.push(new Date());
+          console.log('✅ Timestamp agregado');
           break;
         case 'Nombre':
           rowData.push(data.nombre || '');
+          console.log('✅ Nombre agregado:', data.nombre || '');
           break;
         case 'Apellido':
           rowData.push(data.apellido || '');
+          console.log('✅ Apellido agregado:', data.apellido || '');
           break;
         case 'Email':
           rowData.push(data.email || '');
+          console.log('✅ Email agregado:', data.email || '');
           break;
         case 'DNI':
           rowData.push(data.dni || '');
+          console.log('✅ DNI agregado:', data.dni || '');
           break;
         case 'Teléfono':
           rowData.push(data.telefono || '');
+          console.log('✅ Teléfono agregado:', data.telefono || '');
           break;
         case 'Cantidad de Chances':
-          rowData.push(data.cantidadChances || '');
+          const chances = data.cantidadChances || '';
+          rowData.push(chances);
+          console.log('✅ Cantidad de Chances agregado:', chances);
           break;
         case 'Pago Confirmado':
-          rowData.push(data.pagoConfirmado ? 'TRUE' : 'FALSE');
+          const pagoConfirmado = data.pagoConfirmado ? 'TRUE' : 'FALSE';
+          rowData.push(pagoConfirmado);
+          console.log('✅ Pago Confirmado agregado:', pagoConfirmado);
           break;
         case 'Fecha de Registro':
           rowData.push(data.fechaRegistro || new Date().toISOString());
+          console.log('✅ Fecha de Registro agregado');
           break;
         case 'Observaciones':
           rowData.push(data.observaciones || '');
+          console.log('✅ Observaciones agregado');
           break;
         case 'Estado Pago':
           rowData.push(data.estadoPago || 'PENDIENTE');
+          console.log('✅ Estado Pago agregado:', data.estadoPago || 'PENDIENTE');
           break;
         case 'Session ID':
           rowData.push(data.sessionId || '');
+          console.log('✅ Session ID agregado:', data.sessionId || '');
           break;
         case 'Payment ID':
           rowData.push(data.paymentId || 'N/A');
+          console.log('✅ Payment ID agregado:', data.paymentId || 'N/A');
           break;
         case 'Fecha Confirmación':
           rowData.push(data.fechaConfirmacion || '');
+          console.log('✅ Fecha Confirmación agregado:', data.fechaConfirmacion || '');
           break;
         default:
           rowData.push(''); // Para headers no reconocidos
+          console.log('⚠️ Header no reconocido:', header);
       }
     });
     
-    console.log('📊 Datos a guardar:', rowData);
+    console.log('📊 Datos finales a guardar:', rowData);
+    console.log('📊 Cantidad de columnas:', rowData.length);
+    console.log('📊 Cantidad de headers:', headers.length);
+    
+    // Verificar que coincidan
+    if (rowData.length !== headers.length) {
+      console.log('⚠️ ADVERTENCIA: Cantidad de datos no coincide con headers');
+    }
+    
     sheet.appendRow(rowData);
-    console.log('✅ Datos guardados correctamente');
+    console.log('✅ Datos guardados correctamente en la fila:', sheet.getLastRow());
     
     return { success: true };
     
   } catch (error) {
     console.error('❌ Error guardando datos:', error);
+    console.error('❌ Stack trace:', error.stack);
     return { success: false, error: error.message };
   }
 }
