@@ -25,6 +25,26 @@ function doPost(e) {
     console.log('📥 Datos recibidos:', e.postData.contents);
     const data = JSON.parse(e.postData.contents);
     
+    // Verificar si es una verificación de pago
+    if (data.action === 'verificarPago') {
+      console.log('🔍 Verificando pago...');
+      const result = verificarPagoPorDatos(data);
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // Verificar si es una verificación automática
+    if (data.action === 'ejecutarVerificacionAutomatica') {
+      console.log('🤖 Ejecutando verificación automática...');
+      const result = verificarPagosAutomaticamente();
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
     // Verificar si es una actualización de pago existente
     if (data.sessionId && !data.nombre && !data.apellido && !data.email) {
       console.log('🔄 Actualizando pago existente...');
@@ -375,6 +395,226 @@ function verificarPagoEnMercadoPago(sessionId) {
     console.error('❌ Error verificando pago en MercadoPago:', error);
     return { confirmado: false, error: error.message };
   }
+}
+
+/**
+ * Verifica un pago por email y fecha específicos
+ */
+function verificarPagoPorDatos(data) {
+  try {
+    console.log(`🔍 Verificando pago por datos:`, data);
+    
+    const email = data.email;
+    const fecha = data.fecha;
+    
+    if (!email || !fecha) {
+      return {
+        success: false,
+        error: 'Email y fecha son requeridos'
+      };
+    }
+    
+    const url = `https://api.mercadopago.com/v1/payments/search?limit=200`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    const response = UrlFetchApp.fetch(url, options);
+    const searchData = JSON.parse(response.getContentText());
+    
+    console.log(`📊 Total de pagos encontrados: ${searchData.results.length}`);
+    
+    // Filtrar por collector_id
+    const collectorId = 2142366374;
+    const pagosRecibidos = searchData.results.filter(payment => 
+      payment.collector_id === collectorId
+    );
+    
+    console.log(`📊 Pagos recibidos por collector_id ${collectorId}: ${pagosRecibidos.length}`);
+    
+    // Buscar pagos que coincidan con el email y fecha
+    const pagosCoincidentes = pagosRecibidos.filter(payment => {
+      // Verificar email del pagador
+      const emailCoincide = payment.payer && payment.payer.email && 
+                           payment.payer.email.toLowerCase() === email.toLowerCase();
+      
+      // Verificar fecha
+      const paymentDate = new Date(payment.date_created);
+      const targetDate = new Date(fecha);
+      const fechaCoincide = paymentDate.toDateString() === targetDate.toDateString();
+      
+      // Verificar que el pago esté aprobado
+      const statusAprobado = payment.status === 'approved';
+      
+      return emailCoincide && fechaCoincide && statusAprobado;
+    });
+    
+    console.log(`📊 Pagos coincidentes encontrados: ${pagosCoincidentes.length}`);
+    
+    if (pagosCoincidentes.length > 0) {
+      const pago = pagosCoincidentes[0]; // Tomar el primer pago coincidente
+      
+      return {
+        success: true,
+        pagoEncontrado: true,
+        paymentId: pago.id,
+        status: pago.status,
+        amount: pago.transaction_amount,
+        fecha: pago.date_created,
+        email: pago.payer.email,
+        externalReference: pago.external_reference
+      };
+    } else {
+      return {
+        success: true,
+        pagoEncontrado: false,
+        message: 'No se encontró un pago confirmado con los datos proporcionados'
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ Error verificando pago por datos:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Función para verificación automática de pagos (ejecutar manualmente o con trigger)
+ */
+function verificarPagosAutomaticamente() {
+  try {
+    console.log('🤖 Iniciando verificación automática de pagos...');
+    
+    const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
+    if (!sheet) {
+      throw new Error('No se encontró la hoja especificada');
+    }
+    
+    // Obtener los headers para encontrar las columnas correctas
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    
+    // Encontrar los índices de las columnas
+    const emailIndex = headers.indexOf('Email');
+    const fechaRegistroIndex = headers.indexOf('Fecha de Registro');
+    const pagoConfirmadoIndex = headers.indexOf('Pago Confirmado');
+    const estadoPagoIndex = headers.indexOf('Estado Pago');
+    const paymentIdIndex = headers.indexOf('Payment ID');
+    const fechaConfirmacionIndex = headers.indexOf('Fecha Confirmación');
+    
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    
+    let pagosVerificados = 0;
+    let pagosConfirmados = 0;
+    
+    // Empezar desde la fila 2 (después del header)
+    for (let i = 1; i < values.length; i++) {
+      const email = values[i][emailIndex];
+      const fechaRegistro = values[i][fechaRegistroIndex];
+      const pagoConfirmado = values[i][pagoConfirmadoIndex];
+      const estadoPago = values[i][estadoPagoIndex];
+      
+      // Solo verificar pagos que no estén confirmados
+      if (pagoConfirmado !== 'TRUE' && email && fechaRegistro) {
+        console.log(`🔍 Verificando pago para: ${email} - ${fechaRegistro}`);
+        
+        const resultado = verificarPagoPorDatos({
+          email: email,
+          fecha: fechaRegistro.split('T')[0] // Solo la fecha, sin hora
+        });
+        
+        if (resultado.success && resultado.pagoEncontrado) {
+          // Actualizar la fila
+          const rowIndex = i + 1;
+          if (pagoConfirmadoIndex !== -1) {
+            sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+          }
+          if (estadoPagoIndex !== -1) {
+            sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue('CONFIRMADO');
+          }
+          if (paymentIdIndex !== -1) {
+            sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(resultado.paymentId);
+          }
+          if (fechaConfirmacionIndex !== -1) {
+            sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+          }
+          
+          console.log(`✅ Pago confirmado para: ${email}`);
+          pagosConfirmados++;
+          
+          // Enviar email de confirmación
+          enviarEmailConfirmacion(email, resultado.externalReference, resultado.paymentId);
+        }
+        
+        pagosVerificados++;
+      }
+    }
+    
+    console.log(`📊 Resumen de verificación automática:`);
+    console.log(`   - Pagos verificados: ${pagosVerificados}`);
+    console.log(`   - Pagos confirmados: ${pagosConfirmados}`);
+    
+    return { 
+      success: true, 
+      pagosVerificados, 
+      pagosConfirmados 
+    };
+    
+  } catch (error) {
+    console.error('❌ Error en verificación automática:', error);
+    return { 
+      success: false, 
+      error: error.message 
+    };
+  }
+}
+
+/**
+ * Configura el trigger automático para verificación de pagos
+ */
+function configurarTriggerAutomatico() {
+  try {
+    console.log('⚙️ Configurando trigger automático...');
+    
+    // Eliminar triggers existentes
+    const triggers = ScriptApp.getProjectTriggers();
+    triggers.forEach(trigger => {
+      if (trigger.getHandlerFunction() === 'verificarPagosAutomaticamente') {
+        ScriptApp.deleteTrigger(trigger);
+        console.log('🗑️ Trigger anterior eliminado');
+      }
+    });
+    
+    // Crear nuevo trigger que se ejecute cada hora
+    ScriptApp.newTrigger('verificarPagosAutomaticamente')
+      .timeBased()
+      .everyHours(1)
+      .create();
+    
+    console.log('✅ Trigger automático configurado (cada hora)');
+    return { success: true, message: 'Trigger configurado correctamente' };
+    
+  } catch (error) {
+    console.error('❌ Error configurando trigger:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Ejecuta verificación manual (para testing)
+ */
+function ejecutarVerificacionManual() {
+  console.log('🔧 Ejecutando verificación manual...');
+  const resultado = verificarPagosAutomaticamente();
+  console.log('📊 Resultado de verificación manual:', resultado);
+  return resultado;
 }
 
 /**
