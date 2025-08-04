@@ -189,36 +189,6 @@ function doPost(e) {
     // Verificar y agregar columna "Email Enviado" si no existe
     verificarYAgregarColumnaEmailEnviado();
     
-    // Verificar si es una verificación de pago
-    if (data.action === 'verificarPago') {
-      console.log('🔍 Verificando pago...');
-      const result = verificarPagoPorDatos(data);
-      
-      return ContentService
-        .createTextOutput(JSON.stringify(result))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // Verificar si es una verificación automática
-    if (data.action === 'ejecutarVerificacionAutomatica') {
-      console.log('🤖 Ejecutando verificación automática...');
-      const result = verificarPagosAutomaticamente();
-      
-      return ContentService
-        .createTextOutput(JSON.stringify(result))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-    
-    // Verificar si es para completar datos faltantes
-    if (data.action === 'completarDatosFaltantes') {
-      console.log('🔧 Completando datos faltantes...');
-      const result = completarDatosFaltantes();
-      
-      return ContentService
-        .createTextOutput(JSON.stringify(result))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-    
     // Test endpoint para verificar que el script está funcionando
     if (data.action === 'test') {
       console.log('🧪 Test endpoint llamado');
@@ -229,69 +199,63 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
     
-    // CONFIRMACIÓN INICIAL DE PAGO - ÚNICO LUGAR DONDE SE ENVÍA EMAIL
-    console.log('🔍 Verificando condición de confirmación de pago:');
-    console.log('  - data.sessionId existe:', !!data.sessionId);
-    console.log('  - data.paymentId existe:', !!data.paymentId);
-    console.log('  - data.estadoPago === "CONFIRMADO":', data.estadoPago === 'CONFIRMADO');
-    console.log('  - data.pagoConfirmado es true:', data.pagoConfirmado === true);
-    console.log('  - Condición completa:', data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado));
-    
-    if (data.sessionId && (data.paymentId || data.estadoPago === 'CONFIRMADO' || data.pagoConfirmado)) {
-      console.log('🔄 CONFIRMACIÓN INICIAL DE PAGO - Actualizando datos y enviando email...');
+    // CONFIRMACIÓN DE PAGO - PROCESO COMPLETO
+    if (data.sessionId && data.paymentId && data.estadoPago === 'approved' && data.pagoConfirmado === true) {
+      console.log('✅ Confirmación de pago detectada - procesando...');
       
-      // Primero actualizar los datos en la hoja
-      const result = actualizarPagoEnGoogleSheets(data);
+      // 1. Verificar pago con MercadoPago
+      const pagoVerificado = verificarPagoConMercadoPago(data.paymentId);
       
-      if (result.success) {
-        // SOLO ENVIAR EMAIL SI HAY EMAIL Y DATOS VÁLIDOS
-        if (data.email && data.sessionId) {
-          console.log('📧 ENVIANDO EMAIL DE CONFIRMACIÓN INICIAL...');
-          const emailResult = enviarEmailConfirmacionInicial(data.email, data.sessionId, data.paymentId);
+      if (pagoVerificado.success) {
+        console.log('✅ Pago verificado con MercadoPago');
+        
+        // 2. Buscar y actualizar la línea existente
+        const datosActualizados = {
+          ...data,
+          pagoVerificado: true,
+          fechaVerificacion: new Date().toISOString(),
+          estadoFinal: 'approved'
+        };
+        
+        const resultadoActualizacion = actualizarPagoEnGoogleSheets(datosActualizados);
+        
+        if (resultadoActualizacion.success) {
+          console.log('✅ Datos actualizados en Google Sheets');
           
-          if (emailResult.success) {
-            return ContentService
-              .createTextOutput(JSON.stringify({ 
-                success: true, 
-                message: 'Pago confirmado y email enviado correctamente',
-                emailSent: true 
-              }))
-              .setMimeType(ContentService.MimeType.JSON);
-          } else if (emailResult.alreadySent) {
-            return ContentService
-              .createTextOutput(JSON.stringify({ 
-                success: true, 
-                message: 'Pago confirmado (email ya fue enviado anteriormente)',
-                emailSent: false 
-              }))
-              .setMimeType(ContentService.MimeType.JSON);
-          } else {
-            return ContentService
-              .createTextOutput(JSON.stringify({ 
-                success: true, 
-                message: 'Pago confirmado (error enviando email)',
-                emailSent: false,
-                emailError: emailResult.error 
-              }))
-              .setMimeType(ContentService.MimeType.JSON);
-          }
-        } else {
+          // 3. Enviar email de confirmación
+          const emailEnviado = enviarEmailConfirmacionInicial(datosActualizados);
+          
           return ContentService
             .createTextOutput(JSON.stringify({ 
               success: true, 
-              message: 'Pago confirmado (sin email para enviar)',
-              emailSent: false 
+              message: 'Pago confirmado y procesado correctamente',
+              emailSent: emailEnviado.success,
+              emailMessage: emailEnviado.message
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+        } else {
+          console.log('❌ Error actualizando datos:', resultadoActualizacion.error);
+          return ContentService
+            .createTextOutput(JSON.stringify({ 
+              success: false, 
+              error: 'Error actualizando datos en Google Sheets',
+              details: resultadoActualizacion.error 
             }))
             .setMimeType(ContentService.MimeType.JSON);
         }
       } else {
+        console.log('❌ Pago no verificado con MercadoPago:', pagoVerificado.error);
         return ContentService
-          .createTextOutput(JSON.stringify({ success: false, error: result.error }))
+          .createTextOutput(JSON.stringify({ 
+            success: false, 
+            error: 'Pago no verificado con MercadoPago',
+            details: pagoVerificado.error 
+          }))
           .setMimeType(ContentService.MimeType.JSON);
       }
     }
     
-    // Validar datos requeridos para nuevo registro
+    // NUEVO REGISTRO - GUARDAR DATOS INICIALES
     console.log('🔍 Verificando datos para nuevo registro:');
     console.log('  - nombre:', !!data.nombre);
     console.log('  - apellido:', !!data.apellido);
@@ -745,7 +709,7 @@ function verificarPagoPorDatos(data) {
  */
 function actualizarPagoEnGoogleSheets(datos) {
   try {
-    console.log('📝 CREANDO NUEVA FILA para pago confirmado en Google Sheets');
+    console.log('🔄 ACTUALIZANDO PAGO EN GOOGLE SHEETS...');
     console.log('📊 Datos recibidos en actualizarPagoEnGoogleSheets:', datos);
     console.log('📊 Datos recibidos:', {
       sessionId: datos.sessionId,
@@ -799,102 +763,72 @@ function actualizarPagoEnGoogleSheets(datos) {
       fechaRegistro: fechaRegistroIndex
     });
     
-    // SIEMPRE CREAR NUEVA FILA - NUNCA ACTUALIZAR EXISTENTE
-    console.log('➕ CREANDO NUEVA FILA para pago confirmado');
+    // Buscar la fila existente basada en sessionId
+    const dataRange = sheet.getDataRange();
+    const values = dataRange.getValues();
+    let rowIndex = -1;
     
-    // Determinar la nueva fila
-    const lastRow = sheet.getLastRow();
-    const newRowIndex = lastRow + 1;
+    console.log('🔍 Buscando fila existente con sessionId:', datos.sessionId);
     
-    console.log('📊 Estado de la hoja:');
-    console.log('  - Última fila con datos:', lastRow);
-    console.log('  - Nueva fila a crear:', newRowIndex);
-    
-    // Crear array de datos para la nueva fila basado en los headers
-    const newRowData = [];
-    
-    // Mapear cada header con su valor correspondiente
-    headers.forEach(header => {
-      switch(header) {
-        case 'Timestamp':
-          newRowData.push(new Date().toISOString());
-          break;
-        case 'Nombre':
-          newRowData.push(datos.nombre || '');
-          break;
-        case 'Apellido':
-          newRowData.push(datos.apellido || '');
-          break;
-        case 'Email':
-          newRowData.push(datos.email || '');
-          break;
-        case 'DNI':
-          newRowData.push(datos.dni || '');
-          break;
-        case 'Teléfono':
-          newRowData.push(datos.telefono || '');
-          break;
-        case 'Cantidad de Chances':
-          newRowData.push(datos.cantidadChances || '');
-          break;
-        case 'Pago Confirmado':
-          newRowData.push('TRUE');
-          break;
-        case 'Fecha de Registro':
-          newRowData.push(datos.fechaRegistro || new Date().toISOString());
-          break;
-        case 'Observaciones':
-          newRowData.push(datos.observaciones || '');
-          break;
-        case 'Estado Pago':
-          newRowData.push('CONFIRMADO');
-          break;
-        case 'Session ID':
-          newRowData.push(datos.sessionId || '');
-          break;
-        case 'Payment ID':
-          newRowData.push(datos.paymentId || 'N/A');
-          break;
-        case 'Fecha Confirmación':
-          newRowData.push(new Date().toISOString());
-          break;
-        case 'Email Enviado':
-          newRowData.push('FALSE'); // Se marcará como TRUE cuando se envíe el email
-          break;
-        default:
-          newRowData.push(''); // Para headers no reconocidos
+    // Empezar desde la fila 2 (después del header)
+    for (let i = 1; i < values.length; i++) {
+      const rowSessionId = values[i][sessionIdIndex];
+      console.log(`  - Fila ${i + 1}: sessionId = "${rowSessionId}"`);
+      
+      if (rowSessionId === datos.sessionId) {
+        rowIndex = i + 1; // +1 porque los índices de getRange son 1-based
+        console.log(`✅ Fila encontrada en posición: ${rowIndex}`);
+        break;
       }
-    });
+    }
     
-    console.log('📊 Datos de nueva fila:', newRowData);
+    if (rowIndex === -1) {
+      console.log('❌ No se encontró fila con sessionId:', datos.sessionId);
+      return { success: false, error: 'Fila no encontrada para actualizar' };
+    }
     
-    // Agregar la nueva fila usando appendRow
-    sheet.appendRow(newRowData);
+    // Actualizar solo las columnas específicas del pago
+    console.log('📊 Actualizando columnas específicas del pago...');
     
-    console.log('✅ NUEVA FILA CREADA correctamente en fila:', newRowIndex);
-    console.log('📊 Datos escritos:');
-    console.log('  - Timestamp:', newRowData[headers.indexOf('Timestamp')]);
-    console.log('  - Nombre:', newRowData[headers.indexOf('Nombre')]);
-    console.log('  - Apellido:', newRowData[headers.indexOf('Apellido')]);
-    console.log('  - Email:', newRowData[headers.indexOf('Email')]);
-    console.log('  - DNI:', newRowData[headers.indexOf('DNI')]);
-    console.log('  - Teléfono:', newRowData[headers.indexOf('Teléfono')]);
-    console.log('  - Cantidad de Chances:', newRowData[headers.indexOf('Cantidad de Chances')]);
-    console.log('  - Pago Confirmado:', newRowData[headers.indexOf('Pago Confirmado')]);
-    console.log('  - Estado Pago:', newRowData[headers.indexOf('Estado Pago')]);
-    console.log('  - Session ID:', newRowData[headers.indexOf('Session ID')]);
-    console.log('  - Payment ID:', newRowData[headers.indexOf('Payment ID')]);
-    console.log('  - Fecha Confirmación:', newRowData[headers.indexOf('Fecha Confirmación')]);
-    console.log('  - Email Enviado:', newRowData[headers.indexOf('Email Enviado')]);
+    // Actualizar "Pago Confirmado"
+    if (pagoConfirmadoIndex !== -1) {
+      sheet.getRange(rowIndex, pagoConfirmadoIndex + 1).setValue('TRUE');
+      console.log('✅ Pago Confirmado actualizado a TRUE');
+    }
+    
+    // Actualizar "Estado Pago"
+    if (estadoPagoIndex !== -1) {
+      sheet.getRange(rowIndex, estadoPagoIndex + 1).setValue(datos.estadoPago || 'approved');
+      console.log('✅ Estado Pago actualizado a:', datos.estadoPago || 'approved');
+    }
+    
+    // Actualizar "Payment ID"
+    if (paymentIdIndex !== -1) {
+      sheet.getRange(rowIndex, paymentIdIndex + 1).setValue(datos.paymentId || 'N/A');
+      console.log('✅ Payment ID actualizado a:', datos.paymentId || 'N/A');
+    }
+    
+    // Actualizar "Fecha Confirmación"
+    if (fechaConfirmacionIndex !== -1) {
+      sheet.getRange(rowIndex, fechaConfirmacionIndex + 1).setValue(new Date().toISOString());
+      console.log('✅ Fecha Confirmación actualizada a:', new Date().toISOString());
+    }
+    
+    console.log('✅ FILA ACTUALIZADA correctamente en fila:', rowIndex);
+    console.log('📊 Resumen de actualizaciones:');
+    console.log('  - Pago Confirmado: TRUE');
+    console.log('  - Estado Pago:', datos.estadoPago || 'approved');
+    console.log('  - Payment ID:', datos.paymentId || 'N/A');
+    console.log('  - Fecha Confirmación:', new Date().toISOString());
     
     // NO ENVIAR EMAIL DESDE ESTA FUNCIÓN
     // Los emails solo se envían desde doPost en la confirmación inicial
     console.log('📧 Email no enviado desde actualizarPagoEnGoogleSheets - solo se envía desde doPost');
     
-    return { success: true, newRowIndex: newRowIndex };
+    return { success: true, updatedRowIndex: rowIndex };
     
   } catch (error) {
-    console.error('❌ Error creando nueva fila en Google Sheets:', error);
+    console.error('❌ Error actualizando fila en Google Sheets:', error);
     return { success: false, error: error.message };
   }
 }
@@ -1137,9 +1071,9 @@ function ejecutarVerificacionManual() {
  * @param {string} paymentId - ID de pago
  * @returns {Object} Resultado del envío
  */
-function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
+function enviarEmailConfirmacionInicial(datos) {
   try {
-    console.log(`📧 ENVÍO CENTRALIZADO - Verificando si se debe enviar email a: ${email}`);
+    console.log(`📧 ENVÍO CENTRALIZADO - Verificando si se debe enviar email a: ${datos.email}`);
     
     const sheet = SpreadsheetApp.openById(GOOGLE_SHEET_ID).getSheetByName(GOOGLE_SHEET_NAME);
     if (!sheet) {
@@ -1166,23 +1100,23 @@ function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
       const rowEmail = values[i][emailIndex];
       const rowSessionId = values[i][sessionIdIndex];
       
-      if (rowEmail === email && rowSessionId === sessionId) {
+      if (rowEmail === datos.email && rowSessionId === datos.sessionId) {
         rowIndex = i + 1;
         break;
       }
     }
     
     if (rowIndex === -1) {
-      console.log(`❌ No se encontró fila para email: ${email} y sessionId: ${sessionId}`);
+      console.log(`❌ No se encontró fila para email: ${datos.email} y sessionId: ${datos.sessionId}`);
       return { success: false, error: 'Fila no encontrada' };
     }
     
     // Leer el estado actual de "Email Enviado" directamente de la hoja
     const emailEnviadoActual = sheet.getRange(rowIndex, emailEnviadoIndex + 1).getValue();
-    console.log(`📧 Estado actual de Email Enviado para ${email}: ${emailEnviadoActual}`);
+    console.log(`📧 Estado actual de Email Enviado para ${datos.email}: ${emailEnviadoActual}`);
     
     if (emailEnviadoActual === 'TRUE') {
-      console.log(`📧 Email ya fue enviado anteriormente a: ${email}`);
+      console.log(`📧 Email ya fue enviado anteriormente a: ${datos.email}`);
       return { 
         success: false, 
         message: 'Email ya enviado anteriormente',
@@ -1191,7 +1125,7 @@ function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
     }
     
     // ENVIAR EMAIL SOLO SI NO HA SIDO ENVIADO
-    console.log(`📧 ENVIANDO EMAIL DE CONFIRMACIÓN INICIAL a: ${email}`);
+    console.log(`📧 ENVIANDO EMAIL DE CONFIRMACIÓN INICIAL a: ${datos.email}`);
     
     const emailContent = `
     <!DOCTYPE html>
@@ -1301,7 +1235,7 @@ function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
                 <div class="payment-details">
                     <h3 style="margin-top: 0; color: #495057;">Detalles del Pago</h3>
                     <p><strong>Estado:</strong> <span class="success-text">CONFIRMADO</span></p>
-                    <p><strong>ID de Pago:</strong> <span class="highlight">${paymentId || 'N/A'}</span></p>
+                    <p><strong>ID de Pago:</strong> <span class="highlight">${datos.paymentId || 'N/A'}</span></p>
                     <p><strong>Fecha:</strong> <span class="highlight">${new Date().toLocaleDateString('es-AR')}</span></p>
                 </div>
                 
@@ -1340,7 +1274,7 @@ function enviarEmailConfirmacionInicial(email, sessionId, paymentId) {
     
     // Enviar el email
     MailApp.sendEmail({
-      to: email,
+      to: datos.email,
       subject: '✅ Pago Confirmado - Sorteo Tablet Codes++',
       htmlBody: emailContent
     });
@@ -1704,7 +1638,11 @@ function probarConfiguracion() {
     
     // Probar función de email
     console.log('🔍 Probando función de email...');
-    const emailTest = enviarEmailConfirmacionInicial('test@example.com', 'TEST_SESSION', 'TEST_PAYMENT');
+    const emailTest = enviarEmailConfirmacionInicial({
+      email: 'test@example.com',
+      sessionId: 'TEST_SESSION',
+      paymentId: 'TEST_PAYMENT'
+    });
     console.log('✅ Función de email: OK');
     
     console.log('🎉 ¡Configuración correcta! El sistema está listo para usar.');
@@ -1723,6 +1661,68 @@ function probarConfiguracion() {
       error: error.message,
       message: 'Revisa la configuración según las instrucciones en CONFIGURACION_GOOGLE_APPS_SCRIPT.md'
     };
+  }
+}
+
+/**
+ * Verifica un pago específico con MercadoPago usando paymentId
+ */
+function verificarPagoConMercadoPago(paymentId) {
+  try {
+    console.log(`🔍 Verificando pago con MercadoPago para paymentId: ${paymentId}`);
+    
+    const url = `https://api.mercadopago.com/v1/payments/${paymentId}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${MERCADOPAGO_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    };
+    
+    const response = UrlFetchApp.fetch(url, options);
+    const responseCode = response.getResponseCode();
+    
+    if (responseCode !== 200) {
+      console.log(`❌ Error en respuesta de MercadoPago. Código: ${responseCode}`);
+      return { success: false, error: `Error en respuesta de MercadoPago: ${responseCode}` };
+    }
+    
+    const paymentData = JSON.parse(response.getContentText());
+    
+    console.log(`📊 Datos del pago:`, {
+      id: paymentData.id,
+      status: paymentData.status,
+      external_reference: paymentData.external_reference,
+      transaction_amount: paymentData.transaction_amount,
+      collector_id: paymentData.collector_id
+    });
+    
+    // Verificar que el pago esté aprobado y pertenezca al collector correcto
+    if (paymentData.status === 'approved' && paymentData.collector_id === COLLECTOR_ID) {
+      console.log(`✅ Pago verificado correctamente: ${paymentId}`);
+      return { 
+        success: true, 
+        paymentId: paymentId,
+        status: paymentData.status,
+        amount: paymentData.transaction_amount,
+        externalReference: paymentData.external_reference
+      };
+    } else {
+      console.log(`❌ Pago no aprobado o collector incorrecto:`, {
+        status: paymentData.status,
+        collector_id: paymentData.collector_id,
+        expected_collector: COLLECTOR_ID
+      });
+      return { 
+        success: false, 
+        error: `Pago no aprobado o collector incorrecto. Status: ${paymentData.status}, Collector: ${paymentData.collector_id}` 
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ Error verificando pago con MercadoPago:', error);
+    return { success: false, error: error.message };
   }
 }
 
