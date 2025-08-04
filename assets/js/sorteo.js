@@ -515,6 +515,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const dni = document.getElementById('dni').value;
             const telefono = document.getElementById('telefono').value;
             
+            // Generar Session ID único
+            const sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
             const formData = {
                 nombre: nombre,
                 apellido: apellido,
@@ -526,8 +529,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 pagoConfirmado: false,
                 fechaRegistro: new Date().toISOString(),
                 timestamp: new Date().getTime(),
-                sessionId: Date.now() + Math.random().toString(36).substr(2, 9) // ID único para tracking
+                sessionId: sessionId
             };
+            
+            console.log('📊 Datos a enviar:', formData);
             
             // Enviar datos a Google Sheets (PENDIENTE)
             enviarAGoogleSheets(formData).then(result => {
@@ -536,9 +541,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Guardar datos en localStorage para tracking
                     localStorage.setItem('sorteo_pendiente', JSON.stringify({
-                        sessionId: formData.sessionId,
+                        sessionId: sessionId,
                         timestamp: formData.timestamp,
-                        cantidadChances: cantidadChances
+                        cantidadChances: cantidadChances,
+                        nombre: nombre,
+                        email: email
                     }));
                     
                     // Redirigir al link de pago correspondiente
@@ -546,38 +553,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         const paymentLink = paymentLinks[cantidadChances];
                         if (paymentLink) {
                             console.log('🌐 Abriendo MercadoPago:', paymentLink);
-                            window.open(paymentLink, '_blank');
                             
                             // Mostrar mensaje de confirmación
-                            setTimeout(() => {
-                                alert('✅ Datos registrados exitosamente.\n\nPago iniciado en nueva ventana.\n\nDespués de completar el pago, serás redirigido automáticamente a la página de agradecimiento.');
-                                
-                                // Ocultar el formulario para evitar modificaciones
-                                const formStep = document.getElementById('formStep');
-                                if (formStep) {
-                                    formStep.style.display = 'none';
-                                }
-                                
-                                // Mostrar mensaje de espera
-                                const productCard = document.querySelector('.product-card');
-                                if (productCard) {
-                                    productCard.innerHTML = `
-                                        <div class="text-center">
-                                            <div class="mb-4">
-                                                <i class="bi bi-hourglass-split text-primary" style="font-size: 3rem;"></i>
-                                            </div>
-                                            <h3 class="text-primary">Procesando Pago</h3>
-                                            <p class="lead">Tu información ha sido registrada. Completa el pago en la ventana que se abrió.</p>
-                                            <div class="alert alert-info">
-                                                <i class="bi bi-info-circle me-2"></i>
-                                                <strong>Después del pago serás redirigido automáticamente.</strong>
-                                            </div>
-                                        </div>
-                                    `;
-                                    productCard.style.display = 'block';
-                                }
-                                
-                            }, 1000);
+                            alert('✅ Datos registrados exitosamente.\n\nSerás redirigido a MercadoPago para completar el pago.\n\nDespués del pago, serás redirigido automáticamente a la página de agradecimiento.');
+                            
+                            // Redirigir a MercadoPago
+                            window.location.href = paymentLink;
                             
                         } else {
                             console.log('❌ No se encontró el link de pago para', cantidadChances, 'chances');

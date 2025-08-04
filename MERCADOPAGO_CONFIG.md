@@ -1,47 +1,67 @@
-# Configuración de MercadoPago para el Sorteo
+# Configuración de MercadoPago para CODES++
 
-## Problema Actual
-MercadoPago no está configurado para redirigir de vuelta al sitio después del pago, por lo que los usuarios no pueden completar el registro.
+## URLs de Configuración
 
-## Solución Temporal Implementada
-- Se modificó el código para mostrar el botón de "Registrar Participación" después de hacer clic en "Ir a pagar"
-- Se agregaron instrucciones claras para el usuario
-- Se removió la validación estricta del parámetro `pagado=ok`
-
-## Configuración Necesaria en MercadoPago
-
-### 1. Configurar URL de Retorno
-En tu cuenta de MercadoPago, necesitas configurar:
-
-**URL de éxito:** `https://codes-unlu.github.io/Web-Codes/agradecimiento.html`
-
-**URL de cancelación:** `https://codes-unlu.github.io/Web-Codes/sorteo.html?pagado=cancel`
-
-### 2. Links de Pago por Cantidad de Chances
-Actualmente todos usan el mismo link. Necesitas crear links específicos:
-
-- **1 chance ($1000):** `https://mpago.la/2YQW3HX`
-- **3 chances ($2800):** [Crear nuevo link]
-- **4 chances ($4000):** [Crear nuevo link]
-
-### 3. Pasos para Configurar en MercadoPago
-
-1. Ir a tu cuenta de MercadoPago
-2. Crear nuevos enlaces de pago para cada cantidad
-3. Configurar las URLs de retorno en cada enlace
-4. Actualizar los links en `assets/js/sorteo.js`
-
-### 4. Código a Actualizar
-Una vez configurado MercadoPago, actualizar en `assets/js/sorteo.js`:
-
-```javascript
-const paymentLinks = {
-    1: 'https://mpago.la/2YQW3HX',
-    3: 'https://mpago.la/TU_LINK_3_CHANCES',
-    4: 'https://mpago.la/TU_LINK_4_CHANCES'
-};
+### URL de Éxito (Success URL)
+```
+https://codes-unlu.github.io/Web-Codes/redirect-pago.html
 ```
 
-## Estado Actual
-✅ **Funcional:** Los usuarios pueden pagar y registrar su participación
-⚠️ **Pendiente:** Configurar redirección automática desde MercadoPago 
+### URL de Fallo (Failure URL)
+```
+https://codes-unlu.github.io/Web-Codes/sorteo.html?error=pago_fallido
+```
+
+### URL de Pendiente (Pending URL)
+```
+https://codes-unlu.github.io/Web-Codes/sorteo.html?error=pago_pendiente
+```
+
+## Parámetros que envía MercadoPago
+
+Cuando el usuario completa el pago, MercadoPago redirige con estos parámetros:
+
+- `collection_status`: Estado del cobro (approved, pending, rejected, etc.)
+- `status`: Estado del pago (approved, pending, rejected, etc.)
+- `payment_id`: ID único del pago
+- `external_reference`: Referencia externa (nuestro Session ID)
+- `collection_id`: ID del cobro
+- `merchant_order_id`: ID de la orden del comercio
+- `preference_id`: ID de la preferencia
+
+## Flujo de Pago
+
+1. **Usuario completa formulario** → Datos se envían a Google Sheets con estado "PENDIENTE"
+2. **Usuario hace clic en "Ir a pagar"** → Se redirige a MercadoPago
+3. **Usuario completa pago en MercadoPago** → MercadoPago redirige a `redirect-pago.html`
+4. **redirect-pago.html procesa parámetros** → Actualiza estado a "CONFIRMADO" en Google Sheets
+5. **Usuario es redirigido a agradecimiento.html** → Página de confirmación final
+
+## Sistema de Verificación Automática
+
+El sistema también incluye verificación automática cada hora que:
+
+- Busca pagos pendientes en Google Sheets
+- Verifica estado real en MercadoPago usando la API
+- Actualiza automáticamente pagos confirmados
+- Envía emails de confirmación
+
+## Access Token
+
+```
+APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374
+```
+
+## Links de Pago
+
+- **1 chance ($1)**: `https://mpago.la/2n46a5E`
+- **3 chances ($2.800)**: `https://mpago.la/2YQW3HX`
+- **4 chances ($4.000)**: `https://mpago.la/2YQW3HX`
+
+## Notas Importantes
+
+- Los datos se registran **antes** del pago con estado "PENDIENTE"
+- El sistema verifica automáticamente los pagos cada hora
+- Si el usuario no regresa de MercadoPago, el sistema igual detectará el pago
+- Se envían emails de confirmación automáticamente
+- Los registros antiguos (más de 24h) se marcan como "CANCELADO" 
