@@ -1261,6 +1261,17 @@
             }
           });
         }
+        
+        // Detectar si llegó con anchor #rifa-event y hacer scroll automático
+        if (window.location.hash === '#rifa-event') {
+          setTimeout(function() {
+            var rifaCard = document.getElementById('rifa-event');
+            if (rifaCard) {
+              var y = rifaCard.getBoundingClientRect().top + window.pageYOffset - 90;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+          }, 500);
+        }
       });
     </script>
   </body>
