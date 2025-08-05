@@ -548,7 +548,7 @@ class SorteoApp {
         
         // Validar que el formulario esté completo
         if (!this.validarFormularioCompleto()) {
-            alert('Por favor completa todos los campos del formulario antes de proceder al pago.');
+            alert('Por favor completa todos los campos del formulario antes de proceder al pago. Recuerda volver a esta página después del pago.');
             return;
         }
         

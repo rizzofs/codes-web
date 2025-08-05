@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Validar que el formulario esté completo
         if (!validarFormularioCompleto()) {
-            alert('Por favor completa todos los campos del formulario antes de proceder al pago.');
+            alert('Por favor completa todos los campos del formulario antes de proceder al pago. Recuerda volver a esta página después del pago.');
             return;
         }
         
