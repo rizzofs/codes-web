@@ -1321,6 +1321,26 @@ footer {
     color: var(--text) !important;
 }
 
+/* Dark mode styles for bg-light elements */
+[data-theme="dark"] .bg-light {
+  background-color: var(--background-alt) !important;
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .bg-light h6,
+[data-theme="dark"] .bg-light strong,
+[data-theme="dark"] .bg-light li {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .bg-light ol {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .bg-light .small {
+  color: var(--text-light) !important;
+}
+
 /* ========================================
    BREADCRUMBS
    ======================================== */
