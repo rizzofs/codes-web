@@ -375,45 +375,53 @@
             // Crear contenido del Top 10
             let contenido = '<div class="row">';
             
-            // Primera columna: posiciones 1-5
-            contenido += '<div class="col-md-6">';
-            for (let i = 0; i < 5 && i < top10.length; i++) {
-                const participante = top10[i];
-                const posicion = i + 1;
-                const medalla = posicion === 1 ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : `${posicion}.`;
-                
-                contenido += `
-                    <div class="d-flex justify-content-between align-items-center p-2 border rounded mb-2">
-                        <div>
-                            <span class="fw-bold">${medalla}</span>
-                            <span class="text-muted">Participante ${posicion}</span>
-                        </div>
-                        <div>
-                            <span class="badge bg-primary fs-6">${participante.chances} chances</span>
-                        </div>
-                    </div>
-                `;
-            }
-            contenido += '</div>';
-            
-            // Segunda columna: posiciones 6-10
-            contenido += '<div class="col-md-6">';
-            for (let i = 5; i < 10 && i < top10.length; i++) {
-                const participante = top10[i];
-                const posicion = i + 1;
-                
-                contenido += `
-                    <div class="d-flex justify-content-between align-items-center p-2 border rounded mb-2">
-                        <div>
-                            <span class="fw-bold">${posicion}.</span>
-                            <span class="text-muted">Participante ${posicion}</span>
-                        </div>
-                        <div>
-                            <span class="badge bg-primary fs-6">${participante.chances} chances</span>
-                        </div>
-                    </div>
-                `;
-            }
+                         // Obtener las chances del líder para determinar quiénes comparten el podio
+             const chancesLider = top10[0].chances;
+             
+             // Primera columna: posiciones 1-5
+             contenido += '<div class="col-md-6">';
+             for (let i = 0; i < 5 && i < top10.length; i++) {
+                 const participante = top10[i];
+                 const posicion = i + 1;
+                 
+                 // Si tiene las mismas chances que el líder, dar medalla de oro
+                 const medalla = participante.chances === chancesLider ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : `${posicion}.`;
+                 
+                 contenido += `
+                     <div class="d-flex justify-content-between align-items-center p-2 border rounded mb-2">
+                         <div>
+                             <span class="fw-bold">${medalla}</span>
+                             <span class="text-muted">Participante ${posicion}</span>
+                         </div>
+                         <div>
+                             <span class="badge bg-primary fs-6">${participante.chances} chances</span>
+                         </div>
+                     </div>
+                 `;
+             }
+             contenido += '</div>';
+             
+             // Segunda columna: posiciones 6-10
+             contenido += '<div class="col-md-6">';
+             for (let i = 5; i < 10 && i < top10.length; i++) {
+                 const participante = top10[i];
+                 const posicion = i + 1;
+                 
+                 // Si tiene las mismas chances que el líder, dar medalla de oro
+                 const medalla = participante.chances === chancesLider ? '🥇' : `${posicion}.`;
+                 
+                 contenido += `
+                     <div class="d-flex justify-content-between align-items-center p-2 border rounded mb-2">
+                         <div>
+                             <span class="fw-bold">${medalla}</span>
+                             <span class="text-muted">Participante ${posicion}</span>
+                         </div>
+                         <div>
+                             <span class="badge bg-primary fs-6">${participante.chances} chances</span>
+                         </div>
+                     </div>
+                 `;
+             }
             contenido += '</div>';
             
             contenido += '</div>';
