@@ -513,7 +513,8 @@
                     
                     let mensajeLider = '<strong>¡Líder del sorteo!</strong> Tienes la mayor cantidad de chances.';
                     if (participantesConMismasChances > 1) {
-                        mensajeLider += ` Compartes podio con ${participantesConMismasChances} participantes.`;
+                        const otrosParticipantes = participantesConMismasChances - 1; // Excluir al usuario del conteo
+                        mensajeLider += ` Compartes podio con ${otrosParticipantes} participantes.`;
                         console.log('Mensaje con empate:', mensajeLider);
                     } else {
                         console.log('Mensaje sin empate:', mensajeLider);
