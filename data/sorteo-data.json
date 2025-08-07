@@ -1,0 +1,28 @@
+[
+  {
+    "fecha": "6/08/2025 18:06:29",
+    "email": "wri***@gmail.com",
+    "cuil": "CUIL 20454780958",
+    "dni": "45478095",
+    "chances": 1,
+    "numeroOperacion": "121276499342",
+    "estado": "approved",
+    "detalleEstado": "accredited",
+    "valorChances": "$1.000,00",
+    "tarifa": "-$76,10",
+    "montoRecibido": "$923,90"
+  },
+  {
+    "fecha": "06/08/2025 18:04:56",
+    "email": "la***@yahoo.com.ar",
+    "cuil": "CUIT 27289893429",
+    "dni": "28989342",
+    "chances": 5,
+    "numeroOperacion": "121276167944",
+    "estado": "approved",
+    "detalleEstado": "accredited",
+    "valorChances": "$4.000,00",
+    "tarifa": "-$304,40",
+    "montoRecibido": "$3.695,60"
+  }
+] 
