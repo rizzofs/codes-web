@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expo UNLU 2025 - Centro de Estudiantes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/css/index.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+                </a>
+                <div class="navbar-actions d-flex gap-2 me-3">
+                    <button
+                        class="btn btn-outline-primary btn-sm"
+                        id="searchToggle"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Buscar en el sitio"
+                    >
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <button
+                        class="btn btn-outline-secondary btn-sm"
+                        id="darkModeToggle"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Modo oscuro"
+                    >
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <button
+                        class="btn btn-outline-warning btn-sm"
+                        id="goToRifaBtn"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Ir a la Rifa por la Tablet"
+                    >
+                        <i class="bi bi-gift"></i>
+                    </button>
+                </div>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">
+                                <i class="bi bi-house me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="sorteo.html">
+                                <i class="bi bi-ticket-perforated me-1"></i>Sorteo
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="verificar-chances.html">
+                                <i class="bi bi-search me-1"></i>Consultar Chances
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="ExpoUnlu.html">
+                                <i class="bi bi-building me-1"></i>Expo UNLU
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">
+                        <i class="bi bi-search me-2"></i>Buscar en el sitio
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Escribe tu búsqueda..." />
+                    </div>
+                    <div id="searchResults" class="search-results">
+                        <!-- Los resultados se mostrarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-5">
+        <!-- Header Section -->
+        <section class="text-center mb-5">
+            <h1 class="section-title">
+                <i class="bi bi-building me-3"></i>Expo UNLU 2025
+            </h1>
+            <p class="section-subtitle">
+                La Expo UNLU es un evento anual pensado para que estudiantes de escuelas secundarias 
+                conozcan las carreras que ofrece la universidad. Es una instancia clave para acercar 
+                a nuevos ingresantes.
+            </p>
+        </section>
+
+        <!-- Expo Locations Section -->
+        <section class="mb-5">
+            <h2 class="section-title">Ubicaciones de la Expo UNLU</h2>
+            <p class="section-subtitle">
+                Conocé las diferentes sedes donde se realizará la Expo UNLU 2025.
+            </p>
+            
+            <div class="row g-4">
+                <!-- Expo UNLU San Miguel -->
+                <div class="col-md-4">
+                    <div class="event-card">
+                        <h3><i class="bi bi-geo-alt text-primary me-2"></i>Expo UNLU San Miguel</h3>
+                        <p class="mb-2">
+                            <strong>Fecha:</strong> Viernes 8 de agosto de 2025<br>
+                            <strong>Horario:</strong> 9:00 a 16:00 hs
+                        </p>
+                        <p>
+                            Evento en la sede de San Miguel para estudiantes de la zona norte del Gran Buenos Aires.
+                            Una oportunidad única para conocer las carreras y la universidad.
+                        </p>
+                        <div class="mb-3">
+                            <strong>Actividades:</strong>
+                            <ul class="mb-2">
+                                <li>Stand con información de la carrera</li>
+                                <li>Actividades interactivas</li>
+                                <li>Charlas especializadas</li>
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Charlas programadas:</strong>
+                            <ul class="mb-2">
+                                <li><strong>Derecho a estudiar:</strong> Conocé la Licenciatura en Sistemas de Información de UNLu</li>
+                                <li><strong>Más allá del código:</strong> Horizontes de la tecnología y la Profesión</li>
+                                <li><strong>Los tres gigantes tecnológicos:</strong> Google, Amazon y Spotify</li>
+                            </ul>
+                        </div>
+                        <span class="badge bg-success text-white">Confirmado</span>
+                    </div>
+                </div>
+
+                <!-- Expo UNLU Chivilcoy -->
+                <div class="col-md-4">
+                    <div class="event-card">
+                        <h3><i class="bi bi-geo-alt text-success me-2"></i>Expo UNLU Chivilcoy</h3>
+                        <p class="mb-2">
+                            <strong>Fecha:</strong> Viernes 26 de septiembre de 2025<br>
+                            <strong>Horario:</strong> Por confirmar
+                        </p>
+                        <p>
+                            Evento en la sede de Chivilcoy para estudiantes del interior de la provincia de Buenos Aires.
+                            Descubrí las oportunidades que te ofrece la UNLU.
+                        </p>
+                        <div class="mb-3">
+                            <strong>Actividades:</strong>
+                            <ul class="mb-2">
+                                <li>Stand con información de la carrera</li>
+                                <li>Actividades interactivas</li>
+                                <li>Charlas a confirmar</li>
+                                <li>Información sobre inscripción</li>
+                            </ul>
+                        </div>
+                        <span class="badge bg-warning text-dark">Próximamente</span>
+                    </div>
+                </div>
+
+                <!-- Expo UNLU Luján -->
+                <div class="col-md-4">
+                    <div class="event-card">
+                        <h3><i class="bi bi-geo-alt text-info me-2"></i>Expo UNLU Luján</h3>
+                        <p class="mb-2">
+                            <strong>Fecha:</strong> Jueves 16 de octubre de 2025<br>
+                            <strong>Horario:</strong> Por confirmar
+                        </p>
+                        <p>
+                            Evento en la sede de Luján para estudiantes de la zona oeste de la provincia de Buenos Aires.
+                            Conocé tu futuro académico en la UNLU.
+                        </p>
+                        <div class="mb-3">
+                            <strong>Actividades:</strong>
+                            <ul class="mb-2">
+                                <li>Stand con información de la carrera</li>
+                                <li>Actividades interactivas</li>
+                                <li>Charlas a confirmar</li>
+                                <li>Información sobre inscripción</li>
+                            </ul>
+                        </div>
+                        <span class="badge bg-warning text-dark">Próximamente</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Section -->
+        <section class="mb-5">
+            <h2 class="section-title">¿Qué es la Expo UNLU?</h2>
+            <p class="section-subtitle">
+                Conocé más sobre este evento fundamental para futuros estudiantes.
+            </p>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="fw-bold text-primary mb-3">
+                                <i class="bi bi-info-circle me-2"></i>Información General
+                            </h4>
+                            <p class="mb-3">
+                                La Expo UNLU es un evento anual que organiza la Universidad Nacional de Luján 
+                                para que estudiantes de escuelas secundarias conozcan las carreras que ofrece la universidad.
+                            </p>
+                            <p class="mb-3">
+                                Durante la expo, los estudiantes pueden:
+                            </p>
+                            <ul class="mb-3">
+                                <li>Conocer las diferentes carreras y sus planes de estudio</li>
+                                <li>Hablar con docentes y estudiantes de cada carrera</li>
+                                <li>Informarse sobre el proceso de inscripción</li>
+                                <li>Conocer las instalaciones de la universidad</li>
+                                <li>Resolver dudas sobre becas y beneficios estudiantiles</li>
+                            </ul>
+                            <p class="mb-0">
+                                Es una instancia clave para acercar a nuevos ingresantes y ayudarlos a tomar 
+                                una decisión informada sobre su futuro académico.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="text-center">
+            <h2 class="section-title">¿Tenés dudas?</h2>
+            <p class="section-subtitle">
+                Contactanos para obtener más información sobre la Expo UNLU.
+            </p>
+            
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="fw-bold text-primary mb-3">
+                                <i class="bi bi-envelope me-2"></i>Contacto
+                            </h4>
+                            <p class="mb-3">
+                                Si tenés alguna pregunta sobre la Expo UNLU o las carreras, 
+                                no dudes en contactarnos.
+                            </p>
+                            <a href="mailto:codes.unlu@gmail.com" class="btn btn-primary btn-lg">
+                                <i class="bi bi-envelope me-2"></i>Contactanos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">
+                <i class="bi bi-heart-fill text-danger me-1"></i>
+                Centro de Estudiantes - Universidad Nacional de Luján
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Handle rifa button click for Expo UNLU page
+        document.addEventListener('DOMContentLoaded', function() {
+            const goToRifaBtn = document.getElementById('goToRifaBtn');
+            
+            if (goToRifaBtn) {
+                goToRifaBtn.addEventListener('click', function() {
+                    // Redirect to sorteo page instead of scrolling
+                    window.location.href = 'sorteo.html';
+                    
+                    // Track rifa button click
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'rifa_button_click', {
+                            'event_category': 'sorteo',
+                            'event_label': 'ir_a_rifa_desde_expo'
+                        });
+                    }
+                });
+            }
+            
+            // Handle search functionality for Expo UNLU page
+            const searchToggle = document.getElementById('searchToggle');
+            const searchModal = document.getElementById('searchModal');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (searchToggle && searchModal) {
+                searchToggle.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(searchModal);
+                    modal.show();
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+                    if (query.length > 2) {
+                        performSearch(query);
+                    } else {
+                        searchResults.innerHTML = '';
+                    }
+                });
+            }
+            
+            function performSearch(query) {
+                // Define searchable content for Expo UNLU page
+                const searchableContent = [
+                    {
+                        title: 'Expo UNLU San Miguel',
+                        content: 'Evento en la sede de San Miguel para estudiantes de la zona norte del Gran Buenos Aires. Charlas: Derecho a estudiar, Más allá del código, Los tres gigantes tecnológicos.',
+                        url: '#san-miguel'
+                    },
+                    {
+                        title: 'Expo UNLU Chivilcoy',
+                        content: 'Evento en la sede de Chivilcoy para estudiantes del interior de la provincia de Buenos Aires.',
+                        url: '#chivilcoy'
+                    },
+                    {
+                        title: 'Expo UNLU Luján',
+                        content: 'Evento en la sede de Luján para estudiantes de la zona oeste de la provincia de Buenos Aires.',
+                        url: '#lujan'
+                    },
+                    {
+                        title: 'Charlas programadas',
+                        content: 'Derecho a estudiar, Más allá del código, Los tres gigantes tecnológicos: Google, Amazon y Spotify.',
+                        url: '#san-miguel'
+                    },
+                    {
+                        title: 'Información General',
+                        content: 'La Expo UNLU es un evento anual que organiza la Universidad Nacional de Luján para que estudiantes de escuelas secundarias conozcan las carreras.',
+                        url: '#informacion'
+                    },
+                    {
+                        title: 'Contacto',
+                        content: 'Si tenés alguna pregunta sobre la Expo UNLU o las carreras, no dudes en contactarnos.',
+                        url: '#contacto'
+                    }
+                ];
+                
+                const results = searchableContent.filter(item => 
+                    item.title.toLowerCase().includes(query.toLowerCase()) ||
+                    item.content.toLowerCase().includes(query.toLowerCase())
+                );
+                
+                displaySearchResults(results);
+            }
+            
+            function displaySearchResults(results) {
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<p class="text-muted">No se encontraron resultados.</p>';
+                    return;
+                }
+                
+                const resultsHtml = results.map(result => `
+                    <div class="search-result-item p-3 border-bottom">
+                        <h6 class="mb-1">
+                            <a href="${result.url}" class="text-decoration-none">
+                                ${result.title}
+                            </a>
+                        </h6>
+                        <p class="mb-0 text-muted small">${result.content.substring(0, 150)}...</p>
+                    </div>
+                `).join('');
+                
+                searchResults.innerHTML = resultsHtml;
+            }
+        });
+    </script>
+</body>
+</html>

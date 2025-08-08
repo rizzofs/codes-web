@@ -605,8 +605,15 @@ section:nth-child(even) {
   transition: all 0.3s ease;
   border-left: 5px solid var(--primary);
 }
+
 .event-card .mt-auto {
   margin-top: auto;
+}
+
+/* Ensure buttons are aligned at the bottom of event cards */
+.event-card .btn {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .event-card:hover {
