@@ -15,6 +15,17 @@
     <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
     <meta name="robots" content="index, follow" />
 
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://codes-unlu.github.io/" />
@@ -133,33 +144,42 @@
             <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
           </a>
           <div class="navbar-actions d-flex gap-2 me-3">
-            <button
-              class="btn btn-outline-primary btn-sm"
-              id="searchToggle"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Buscar en el sitio"
-            >
-              <i class="bi bi-search"></i>
-            </button>
-            <button
-              class="btn btn-outline-secondary btn-sm"
-              id="darkModeToggle"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Modo oscuro"
-            >
-              <i class="bi bi-moon"></i>
-            </button>
-            <button
-              class="btn btn-outline-warning btn-sm"
-              id="goToRifaBtn"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Ir a la Rifa por la Tablet"
-            >
-              <i class="bi bi-gift"></i>
-            </button>
+            <div class="d-flex flex-column align-items-center">
+              <button
+                class="btn btn-outline-primary btn-sm"
+                id="searchToggle"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Buscar en el sitio"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+              <span class="fw-bold text-dark">Buscar</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                id="darkModeToggle"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Modo oscuro"
+              >
+                <i class="bi bi-moon"></i>
+              </button>
+              <span class="fw-bold text-dark">Modo</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <button
+                class="btn btn-outline-warning btn-sm"
+                id="goToRifaBtn"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Ir a la Rifa por la Tablet"
+              >
+                <i class="bi bi-gift"></i>
+              </button>
+              <span class="fw-bold text-dark">Participá</span>
+            </div>
           </div>
           <button
             class="navbar-toggler"
@@ -771,6 +791,25 @@
             <p>
               Unite a nuestro servidor para consultas, organización de grupos y
               apoyo entre estudiantes.
+            </p>
+          </div>
+
+          <div class="resource-item">
+            <a
+              href="gruposswpp.html"
+              class="external-link"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Grupos de WhatsApp organizados por cuatrimestre"
+            >
+              <i class="bi bi-whatsapp text-success"></i>
+              Grupos de WhatsApp por cuatrimestre
+              <span class="loading-spinner d-none">
+                <i class="bi bi-arrow-clockwise spin"></i>
+              </span>
+            </a>
+            <p>
+              Unite al grupo de tu cuatrimestre para coordinar cursadas, resolver dudas y recibir avisos.
             </p>
           </div>
 

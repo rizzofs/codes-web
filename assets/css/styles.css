@@ -1,3 +1,11 @@
+[data-theme="light"] .navbar .navbar-toggler-icon,
+.navbar-light .navbar-toggler-icon,
+.navbar .navbar-toggler-icon {
+  width: 1.5em;
+  height: 1.5em;
+  background-size: 100% 100% !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.65%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
 /* ========================================
    CODES++ - Centro de Estudiantes Styles
    ======================================== */
@@ -110,6 +118,9 @@ header.scrolled {
 /* Navbar actions (search and dark mode buttons) */
 .navbar-actions {
   align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  height: 100%;
 }
 
 .navbar-actions .btn {
@@ -117,10 +128,63 @@ header.scrolled {
   font-size: 0.875rem;
   border-radius: 0.375rem;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  height: 38px;
+  width: 38px; /* Added for square size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px; /* Ensure minimum square size */
+}
+
+/* Ensure raffle button maintains square dimensions like other buttons */
+.navbar-actions .btn#goToRifaBtn {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0.375rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .navbar-actions .btn:hover {
   transform: translateY(-1px);
+}
+
+/* Text labels styling with gradient effect */
+.navbar-actions .fw-bold.text-dark {
+  font-size: 0.875rem;
+  margin-top: 0.125rem;
+  white-space: nowrap;
+  align-self: center;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text) !important; /* Ensure visibility in light mode */
+}
+
+/* Container for raffle button and Participá text */
+.navbar-actions .d-flex.flex-column {
+  gap: 0.125rem;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  display: flex;
+}
+
+/* Consultar Chances link styling to prevent wrapping */
+.navbar-nav .nav-link[href*="verificar-chances"] {
+  font-size: 0.8rem;
+  padding: 0.375rem 0.5rem !important;
+  white-space: nowrap;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Responsive adjustments for navbar */
@@ -128,6 +192,42 @@ header.scrolled {
   .navbar-actions {
     order: 2;
     margin-right: 0.5rem !important;
+    gap: 0.25rem;
+  }
+  
+  .navbar-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    height: 32px;
+    width: 32px; /* Added for square size */
+    min-width: 32px; /* Ensure minimum square size */
+  }
+  
+  /* Ensure raffle button maintains square dimensions on tablets */
+  .navbar-actions .btn#goToRifaBtn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .navbar-actions .fw-bold.text-dark {
+    font-size: 0.8rem;
+    margin-top: 0.1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  
+  .navbar-actions .d-flex.flex-column {
+    gap: 0.1rem;
+    height: 32px;
   }
   
   .navbar-toggler {
@@ -136,6 +236,61 @@ header.scrolled {
   
   .navbar-collapse {
     order: 4;
+  }
+  
+  /* Smaller Consultar Chances link on tablets */
+  .navbar-nav .nav-link[href*="verificar-chances"] {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.375rem !important;
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-actions {
+    gap: 0.125rem;
+  }
+  
+  .navbar-actions .btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+    height: 28px;
+    width: 28px; /* Added for square size */
+    min-width: 28px; /* Ensure minimum square size */
+  }
+  
+  /* Override for raffle button on mobile */
+  .navbar-actions .btn#goToRifaBtn {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0.2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .navbar-actions .fw-bold.text-dark {
+    font-size: 0.75rem;
+    margin-top: 0.075rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  
+  .navbar-actions .d-flex.flex-column {
+    gap: 0.075rem;
+    height: 28px;
+  }
+  
+  /* Even smaller Consultar Chances link on mobile */
+  .navbar-nav .nav-link[href*="verificar-chances"] {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.25rem !important;
+    max-width: 80px;
   }
 }
 
@@ -1014,14 +1169,51 @@ footer {
 }
 
 [data-theme="dark"] .navbar {
-  background: rgba(26, 26, 26, 0.7) !important;
+  background: rgba(26, 26, 26, 0.95) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 24px rgba(0,0,0,0.25);
 }
 
 [data-theme="dark"] .nav-link {
-  color: var(--text) !important;
+  color: #ffffff !important;
+}
+
+/* Ensure all navbar text is visible in dark mode */
+[data-theme="dark"] .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-nav .nav-link:hover {
+  color: var(--primary) !important;
+}
+
+/* Ensure navbar brand text is visible */
+[data-theme="dark"] .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* Ensure all text in navbar actions is visible */
+[data-theme="dark"] .navbar-actions .text-dark {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-actions .text-muted {
+  color: #b0b0b0 !important;
+}
+
+/* FORCE ALL NAVBAR TEXT TO BE VISIBLE IN DARK MODE */
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .navbar *,
+[data-theme="dark"] .navbar .nav-link,
+[data-theme="dark"] .navbar .navbar-brand,
+[data-theme="dark"] .navbar .navbar-nav .nav-link,
+[data-theme="dark"] .navbar .navbar-actions *,
+[data-theme="dark"] .navbar .navbar-actions span,
+[data-theme="dark"] .navbar .navbar-actions .text-dark,
+[data-theme="dark"] .navbar .navbar-actions .fw-bold.text-dark {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 [data-theme="dark"] .nav-link:hover {
@@ -1037,9 +1229,38 @@ footer {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
+/* Force hamburger icon to be visible in dark mode regardless of Bootstrap scheme */
+[data-theme="dark"] .navbar .navbar-toggler-icon,
+[data-theme="dark"] .navbar-light .navbar-toggler-icon,
+[data-theme="dark"] .navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-size: 100% 100% !important;
+}
+
+[data-theme="dark"] .navbar-toggler {
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+
+/* Ensure dark override also wins in mobile breakpoint where a white bg was forced */
+@media (max-width: 991.98px) {
+  [data-theme="dark"] .navbar-toggler {
+    background: transparent !important;
+    border-color: var(--border) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  }
+}
+
+/* Improve hamburger rendering */
+.navbar-toggler-icon {
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
 [data-theme="dark"] .navbar-actions .btn-outline-primary {
   border-color: var(--primary);
   color: var(--primary);
+  background-color: rgba(57, 192, 195, 0.1);
 }
 
 [data-theme="dark"] .navbar-actions .btn-outline-primary:hover {
@@ -1049,14 +1270,15 @@ footer {
 }
 
 [data-theme="dark"] .navbar-actions .btn-outline-secondary {
-  border-color: var(--text-light);
-  color: var(--text-light);
+  border-color: #ffffff;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .navbar-actions .btn-outline-secondary:hover {
-  background-color: var(--text-light);
-  border-color: var(--text-light);
-  color: var(--background);
+  background-color: #ffffff;
+  border-color: #ffffff;
+  color: var(--secondary);
 }
 
 [data-theme="dark"] .accordion-button {
@@ -1317,7 +1539,45 @@ footer {
 }
 
 [data-theme="dark"] .text-dark {
-    color: var(--text) !important;
+    color: #ffffff !important; /* Ensure visibility in dark mode */
+}
+
+/* COMPLETE DARK MODE FIX FOR NAVBAR TEXT */
+[data-theme="dark"] .navbar-actions .fw-bold.text-dark,
+[data-theme="dark"] .navbar-actions span.fw-bold.text-dark,
+[data-theme="dark"] .navbar-actions .d-flex.flex-column .text-dark,
+[data-theme="dark"] .navbar-actions .d-flex.flex-column .text-muted,
+[data-theme="dark"] .navbar-actions .d-flex.flex-column .text-secondary {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+/* ULTIMATE DARK MODE FIX - Force all navbar text to be white */
+[data-theme="dark"] .navbar * {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar .text-dark {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar .text-muted {
+  color: #b0b0b0 !important;
+}
+
+[data-theme="dark"] .navbar .text-secondary {
+  color: #b0b0b0 !important;
+}
+
+/* Specific fix for navbar action labels */
+[data-theme="dark"] .navbar-actions span {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
 }
 
 [data-theme="dark"] .text-white {
@@ -1333,6 +1593,52 @@ footer {
   background-color: var(--background-alt) !important;
   color: var(--text) !important;
 }
+[data-theme="dark"] .alert-info {
+  background-color: rgba(57, 192, 195, 0.1) !important;
+  border-color: var(--primary) !important;
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary {
+  border-color: var(--border) !important;
+  color: var(--text-light) !important;
+}
+
+[data-theme="dark"] .btn-outline-secondary:hover {
+  background-color: var(--text-light) !important;
+  color: var(--background) !important;
+}
+
+[data-theme="dark"] .btn-success {
+  color: #fff !important;
+}
+
+/* Dark mode fixes for tables (cargar-grupos y similares) */
+[data-theme="dark"] .table {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .table > :not(caption) > * > * {
+  color: var(--text) !important;
+  background-color: transparent !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .table thead th {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .table a:not(.btn) {
+  color: var(--primary) !important;
+  text-decoration: underline;
+}
+
 
 [data-theme="dark"] .bg-light h6,
 [data-theme="dark"] .bg-light strong,
@@ -1408,6 +1714,30 @@ footer {
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   GROUPS PAGE - RESPONSIVE BUTTONS
+   ======================================== */
+
+/* Consistent size for join buttons */
+.list-group-item a[data-materia] {
+  min-width: 140px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Stack nicely on small screens */
+@media (max-width: 576px) {
+  .list-group .list-group-item.d-flex {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .list-group-item a[data-materia] {
+    width: 100%;
+    min-width: 0;
+    order: 2;
+  }
 }
 
 /* ========================================
@@ -1546,6 +1876,12 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+  flex-shrink: 0;
+  margin-right: 1rem;
 }
 
 /* Acciones y toggler alineados */
@@ -1554,12 +1890,27 @@ footer {
   align-items: center;
   gap: 0.5rem;
   margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.navbar-collapse {
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.navbar-toggler {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
 }
 
 /* En mobile: logo y acciones en la misma fila, sin saltos */
 @media (max-width: 991.98px) {
   .navbar .container {
     flex-wrap: nowrap;
+    padding: 0.25rem 0.75rem;
+  }
+  .navbar-brand {
+    margin-right: 0.5rem;
   }
   .navbar-logo {
     height: 40px;
@@ -1568,17 +1919,32 @@ footer {
   .navbar-actions {
     margin-left: 4px;
   }
+  .navbar-toggler {
+    margin-left: 0.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar .container {
+    padding: 0.2rem 0.5rem;
+  }
 }
 
 /* --- FIN: Ajustes de responsividad y alineación navbar/logo --- */
-
-<<<<<<< HEAD
-/* Forzar navbar siempre claro, incluso en modo oscuro */
-header, .navbar, .navbar-light, [data-theme="dark"] header, [data-theme="dark"] .navbar, [data-theme="dark"] .navbar-light {
+/* Navbar claro solo en modo claro */
+header, .navbar, .navbar-light {
   background: rgba(255,255,255,0.95) !important;
   color: var(--text) !important;
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow);
+}
+
+/* Navbar oscuro en modo oscuro */
+[data-theme="dark"] header, [data-theme="dark"] .navbar, [data-theme="dark"] .navbar-dark {
+  background: rgba(26, 26, 26, 0.95) !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25);
 }
 
 /* Logo siempre mismo tamaño y pegado al borde */
@@ -1624,10 +1990,19 @@ header, .navbar, .navbar-light, [data-theme="dark"] header, [data-theme="dark"] 
 .navbar-nav .nav-link:hover {
   color: var(--primary) !important;
   background: rgba(57, 192, 195, 0.1) !important;
+}
+
+/* Dark mode navbar link improvements */
+[data-theme="dark"] .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-nav .nav-link:hover {
+  color: var(--primary) !important;
+  background: rgba(57, 192, 195, 0.15) !important;
 } 
 
  
-=======
 .btn-proximamente {
   background: var(--gradient);
   border: none;
@@ -1640,8 +2015,108 @@ header, .navbar, .navbar-light, [data-theme="dark"] header, [data-theme="dark"] 
   pointer-events: none;
   box-shadow: none;
   transition: all 0.3s ease;
-} 
->>>>>>> 0a060881b9fe3f78d7dd3a9cc47410313f31c1b0
+}
+
+/* ========================================
+   RAFFLE BUTTON GRADIENT ANIMATION
+   ======================================== */
+
+/* Infinite looping gradient animation for raffle button */
+#goToRifaBtn {
+  background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f, #ff6b35);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  border: none !important;
+  color: white !important;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  /* Ensure square dimensions are maintained */
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#goToRifaBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+  animation: gradientShift 1.5s ease infinite;
+}
+
+#goToRifaBtn:active {
+  transform: translateY(0);
+}
+
+#goToRifaBtn i {
+  color: white !important;
+  position: relative;
+  z-index: 2;
+}
+
+/* Gradient animation keyframes */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Dark mode override for raffle button */
+[data-theme="dark"] #goToRifaBtn {
+  background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f, #ff6b35);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  color: white !important;
+}
+
+[data-theme="dark"] #goToRifaBtn:hover {
+  background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f, #ff6b35);
+  background-size: 300% 300%;
+  animation: gradientShift 1.5s ease infinite;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+[data-theme="dark"] #goToRifaBtn i {
+  color: white !important;
+}
+
+/* Responsive adjustments for raffle button */
+@media (max-width: 991.98px) {
+  #goToRifaBtn {
+    animation: gradientShift 2.5s ease infinite;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+  }
+  
+  #goToRifaBtn:hover {
+    animation: gradientShift 1.2s ease infinite;
+  }
+}
+
+@media (max-width: 576px) {
+  #goToRifaBtn {
+    animation: gradientShift 2s ease infinite;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+  
+  #goToRifaBtn:hover {
+    animation: gradientShift 1s ease infinite;
+  }
+}
 
 /* --- MEJORA DEL MENÚ NAVBAR EN MOBILE --- */
 @media (max-width: 991.98px) {
@@ -1781,3 +2256,76 @@ header, .navbar, .navbar-light, [data-theme="dark"] header, [data-theme="dark"] 
   }
 }
 /* --- FIN MENÚ MOBILE DROPDOWN DESDE NAVBAR --- */
+
+/* ========================================
+   ULTIMATE DARK MODE NAVBAR FIX
+   ======================================== */
+
+/* Force all navbar text to be visible in dark mode - HIGHEST PRIORITY */
+[data-theme="dark"] .navbar * {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar .text-dark,
+[data-theme="dark"] .navbar .fw-bold.text-dark,
+[data-theme="dark"] .navbar span.fw-bold.text-dark,
+[data-theme="dark"] .navbar-actions .text-dark,
+[data-theme="dark"] .navbar-actions .fw-bold.text-dark,
+[data-theme="dark"] .navbar-actions span.fw-bold.text-dark,
+[data-theme="dark"] .navbar-actions .d-flex.flex-column .text-dark,
+[data-theme="dark"] .navbar-actions .d-flex.flex-column .fw-bold.text-dark {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: none !important;
+}
+
+/* Ensure navbar links are visible */
+[data-theme="dark"] .navbar .nav-link,
+[data-theme="dark"] .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar .nav-link:hover,
+[data-theme="dark"] .navbar-nav .nav-link:hover {
+  color: var(--primary) !important;
+}
+
+/* Ensure navbar brand is visible */
+[data-theme="dark"] .navbar .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* OVERRIDE FOR NAVBAR-LIGHT CLASS IN DARK MODE */
+[data-theme="dark"] .navbar-light .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-light .navbar-brand {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .navbar-light .text-dark {
+  color: #ffffff !important;
+}
+
+/* ULTIMATE OVERRIDE - Force all text in navbar to be white */
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .navbar-light,
+[data-theme="dark"] .navbar *,
+[data-theme="dark"] .navbar-light * {
+  color: #ffffff !important;
+}
+
+/* Specific overrides for navbar action labels */
+[data-theme="dark"] .navbar-actions span,
+[data-theme="dark"] .navbar-actions .fw-bold,
+[data-theme="dark"] .navbar-actions .text-dark {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}

@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initAnalytics(); // Initialize analytics tracking
     
+    // Force navbar text visibility on page load
+    setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        if (currentTheme === 'dark' && typeof window.forceNavbarTextVisibility === 'function') {
+            window.forceNavbarTextVisibility(true);
+        }
+    }, 100);
+    
 });
 
 /**
@@ -324,34 +332,88 @@ function initSearchFunctionality() {
 }
 
 /**
+ * Toggle navbar light/dark color scheme classes
+ */
+function toggleNavbarColorScheme(isDark) {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    if (isDark) {
+        navbar.classList.remove('navbar-light');
+        navbar.classList.add('navbar-dark');
+    } else {
+        navbar.classList.remove('navbar-dark');
+        navbar.classList.add('navbar-light');
+    }
+}
+
+/**
  * Initialize dark mode toggle
  */
 function initDarkMode() {
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
+    const root = document.documentElement;
     // El logo ya no cambia, solo se gestiona el modo oscuro
 
     // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
-        body.setAttribute('data-theme', savedTheme);
+        root.setAttribute('data-theme', savedTheme);
         updateDarkModeIcon(savedTheme === 'dark');
+        forceNavbarTextVisibility(savedTheme === 'dark');
+        toggleNavbarColorScheme(savedTheme === 'dark');
     }
     
-    darkModeToggle.addEventListener('click', function() {
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateDarkModeIcon(newTheme === 'dark');
-    });
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            const isDark = newTheme === 'dark';
+            updateDarkModeIcon(isDark);
+            forceNavbarTextVisibility(isDark);
+            toggleNavbarColorScheme(isDark);
+        });
+    }
     
     function updateDarkModeIcon(isDark) {
+        if (!darkModeToggle) return;
         const icon = darkModeToggle.querySelector('i');
-        icon.className = isDark ? 'bi bi-sun' : 'bi bi-moon';
+        if (icon) {
+            icon.className = isDark ? 'bi bi-sun' : 'bi bi-moon';
+        }
         darkModeToggle.setAttribute('title', isDark ? 'Modo claro' : 'Modo oscuro');
     }
+    
+    function forceNavbarTextVisibility(isDark) {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+        
+        // Force all navbar text to be visible in dark mode
+        const navbarTexts = navbar.querySelectorAll('.text-dark, .fw-bold.text-dark, .nav-link, .navbar-brand, span');
+        
+        navbarTexts.forEach(element => {
+            if (isDark) {
+                element.style.color = '#ffffff';
+                element.style.webkitTextFillColor = '#ffffff';
+                element.style.background = 'none';
+                element.style.webkitBackgroundClip = 'initial';
+                element.style.backgroundClip = 'initial';
+                element.style.textShadow = 'none';
+            } else {
+                // Reset to default in light mode
+                element.style.color = '';
+                element.style.webkitTextFillColor = '';
+                element.style.background = '';
+                element.style.webkitBackgroundClip = '';
+                element.style.backgroundClip = '';
+                element.style.textShadow = '';
+            }
+        });
+    }
+    
+    // Make function global for external access
+    window.forceNavbarTextVisibility = forceNavbarTextVisibility;
 }
 
 /**
@@ -458,6 +520,7 @@ function navigateToSection(sectionId) {
             searchModal.hide();
         }
     }
+
 }
 
 // Initialize additional features
@@ -594,7 +657,7 @@ function initAnalytics() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', function() {
-            const currentTheme = document.body.getAttribute('data-theme');
+            const currentTheme = document.documentElement.getAttribute('data-theme');
             trackEvent('theme_toggle', {
                 theme: currentTheme === 'dark' ? 'light' : 'dark'
             });

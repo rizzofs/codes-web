@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorteo Tablet - CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <script>
+        (function(){
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <meta name="description"
         content="Participá del sorteo de una Tablet Android 15 organizado por CODES++ - Centro de Estudiantes de Sistemas de la UNLu." />
     <meta name="keywords" content="sorteo, tablet, CODES++, centro de estudiantes, sistemas, UNLu" />
@@ -33,10 +43,32 @@
                     <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
                 </a>
                 <div class="navbar-actions d-flex gap-2 me-3">
-                    <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" title="Modo oscuro">
-                        <i class="bi bi-moon"></i>
-                    </button>
+                    <div class="d-flex flex-column align-items-center">
+                        <button
+                            class="btn btn-outline-primary btn-sm"
+                            id="searchToggle"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Buscar en el sitio"
+                        >
+                            <i class="bi bi-search"></i>
+                        </button>
+                        <span class="fw-bold text-dark">Buscar</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Modo oscuro">
+                            <i class="bi bi-moon"></i>
+                        </button>
+                        <span class="fw-bold text-dark">Modo</span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+                        <button class="btn btn-outline-warning btn-sm" id="goToRifaBtn" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="Ir a la Rifa por la Tablet">
+                            <i class="bi bi-gift"></i>
+                        </button>
+                        <span class="fw-bold text-dark">Participá</span>
+                    </div>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -420,6 +452,31 @@
         </div>
     </footer>
 
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">
+                        <i class="bi bi-search me-2"></i>Buscar en el sitio
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Escribe tu búsqueda..." />
+                    </div>
+                    <div id="searchResults" class="search-results">
+                        <!-- Los resultados se mostrarán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Menú Mobile tipo dropdown desde navbar (sin cruz de cierre) -->
     <div class="modal fade mobile-menu-modal" id="mobileMenuModal" tabindex="-1" aria-labelledby="mobileMenuLabel" aria-hidden="true">
       <div class="modal-dialog mobile-menu-dropdown" style="margin: 0 auto; max-width: 420px;">
@@ -442,6 +499,97 @@
         </div>
       </div>
     </div>
+
+    <!-- Search functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchToggle = document.getElementById('searchToggle');
+            const searchModal = document.getElementById('searchModal');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (searchToggle && searchModal) {
+                searchToggle.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(searchModal);
+                    modal.show();
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+                    if (query.length > 2) {
+                        performSearch(query);
+                    } else {
+                        searchResults.innerHTML = '';
+                    }
+                });
+            }
+            
+            function performSearch(query) {
+                // Define searchable content for sorteo page
+                const searchableContent = [
+                    {
+                        title: 'Sorteo de Tablet',
+                        content: 'Participá en el sorteo de una Tablet Android 15 con teclado, ratón, lápiz óptico y funda protectora.',
+                        url: '#sorteo'
+                    },
+                    {
+                        title: 'Formulario de Participación',
+                        content: 'Completá el formulario para participar en el sorteo de la tablet.',
+                        url: '#formulario'
+                    },
+                    {
+                        title: 'Sistema de Chances',
+                        content: 'Cada chance es una oportunidad extra de ganar. Podés comprar todas las veces que quieras.',
+                        url: '#chances'
+                    },
+                    {
+                        title: 'Consultar Chances',
+                        content: 'Verificá tus chances actuales en el sorteo.',
+                        url: 'verificar-chances.html'
+                    },
+                    {
+                        title: 'Características de la Tablet',
+                        content: 'Android 15, 10.1 pulgadas, teclado, ratón, lápiz óptico, funda protectora y cable USB-C.',
+                        url: '#caracteristicas'
+                    },
+                    {
+                        title: 'Contacto',
+                        content: 'Si tenés alguna pregunta sobre el sorteo, no dudes en contactarnos.',
+                        url: 'index.html#contacto'
+                    }
+                ];
+                
+                const results = searchableContent.filter(item => 
+                    item.title.toLowerCase().includes(query.toLowerCase()) ||
+                    item.content.toLowerCase().includes(query.toLowerCase())
+                );
+                
+                displaySearchResults(results);
+            }
+            
+            function displaySearchResults(results) {
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<p class="text-muted">No se encontraron resultados.</p>';
+                    return;
+                }
+                
+                const resultsHtml = results.map(result => `
+                    <div class="search-result-item p-3 border-bottom">
+                        <h6 class="mb-1">
+                            <a href="${result.url}" class="text-decoration-none">
+                                ${result.title}
+                            </a>
+                        </h6>
+                        <p class="mb-0 text-muted small">${result.content.substring(0, 150)}...</p>
+                    </div>
+                `).join('');
+                
+                searchResults.innerHTML = resultsHtml;
+            }
+        });
+    </script>
 
     <!-- Script para abrir/cerrar el modal tipo dropdown -->
     <script>

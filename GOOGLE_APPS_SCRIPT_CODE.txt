@@ -1,43 +1,91 @@
+// Web App para gestionar enlaces de WhatsApp por materia
+// Hoja: "Grupos" con columnas: Codigo | Materia | Link | Actualizado | ActualizadoPor
+
+function doGet(e) {
+  var action = (e && e.parameter && e.parameter.action) || 'ping';
+  var sheet = getGroupsSheet_();
+  if (action === 'list') {
+    var data = sheet.getDataRange().getValues();
+    var rows = [];
+    for (var i = 1; i < data.length; i++) {
+      rows.push({
+        code: String(data[i][0] || ''),
+        name: String(data[i][1] || ''),
+        link: String(data[i][2] || ''),
+        updatedAt: data[i][3] ? new Date(data[i][3]).toISOString() : '',
+        updatedBy: String(data[i][4] || '')
+      });
+    }
+    return json_({ rows: rows });
+  }
+  if (action === 'get') {
+    var code = (e.parameter && e.parameter.code) || '';
+    if (!code) return json_({ error: 'code requerido' }, 400);
+    var idx = findCodeRow_(sheet, code);
+    if (idx < 0) return json_({ code: code, link: '' });
+    var row = sheet.getRange(idx, 1, 1, 5).getValues()[0];
+    return json_({ code: row[0], name: row[1], link: row[2], updatedAt: row[3], updatedBy: row[4] });
+  }
+  return json_({ ok: true, message: 'API grupos operativa' });
+}
+
 function doPost(e) {
   try {
-    // Obtener la hoja activa
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    
-    // Obtener los datos del formulario
-    var data = JSON.parse(e.postData.contents);
-    
-    // Crear una nueva fila con los datos
-    var rowData = [
-      new Date(), // Timestamp
-      data.nombre || '',
-      data.apellido || '',
-      data.email || '',
-      data.dni || '',
-      data.telefono || '',
-      data.cantidadChances || '',
-      data.pagoConfirmado || false,
-      data.fechaRegistro || new Date().toISOString(),
-      data.observaciones || ''
-    ];
-    
-    // Agregar la fila a la hoja
-    sheet.appendRow(rowData);
-    
-    // Devolver respuesta exitosa
-    return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
-      
-  } catch(error) {
-    // Devolver error
-    return ContentService
-      .createTextOutput(JSON.stringify({ 'result': 'error', 'error': error.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    var payload = JSON.parse(e.postData.contents);
+    var code = String(payload.code || '').trim();
+    var name = String(payload.name || '').trim();
+    var link = String(payload.link || '').trim();
+    var updatedBy = String(payload.updatedBy || 'anónimo').trim();
+    if (!code || !link) return json_({ error: 'code y link son requeridos' }, 400);
+    var sheet = getGroupsSheet_();
+    // crear encabezados si está vacía
+    ensureHeaders_(sheet);
+    var rowIndex = findCodeRow_(sheet, code);
+    var now = new Date();
+    if (rowIndex > 0) {
+      // update existente
+      sheet.getRange(rowIndex, 1, 1, 5).setValues([[code, name, link, now, updatedBy]]);
+      return json_({ result: 'updated', code: code, link: link });
+    } else {
+      // insert nuevo
+      sheet.appendRow([code, name, link, now, updatedBy]);
+      return json_({ result: 'inserted', code: code, link: link });
+    }
+  } catch (err) {
+    return json_({ error: String(err) }, 500);
   }
 }
 
-function doGet(e) {
-  return ContentService
-    .createTextOutput('API funcionando correctamente')
-    .setMimeType(ContentService.MimeType.TEXT);
-} 
+// Helpers
+function getGroupsSheet_() {
+  var ss = SpreadsheetApp.openById('16FeoEYdj5FTmKzCJY_IqTPB6rPU4p3eT3R5PwPtMdME');
+  var sheet = ss.getSheetByName('Grupos');
+  if (!sheet) sheet = ss.insertSheet('Grupos');
+  return sheet;
+}
+
+function ensureHeaders_(sheet) {
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['Codigo', 'Materia', 'Link', 'Actualizado', 'ActualizadoPor']);
+  } else {
+    var firstRow = sheet.getRange(1, 1, 1, 5).getValues()[0];
+    if (String(firstRow[0]).toLowerCase() !== 'codigo') {
+      sheet.insertRowBefore(1);
+      sheet.getRange(1,1,1,5).setValues([['Codigo','Materia','Link','Actualizado','ActualizadoPor']]);
+    }
+  }
+}
+
+function findCodeRow_(sheet, code) {
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim() === String(code).trim()) return i + 1;
+  }
+  return -1;
+}
+
+function json_(obj, status) {
+  var out = ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+  if (status) out.setResponseCode(status);
+  return out;
+}

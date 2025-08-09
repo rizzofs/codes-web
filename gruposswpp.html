@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grupos de WhatsApp por cuatrimestre | CODES++</title>
+
+    <meta name="description" content="Accedé a los grupos de WhatsApp organizados por cuatrimestre para coordinar cursadas, resolver dudas y recibir avisos." />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script>
+      (function(){
+        try {
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+        } catch(e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <header id="header">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">
+            <img src="assets/images/Logo.svg" alt="Logo CODES++" class="navbar-logo" />
+          </a>
+          <div class="navbar-actions d-flex gap-2 me-3">
+            <div class="d-flex flex-column align-items-center">
+              <button class="btn btn-outline-primary btn-sm" id="searchToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar en el sitio">
+                <i class="bi bi-search"></i>
+              </button>
+              <span class="fw-bold text-dark">Buscar</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Modo oscuro">
+                <i class="bi bi-moon"></i>
+              </button>
+              <span class="fw-bold text-dark">Modo</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <button class="btn btn-outline-warning btn-sm" id="goToRifaBtn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ir a la Rifa por la Tablet">
+                <i class="bi bi-gift"></i>
+              </button>
+              <span class="fw-bold text-dark">Participá</span>
+            </div>
+          </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav gap-2">
+              <li class="nav-item"><a class="nav-link" href="index.html#nosotros">Nosotros</a></li>
+              <li class="nav-item"><a class="nav-link" href="index.html#integrantes">Integrantes</a></li>
+              <li class="nav-item"><a class="nav-link" href="index.html#eventos">Actividades</a></li>
+              <li class="nav-item"><a class="nav-link" href="index.html#extra">Recursos</a></li>
+              <li class="nav-item"><a class="nav-link" href="index.html#faq">FAQ</a></li>
+              <li class="nav-item"><a class="nav-link" href="verificar-chances.html"><i class="bi bi-search me-1"></i>Consultar Chances</a></li>
+              <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="container" style="padding-top: 120px;">
+      <h1 class="section-title">📱 Grupos de WhatsApp por cuatrimestre</h1>
+      <p class="section-subtitle">Elegí tu cuatrimestre y unite al grupo correspondiente. Si un enlace cambia o hay un nuevo grupo, avisanos.</p>
+
+      <div class="resource-item d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3">
+        <div class="me-md-3">
+          <h5 class="mb-1"><i class="bi bi-people-fill text-success me-2"></i>Grupo general de la carrera</h5>
+          <p class="mb-0 text-muted">Información, avisos y coordinación general para todos los estudiantes.</p>
+        </div>
+        <div class="mt-2 mt-md-0">
+          <a href="https://chat.whatsapp.com/BKy4YBq8vrf0yYfsO4zsJr?mode=ac_t" target="_blank" rel="noopener" class="btn btn-success">
+            <i class="bi bi-whatsapp me-1"></i>Unirme al grupo general
+          </a>
+        </div>
+      </div>
+
+      <div class="alert alert-secondary mb-4">
+        <i class="bi bi-info-circle me-2"></i>
+        Los grupos son <strong>únicos por materia</strong> y abarcan <strong>todas las sedes</strong> (Luján, San Miguel y Chivilcoy).
+      </div>
+
+      <div class="row g-3">
+        <!-- I -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-1-circle text-primary me-2"></i>I cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11271 - Introducción a la Programación
+                <a data-materia="11271" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                13014 - Matemática Básica
+                <a data-materia="13014" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                21256 - Introducción a los Sistemas de Información
+                <a data-materia="21256" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- II -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-2-circle text-primary me-2"></i>II cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11274 - Programación Estructurada
+                <a data-materia="11274" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11256 - Sistemas de Información I
+                <a data-materia="11256" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                41407 - Organización de Computadoras
+                <a data-materia="41407" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                13021 - Álgebra Lineal y Geometría
+                <a data-materia="13021" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- III -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-3-circle text-primary me-2"></i>III cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11275 - Estructuras de Datos y Algoritmos I
+                <a data-materia="11275" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11258 - Sistemas de Información II
+                <a data-materia="11258" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                13022 - Análisis Matemático I
+                <a data-materia="13022" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                41426 - Arquitectura de Computadoras
+                <a data-materia="41426" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- IV -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-4-circle text-primary me-2"></i>IV cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11276 - Programación Orientada a Objetos
+                <a data-materia="11276" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                13923 - Análisis Matemático II
+                <a data-materia="13923" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11259 - Sistemas de Información III
+                <a data-materia="11259" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11410 - Sistemas Operativos
+                <a data-materia="11410" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- V -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-5-circle text-primary me-2"></i>V cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11083 - Estadística y Probabilidad
+                <a data-materia="11083" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14027 - Fundamentos de Redes de Datos
+                <a data-materia="14027" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11286 - Programación en Ambiente Web
+                <a data-materia="11286" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11277 - Bases de Datos Relacionales
+                <a data-materia="11277" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- VI (APU) -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-6-circle text-primary me-2"></i>VI cuatrimestre (APU)</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                21279 - Gestión de Soluciones Innovadoras
+                <a data-materia="21279" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11287 - Seminario de Integración Profesional
+                <a data-materia="11287" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- VI (Lic.) -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-6-circle text-primary me-2"></i>VI cuatrimestre (Lic.)</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11278 - Bases de Datos Distribuidas
+                <a data-materia="11278" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14028 - Matemática Computacional
+                <a data-materia="14028" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- VII -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-7-circle text-primary me-2"></i>VII cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14029 - Administración de Redes
+                <a data-materia="14029" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14030 - Estructuras de Datos y Algoritmos II
+                <a data-materia="14030" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14031 - Teoría de la Computación
+                <a data-materia="14031" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11260 - Sistemas de Información IV
+                <a data-materia="11260" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- VIII -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-8-circle text-primary me-2"></i>VIII cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11288 - Gestión de Datos Masivos
+                <a data-materia="11288" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14032 - Diseño Avanzado de Software
+                <a data-materia="14032" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                41429 - Sistemas Distribuidos y Programación Paralela
+                <a data-materia="41429" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14034 - Modelos de decisión y optimización
+                <a data-materia="14034" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- IX -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-9-circle text-primary me-2"></i>IX cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11292 - Seguridad Informática
+                <a data-materia="11292" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11289 - Inteligencia Artificial
+                <a data-materia="11289" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14033 - Bases de Datos Textuales
+                <a data-materia="14033" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- X -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-0-circle text-primary me-2"></i>X cuatrimestre</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                21258 - Gestión de Proyectos
+                <a data-materia="21258" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                21257 - Aspectos Profesionales y Sociales
+                <a data-materia="21257" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                11091 - Taller de Tesina
+                <a data-materia="11091" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="small text-muted mt-3">Referencias y plan oficial: <a href="https://www.unlu.edu.ar/carg-sistemas.html" target="_blank">UNLu - Licenciatura en Sistemas de Información</a>.</p>
+      <div id="cargar-grupos-cta" class="alert alert-info mt-2 d-flex align-items-center justify-content-between">
+        <div>
+          <i class="bi bi-info-circle me-2"></i>
+          Enviá los enlaces de cada cuatrimestre y los activamos al instante.
+        </div>
+        <a href="cargar-grupos.html" class="btn btn-primary btn-sm">
+          <i class="bi bi-pencil-square me-1"></i>Agregar/Actualizar grupos
+        </a>
+      </div>
+    </section>
+
+    <footer id="contacto">
+      <div class="container">
+        <div class="footer-content">
+          <h3 class="footer-title">Centro Organizado de Estudiantes de Sistemas - CODES++</h3>
+          <div class="contact-item"><i class="bi bi-envelope-fill"></i> <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a></div>
+          <div class="social-links">
+            <a href="https://www.instagram.com/codes_unlu/" target="_blank" class="social-link"><i class="bi bi-instagram"></i></a>
+            <a href="https://discord.gg/rDtEx4dMvD" target="_blank" class="social-link"><i class="bi bi-discord"></i></a>
+            <a href="https://github.com/CODES-UNLU" target="_blank" class="social-link"><i class="bi bi-github"></i></a>
+            <a href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c" target="_blank" class="social-link"><i class="bi bi-whatsapp"></i></a>
+          </div>
+          <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem">© 2025 CODES++. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+  <!-- Modal Menú Mobile tipo dropdown desde navbar (sin cruz de cierre) -->
+  <div class="modal fade mobile-menu-modal" id="mobileMenuModal" tabindex="-1" aria-labelledby="mobileMenuLabel" aria-hidden="true">
+    <div class="modal-dialog mobile-menu-dropdown" style="margin: 0 auto; max-width: 420px;">
+      <div class="modal-content border-0 rounded-bottom-4 shadow-lg p-0" style="border-top-left-radius: 0; border-top-right-radius: 0;">
+        <div class="modal-body d-flex flex-column align-items-center justify-content-center p-0">
+          <ul class="nav flex-column gap-2 w-100 align-items-center mb-2 py-3">
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#nosotros" data-bs-dismiss="modal">Nosotros</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#integrantes" data-bs-dismiss="modal">Integrantes</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#eventos" data-bs-dismiss="modal">Actividades</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#extra" data-bs-dismiss="modal">Recursos</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="index.html#faq" data-bs-dismiss="modal">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="verificar-chances.html"><i class="bi bi-search me-1"></i>Consultar Chances</a></li>
+            <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#contacto" data-bs-dismiss="modal">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Search Modal (reutilizable) -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="searchModalLabel">Buscar en el sitio</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" id="searchInput" placeholder="Escribí para buscar..." />
+            <div id="searchResults" class="search-results mt-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <!-- Script para abrir/cerrar el modal tipo dropdown -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggler = document.querySelector('.navbar-toggler');
+        var modalEl = document.getElementById('mobileMenuModal');
+        if (toggler && modalEl && window.bootstrap) {
+          var mobileMenuModal = new bootstrap.Modal(modalEl, { backdrop: true });
+          toggler.addEventListener('click', function(e) {
+            if (window.innerWidth <= 991) {
+              e.preventDefault();
+              mobileMenuModal.show();
+            }
+          });
+          modalEl.addEventListener('click', function(e) { if (e.target === modalEl) mobileMenuModal.hide(); });
+          modalEl.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function() { mobileMenuModal.hide(); });
+          });
+        }
+      });
+    </script>
+    <script src="assets/js/groups.js"></script>
+    <script>
+      // Normaliza links sin protocolo
+      function normalizeLink(url){
+        let u = (url || '').trim();
+        if (!u) return '';
+        if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+        return u;
+      }
+
+      // Activa botones automáticamente con datos de la hoja
+      document.addEventListener('DOMContentLoaded', async function(){
+        try {
+          const rows = await Groups.fetchAllGroups();
+          const map = new Map();
+          rows.forEach(r => {
+            const code = String(r.code || r.Codigo || r[0] || '').trim();
+            const link = String(r.link || r.Link || r[2] || '').trim();
+            if (code && link) map.set(code, link);
+          });
+
+          document.querySelectorAll('a[data-materia]').forEach(a => {
+            const code = a.getAttribute('data-materia');
+            const raw = map.get(String(code));
+            const newA = a.cloneNode(true);
+            if (raw) {
+              const link = normalizeLink(raw);
+              newA.href = link;
+              newA.className = 'btn btn-success btn-sm';
+              newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Unirme';
+              newA.removeAttribute('aria-disabled');
+              newA.setAttribute('target','_blank');
+              newA.setAttribute('rel','noopener');
+            } else {
+              // Sin enlace: botón gris que lleva al CTA inferior
+              newA.href = '#cargar-grupos-cta';
+              newA.className = 'btn btn-outline-secondary btn-sm';
+              newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Sin enlace';
+              newA.removeAttribute('aria-disabled');
+            }
+            a.parentNode.replaceChild(newA, a);
+          });
+        } catch (e) {
+          console.error('No se pudo cargar la lista de grupos', e);
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        // Botón Participá en navbar: ir a sorteo.html
+        const goToRifaBtn = document.getElementById('goToRifaBtn');
+        if (goToRifaBtn) {
+          goToRifaBtn.addEventListener('click', () => {
+            window.location.href = 'sorteo.html';
+          });
+        }
+      });
+    </script>
+  </body>
+  </html>
+
+
