@@ -149,6 +149,54 @@ header.scrolled {
   justify-content: center !important;
 }
 
+/* Back to Groups button: pill style, auto width, gradient-friendly */
+#backToGroupsBtn {
+  width: auto !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  padding: 0.375rem 0.75rem !important;
+  border-radius: 9999px !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background-color: rgba(57, 192, 195, 0.08) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.25rem !important;
+}
+
+#backToGroupsBtn:hover {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(57, 192, 195, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+#backToGroupsBtn i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  #backToGroupsBtn {
+    padding: 0.25rem 0.5rem !important;
+    height: 28px !important;
+  }
+}
+
+[data-theme="dark"] #backToGroupsBtn {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background-color: rgba(57, 192, 195, 0.12) !important;
+}
+
+[data-theme="dark"] #backToGroupsBtn:hover {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
 .navbar-actions .btn:hover {
   transform: translateY(-1px);
 }
