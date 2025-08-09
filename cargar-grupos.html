@@ -34,11 +34,19 @@
         <div class="card p-4 mb-4">
           <form id="groupForm" class="row g-3">
             <div class="col-12">
+              <label for="plan" class="form-label fw-semibold">Plan (obligatorio)</label>
+              <select id="plan" class="form-select" required>
+                <option value="" selected disabled>Seleccionar plan</option>
+                <option value="1714">17.14 (actual)</option>
+                <option value="1713">17.13</option>
+              </select>
+            </div>
+            <div class="col-12">
               <label for="materia" class="form-label fw-semibold">Materia</label>
-              <select id="materia" class="form-select" required>
+              <select id="materia" class="form-select" required disabled>
                 <option value="">Seleccionar materia</option>
               </select>
-              <div class="form-text">La lista incluye todas las materias por código y nombre.</div>
+              <div class="form-text">Primero elegí el plan para ver las materias disponibles.</div>
             </div>
             <div class="col-12">
               <label class="form-label fw-semibold">Link actual (si existe)</label>
@@ -117,8 +125,16 @@
     // Populate materias
     function populateMaterias() {
       const sel = document.getElementById('materia');
+      const planVal = document.getElementById('plan').value;
+      if (!planVal) {
+        sel.innerHTML = '<option value="">Seleccionar materia</option>';
+        sel.disabled = true;
+        return;
+      }
+      const list = Groups.getMateriasByPlan(planVal);
       sel.innerHTML = '<option value="">Seleccionar materia</option>' +
-        Groups.MATERIAS.map(m => `<option value="${m.code}">${m.code} - ${m.name}</option>`).join('');
+        list.map(m => `<option value="${m.code}">${m.code} - ${m.name}</option>`).join('');
+      sel.disabled = false;
     }
 
     // Load current link when selecting materia
@@ -130,7 +146,8 @@
       infoBox.querySelector('span').textContent = 'Buscando...';
       hrefBtn.classList.add('d-none');
       try {
-        const data = await Groups.fetchGroupByCode(code);
+        const plan = document.getElementById('plan').value || '1714';
+        const data = await Groups.fetchGroupByCode(code, plan);
         if (data && data.link) {
           infoBox.classList.remove('alert-light');
           infoBox.classList.add('alert-info');
@@ -161,11 +178,13 @@
       btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Guardando...';
       btn.disabled = true;
       try {
+        const plan = document.getElementById('plan').value || '1714';
         const result = await Groups.upsertGroupLink({
           code,
           name: materia ? materia.name : '',
           link: nuevoLink,
-          updatedBy: nombre || 'anónimo'
+          updatedBy: nombre || 'anónimo',
+          plan
         });
         await loadCurrentLink(code);
         await renderTabla();
@@ -183,7 +202,8 @@
       const tbody = document.getElementById('tbodyGrupos');
       tbody.innerHTML = '<tr><td colspan="4" class="text-muted">Cargando...</td></tr>';
       try {
-        const rows = await Groups.fetchAllGroups();
+        const plan = document.getElementById('plan').value || '1714';
+        const rows = await Groups.fetchAllGroups(plan);
         if (!rows || rows.length === 0) {
           tbody.innerHTML = '<tr><td colspan="4" class="text-muted">Sin datos</td></tr>';
           return;
@@ -211,6 +231,13 @@
       document.getElementById('materia').addEventListener('change', (e) => {
         if (e.target.value) loadCurrentLink(e.target.value);
       });
+      document.getElementById('plan').addEventListener('change', () => {
+        populateMaterias();
+        document.getElementById('linkActual').querySelector('span').textContent = 'Sin enlace cargado';
+        document.getElementById('linkActualHref').classList.add('d-none');
+        document.getElementById('materia').value = '';
+        renderTabla();
+      });
       document.getElementById('groupForm').addEventListener('submit', handleSubmit);
       document.getElementById('btnVerTodos').addEventListener('click', renderTabla);
       renderTabla();
@@ -218,6 +245,12 @@
       // Preseleccionar materia por query param ?code=XXXX
       const params = new URLSearchParams(window.location.search);
       const codeParam = params.get('code');
+      const planParam = params.get('plan');
+      if (planParam) {
+        const selPlan = document.getElementById('plan');
+        selPlan.value = planParam;
+      }
+      populateMaterias();
       if (codeParam) {
         const sel = document.getElementById('materia');
         sel.value = codeParam;

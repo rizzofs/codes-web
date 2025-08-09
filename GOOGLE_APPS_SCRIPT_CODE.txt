@@ -3,7 +3,8 @@
 
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) || 'ping';
-  var sheet = getGroupsSheet_();
+  var plan = (e && e.parameter && e.parameter.plan) || '1714';
+  var sheet = getGroupsSheetByPlan_(plan);
   if (action === 'list') {
     var data = sheet.getDataRange().getValues();
     var rows = [];
@@ -36,8 +37,9 @@ function doPost(e) {
     var name = String(payload.name || '').trim();
     var link = String(payload.link || '').trim();
     var updatedBy = String(payload.updatedBy || 'anónimo').trim();
+    var plan = String(payload.plan || '1714').trim();
     if (!code || !link) return json_({ error: 'code y link son requeridos' }, 400);
-    var sheet = getGroupsSheet_();
+    var sheet = getGroupsSheetByPlan_(plan);
     // crear encabezados si está vacía
     ensureHeaders_(sheet);
     var rowIndex = findCodeRow_(sheet, code);
@@ -57,10 +59,11 @@ function doPost(e) {
 }
 
 // Helpers
-function getGroupsSheet_() {
+function getGroupsSheetByPlan_(plan) {
   var ss = SpreadsheetApp.openById('16FeoEYdj5FTmKzCJY_IqTPB6rPU4p3eT3R5PwPtMdME');
-  var sheet = ss.getSheetByName('Grupos');
-  if (!sheet) sheet = ss.insertSheet('Grupos');
+  var name = (String(plan) === '1713') ? 'Grupos1713' : 'Grupos';
+  var sheet = ss.getSheetByName(name);
+  if (!sheet) sheet = ss.insertSheet(name);
   return sheet;
 }
 

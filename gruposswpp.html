@@ -82,12 +82,25 @@
         </div>
       </div>
 
-      <div class="alert alert-secondary mb-4">
-        <i class="bi bi-info-circle me-2"></i>
-        Los grupos son <strong>únicos por materia</strong> y abarcan <strong>todas las sedes</strong> (Luján, San Miguel y Chivilcoy).
+      <div class="alert alert-secondary mb-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-info-circle me-2"></i>
+          <span>
+            Los grupos son <strong>únicos por materia</strong> y abarcan <strong>todas las sedes</strong> (Luján, San Miguel y Chivilcoy).
+          </span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="small text-muted">Plan:</span>
+          <div class="btn-group" role="group" aria-label="Elegir plan">
+            <input type="radio" class="btn-check" name="planSwitch" id="plan1714" autocomplete="off" checked>
+            <label class="btn btn-outline-primary btn-sm" for="plan1714">17.14</label>
+            <input type="radio" class="btn-check" name="planSwitch" id="plan1713" autocomplete="off">
+            <label class="btn btn-outline-primary btn-sm" for="plan1713">17.13</label>
+          </div>
+        </div>
       </div>
 
-      <div class="row g-3">
+      <div id="groupsGrid" class="row g-3">
         <!-- I -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
@@ -432,37 +445,122 @@
         return u;
       }
 
-      // Activa botones automáticamente con datos de la hoja
+      // Construye UI por plan y activa botones con datos de la hoja
       document.addEventListener('DOMContentLoaded', async function(){
         try {
-          const rows = await Groups.fetchAllGroups();
-          const map = new Map();
-          rows.forEach(r => {
-            const code = String(r.code || r.Codigo || r[0] || '').trim();
-            const link = String(r.link || r.Link || r[2] || '').trim();
-            if (code && link) map.set(code, link);
-          });
+          let currentPlan = (new URLSearchParams(window.location.search)).get('plan') || '1714';
+          // reflejar en switch
+          if (currentPlan === '1713') document.getElementById('plan1713').checked = true;
+          else document.getElementById('plan1714').checked = true;
 
-          document.querySelectorAll('a[data-materia]').forEach(a => {
-            const code = a.getAttribute('data-materia');
-            const raw = map.get(String(code));
-            const newA = a.cloneNode(true);
-            if (raw) {
-              const link = normalizeLink(raw);
-              newA.href = link;
-              newA.className = 'btn btn-success btn-sm';
-              newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Unirme';
-              newA.removeAttribute('aria-disabled');
-              newA.setAttribute('target','_blank');
-              newA.setAttribute('rel','noopener');
+          function renderGridForPlan(plan){
+            const container = document.getElementById('groupsGrid');
+            let cuatMap = [];
+            if (plan === '1713') {
+              cuatMap = [
+                { title: 'I cuatrimestre', codes: ['11071','11072','21056','41407'] },
+                { title: 'II cuatrimestre', codes: ['11073','11074','41406','31971'] },
+                { title: 'III cuatrimestre', codes: ['11081','11075','11056','31972'] },
+                { title: 'IV cuatrimestre', codes: ['11082','11410','11076','11077'] },
+                { title: 'V cuatrimestre', codes: ['11058','10040','11083','11079'] },
+                { title: 'VI cuatrimestre', codes: ['11059','11078','21057','11085'] },
+                { title: 'VII cuatrimestre', codes: ['41408','41409','11086','11087'] },
+                { title: 'VIII (Lic.)', codes: ['11412','11088','11060'] },
+                { title: 'IX (Lic.)', codes: ['11089','11092','11090','11091'] },
+                { title: 'X (Lic.)', codes: ['11417','21058','41410','11095'] }
+              ];
             } else {
-              // Sin enlace: botón gris que lleva al CTA inferior
-              newA.href = '#cargar-grupos-cta';
-              newA.className = 'btn btn-outline-secondary btn-sm';
-              newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Sin enlace';
-              newA.removeAttribute('aria-disabled');
+              cuatMap = [
+                { title: 'I cuatrimestre', codes: ['11271','13014','21256'] },
+                { title: 'II cuatrimestre', codes: ['11274','11256','41407','13021'] },
+                { title: 'III cuatrimestre', codes: ['11275','11258','13022','41426'] },
+                { title: 'IV cuatrimestre', codes: ['11276','13923','11259','11410'] },
+                { title: 'V cuatrimestre', codes: ['11083','14027','11286','11277'] },
+                { title: 'VI (APU)', codes: ['21279','11287'] },
+                { title: 'VI (Lic.)', codes: ['11278','14028'] },
+                { title: 'VII cuatrimestre', codes: ['14029','14030','14031','11260'] },
+                { title: 'VIII cuatrimestre', codes: ['11288','14032','41429','14034'] },
+                { title: 'IX cuatrimestre', codes: ['11292','11289','14033'] },
+                { title: 'X cuatrimestre', codes: ['21258','21257','11091'] }
+              ];
             }
-            a.parentNode.replaceChild(newA, a);
+
+            function materiaByCode(code){
+              const m = Groups.getMateriaByCode(code, plan);
+              return { code, name: m ? m.name : '(Materia)' };
+            }
+
+            const cols = cuatMap.map(group => {
+              const items = group.codes.map(materiaByCode);
+              return `
+                <div class="col-sm-6 col-lg-4">
+                  <div class="resource-item h-100 d-flex flex-column">
+                    <h5 class="mb-2">${group.title}</h5>
+                    <ul class="list-group mb-3">
+                      ${items.map(m => `
+                        <li class=\"list-group-item d-flex justify-content-between align-items-center\">${m.code} - ${m.name}
+                          <a data-materia=\"${m.code}\" href=\"#\" class=\"btn btn-outline-secondary btn-sm disabled\" aria-disabled=\"true\"><i class=\"bi bi-whatsapp me-1\"></i>Sin enlace</a>
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                </div>`;
+            });
+            container.innerHTML = cols.join('');
+          }
+
+          async function refreshByPlan(plan){
+            // reconstruir grid con materias del plan
+            renderGridForPlan(plan);
+            const rows = await Groups.fetchAllGroups(plan);
+            const map = new Map();
+            rows.forEach(r => {
+              const code = String(r.code || r.Codigo || r[0] || '').trim();
+              const link = String(r.link || r.Link || r[2] || '').trim();
+              if (code && link) map.set(code, link);
+            });
+            document.querySelectorAll('a[data-materia]').forEach(a => {
+              const code = a.getAttribute('data-materia');
+              const raw = map.get(String(code));
+              const newA = a.cloneNode(true);
+              if (raw) {
+                const link = normalizeLink(raw);
+                newA.href = link;
+                newA.className = 'btn btn-success btn-sm';
+                newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Unirme';
+                newA.removeAttribute('aria-disabled');
+                newA.setAttribute('target','_blank');
+                newA.setAttribute('rel','noopener');
+              } else {
+                newA.href = `cargar-grupos.html?code=${encodeURIComponent(code)}&plan=${encodeURIComponent(plan)}`;
+                newA.className = 'btn btn-outline-secondary btn-sm';
+                newA.innerHTML = '<i class="bi bi-whatsapp me-1"></i>Sin enlace';
+                newA.removeAttribute('aria-disabled');
+              }
+              a.parentNode.replaceChild(newA, a);
+            });
+          }
+
+          await refreshByPlan(currentPlan);
+
+          // Manejadores del switch
+          document.getElementById('plan1714').addEventListener('change', async () => {
+            if (document.getElementById('plan1714').checked) {
+              currentPlan = '1714';
+              const url = new URL(window.location.href);
+              url.searchParams.set('plan', '1714');
+              window.history.replaceState({}, '', url);
+              await refreshByPlan('1714');
+            }
+          });
+          document.getElementById('plan1713').addEventListener('change', async () => {
+            if (document.getElementById('plan1713').checked) {
+              currentPlan = '1713';
+              const url = new URL(window.location.href);
+              url.searchParams.set('plan', '1713');
+              window.history.replaceState({}, '', url);
+              await refreshByPlan('1713');
+            }
           });
         } catch (e) {
           console.error('No se pudo cargar la lista de grupos', e);

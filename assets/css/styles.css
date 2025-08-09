@@ -1740,6 +1740,11 @@ footer {
   }
 }
 
+/* Toggle plan switch spacing inside alert */
+.alert .btn-group .btn {
+  padding: 0.25rem 0.5rem;
+}
+
 /* ========================================
    EXPANDED NOSOTROS SECTION
    ======================================== */
