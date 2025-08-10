@@ -101,7 +101,28 @@
       </div>
 
       <div id="groupsGrid" class="row g-3">
-        <!-- I -->
+        <!-- Talleres Introductorios -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="resource-item h-100 d-flex flex-column">
+            <h5 class="mb-2"><i class="bi bi-tools text-warning me-2"></i>Talleres Introductorios</h5>
+            <ul class="list-group mb-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                19054 - Competencias Básicas en Informática (2) (7)
+                <a data-materia="19054" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                39553 - Competencias Básicas en Idioma Inglés (equivalente a niveles I y II) (2)
+                <a data-materia="39553" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                14026 - Taller Introductorio de Interpretación de Problemas (3)
+                <a data-materia="14026" href="#" class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true"><i class="bi bi-whatsapp me-1"></i>Sin enlace</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- I cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-1-circle text-primary me-2"></i>I cuatrimestre</h5>
@@ -122,7 +143,7 @@
           </div>
         </div>
 
-        <!-- II -->
+        <!-- II cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-2-circle text-primary me-2"></i>II cuatrimestre</h5>
@@ -147,7 +168,7 @@
           </div>
         </div>
 
-        <!-- III -->
+        <!-- III cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-3-circle text-primary me-2"></i>III cuatrimestre</h5>
@@ -172,7 +193,7 @@
           </div>
         </div>
 
-        <!-- IV -->
+        <!-- IV cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-4-circle text-primary me-2"></i>IV cuatrimestre</h5>
@@ -197,7 +218,7 @@
           </div>
         </div>
 
-        <!-- V -->
+        <!-- V cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-5-circle text-primary me-2"></i>V cuatrimestre</h5>
@@ -256,7 +277,7 @@
           </div>
         </div>
 
-        <!-- VII -->
+        <!-- VII cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-7-circle text-primary me-2"></i>VII cuatrimestre</h5>
@@ -281,7 +302,7 @@
           </div>
         </div>
 
-        <!-- VIII -->
+        <!-- VIII cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-8-circle text-primary me-2"></i>VIII cuatrimestre</h5>
@@ -306,7 +327,7 @@
           </div>
         </div>
 
-        <!-- IX -->
+        <!-- IX cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-9-circle text-primary me-2"></i>IX cuatrimestre</h5>
@@ -327,7 +348,7 @@
           </div>
         </div>
 
-        <!-- X -->
+        <!-- X cuatrimestre -->
         <div class="col-sm-6 col-lg-4">
           <div class="resource-item h-100 d-flex flex-column">
             <h5 class="mb-2"><i class="bi bi-0-circle text-primary me-2"></i>X cuatrimestre</h5>
@@ -347,7 +368,6 @@
             </ul>
           </div>
         </div>
-
       </div>
 
       <p class="small text-muted mt-3">Referencias y plan oficial: <a href="https://www.unlu.edu.ar/carg-sistemas.html" target="_blank">UNLu - Licenciatura en Sistemas de Información</a>.</p>
@@ -471,6 +491,7 @@
               ];
             } else {
               cuatMap = [
+                { title: 'Talleres Introductorios', codes: ['19054','39553','14026'] },
                 { title: 'I cuatrimestre', codes: ['11271','13014','21256'] },
                 { title: 'II cuatrimestre', codes: ['11274','11256','41407','13021'] },
                 { title: 'III cuatrimestre', codes: ['11275','11258','13022','41426'] },
