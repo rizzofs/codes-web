@@ -1299,7 +1299,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         // Verificar si ya se mostró el modal en esta sesión
-        var modalYaMostrado = localStorage.getItem('sorteoModalMostrado');
+        var modalYaMostrado = sessionStorage.getItem('sorteoModalMostrado');
         
         if (!modalYaMostrado) {
           // Mostrar el modal después de 2 segundos solo si no se ha mostrado antes
@@ -1307,8 +1307,8 @@
             var sorteoModal = new bootstrap.Modal(document.getElementById('sorteoModal'));
             sorteoModal.show();
             
-            // Marcar que ya se mostró el modal
-            localStorage.setItem('sorteoModalMostrado', 'true');
+            // Marcar que ya se mostró el modal en esta sesión
+            sessionStorage.setItem('sorteoModalMostrado', 'true');
           }, 2000);
         }
 
