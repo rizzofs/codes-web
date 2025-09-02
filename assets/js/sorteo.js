@@ -658,23 +658,62 @@ window.limpiarYVolver = function() {
         container.innerHTML = window.originalContainerContent;
         console.log('✅ Contenido original restaurado');
         
+        // Asegurar que el estado inicial sea correcto
+        const formStep = document.getElementById('formStep');
+        const productCard = document.querySelector('.product-card');
+        
+        console.log('🔍 Estado inicial después de restaurar:');
+        console.log('📍 FormStep encontrado:', !!formStep);
+        console.log('📍 ProductCard encontrado:', !!productCard);
+        
+        if (formStep) {
+            formStep.style.display = 'none';
+            console.log('✅ FormStep ocultado');
+        }
+        if (productCard) {
+            productCard.style.display = 'block';
+            console.log('✅ ProductCard mostrado');
+        }
+        
         // Re-inicializar los event listeners del formulario
+        console.log('⏰ Iniciando re-inicialización en 100ms...');
         setTimeout(() => {
+            console.log('🔄 Ejecutando re-inicialización...');
+            
             // Re-inicializar el botón principal de navegación
             const nextStepBtn = document.getElementById('nextStepBtn');
             const formStep = document.getElementById('formStep');
             const productCard = document.querySelector('.product-card');
             
+            console.log('🔍 Elementos encontrados en re-inicialización:');
+            console.log('📍 nextStepBtn:', !!nextStepBtn);
+            console.log('📍 formStep:', !!formStep);
+            console.log('📍 productCard:', !!productCard);
+            
             if (nextStepBtn) {
-                nextStepBtn.addEventListener('click', function() {
+                // Remover event listeners existentes si los hay
+                const newNextStepBtn = nextStepBtn.cloneNode(true);
+                nextStepBtn.parentNode.replaceChild(newNextStepBtn, nextStepBtn);
+                
+                // Agregar nuevo event listener
+                newNextStepBtn.addEventListener('click', function() {
                     console.log('🔄 Navegando al formulario...');
-                    if (productCard) productCard.style.display = 'none';
+                    console.log('📍 ProductCard encontrado:', !!productCard);
+                    console.log('📍 FormStep encontrado:', !!formStep);
+                    
+                    if (productCard) {
+                        productCard.style.display = 'none';
+                        console.log('✅ ProductCard ocultado');
+                    }
                     if (formStep) {
                         formStep.style.display = 'block';
                         formStep.scrollIntoView({behavior: 'smooth'});
+                        console.log('✅ FormStep mostrado y scrolleado');
                     }
                 });
                 console.log('🔄 Event listener del botón principal re-inicializado');
+            } else {
+                console.log('❌ No se encontró el botón nextStepBtn');
             }
             
             // Re-inicializar la función global goBackToProduct
