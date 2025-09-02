@@ -660,6 +660,33 @@ window.limpiarYVolver = function() {
         
         // Re-inicializar los event listeners del formulario
         setTimeout(() => {
+            // Re-inicializar el botón principal de navegación
+            const nextStepBtn = document.getElementById('nextStepBtn');
+            const formStep = document.getElementById('formStep');
+            const productCard = document.querySelector('.product-card');
+            
+            if (nextStepBtn) {
+                nextStepBtn.addEventListener('click', function() {
+                    console.log('🔄 Navegando al formulario...');
+                    if (productCard) productCard.style.display = 'none';
+                    if (formStep) {
+                        formStep.style.display = 'block';
+                        formStep.scrollIntoView({behavior: 'smooth'});
+                    }
+                });
+                console.log('🔄 Event listener del botón principal re-inicializado');
+            }
+            
+            // Re-inicializar la función global goBackToProduct
+            window.goBackToProduct = function() {
+                console.log('🔄 Volviendo al producto...');
+                if (formStep) formStep.style.display = 'none';
+                if (productCard) {
+                    productCard.style.display = 'block';
+                    productCard.scrollIntoView({behavior: 'smooth'});
+                }
+            };
+            
             // Re-inicializar la funcionalidad del formulario
             const cantidadChances = document.getElementById('cantidadChances');
             const goToPayContainer = document.getElementById('goToPayContainer');
