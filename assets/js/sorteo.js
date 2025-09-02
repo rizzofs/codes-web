@@ -675,11 +675,10 @@ window.limpiarYVolver = function() {
             console.log('✅ ProductCard mostrado');
         }
         
-        // Re-inicializar los event listeners del formulario
-        console.log('⏰ Iniciando re-inicialización en 100ms...');
-        setTimeout(() => {
-            console.log('🔄 Ejecutando re-inicialización...');
-            
+        // Re-inicializar los event listeners del formulario INMEDIATAMENTE
+        console.log('🔄 Iniciando re-inicialización INMEDIATA...');
+        
+        try {
             // Re-inicializar el botón principal de navegación
             const nextStepBtn = document.getElementById('nextStepBtn');
             const formStep = document.getElementById('formStep');
@@ -715,7 +714,6 @@ window.limpiarYVolver = function() {
             } else {
                 console.log('❌ No se encontró el botón nextStepBtn');
             }
-            
             // Re-inicializar la función global goBackToProduct
             window.goBackToProduct = function() {
                 console.log('🔄 Volviendo al producto...');
@@ -746,7 +744,9 @@ window.limpiarYVolver = function() {
                 actualizarBotonPago();
                 console.log('🔄 Event listeners del formulario re-inicializados');
             }
-        }, 100);
+        } catch (error) {
+            console.error('❌ Error en re-inicialización:', error);
+        }
     } else {
         // Si no hay contenido guardado, recargar la página
         console.log('🔄 No hay contenido guardado - Recargando página...');
