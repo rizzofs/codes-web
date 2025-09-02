@@ -86,7 +86,7 @@ configurarTrigger();
 ## 📞 Datos de Configuración
 
 ### MercadoPago
-- **Access Token**: `APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374`
+- **Access Token**: `TU_ACCESS_TOKEN_AQUI` (⚠️ REEMPLAZAR CON TU TOKEN REAL)
 - **Collector ID**: `2142366374`
 - **Email**: `rizzofs.eu@gmail.com`
 

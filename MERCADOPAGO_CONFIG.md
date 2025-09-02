@@ -49,7 +49,7 @@ El sistema también incluye verificación automática cada hora que:
 ## Access Token
 
 ```
-APP_USR-5908100961878781-080320-3d4cf3e45d4723bffa7e302677cce571-2142366374
+TU_ACCESS_TOKEN_AQUI
 ```
 
 ## Links de Pago
