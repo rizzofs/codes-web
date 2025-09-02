@@ -180,19 +180,83 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Función para formatear DNI referido
+    window.formatDNIReferido = function(input) {
+        // Solo permitir números
+        input.value = input.value.replace(/\D/g, '');
+        // Limitar a 8 dígitos
+        if (input.value.length > 8) {
+            input.value = input.value.slice(0, 8);
+        }
+        
+        // Limpiar feedback cuando se modifica el DNI
+        document.getElementById('referidoFeedback').innerHTML = '';
+    };
+
+    // Función simplificada para validar referido (solo validaciones básicas)
+    window.validarReferido = function() {
+        const dniReferido = document.getElementById('dniReferido').value.trim();
+        const dniComprador = document.getElementById('dni').value.trim();
+        const feedback = document.getElementById('referidoFeedback');
+        
+        // Limpiar feedback si no hay DNI ingresado
+        if (!dniReferido) {
+            feedback.innerHTML = '';
+            return;
+        }
+        
+        // Validaciones básicas
+        if (dniReferido.length !== 8) {
+            feedback.innerHTML = '<div class="alert alert-warning alert-sm"><i class="bi bi-exclamation-triangle me-1"></i>El DNI debe tener 8 dígitos</div>';
+            return;
+        }
+        
+        if (dniReferido === dniComprador) {
+            feedback.innerHTML = '<div class="alert alert-danger alert-sm"><i class="bi bi-x-circle me-1"></i>No podés referirte a vos mismo</div>';
+            return;
+        }
+        
+        // Si pasa las validaciones básicas, mostrar mensaje de éxito
+        feedback.innerHTML = '<div class="alert alert-success alert-sm"><i class="bi bi-check-circle me-1"></i>DNI referido válido - Se validará manualmente</div>';
+    };
+
     window.calculateTotal = function() {
         const cantidadChances = document.getElementById('cantidadChances').value;
         const chancesDisplay = document.getElementById('chancesDisplay');
         const totalPrecio = document.getElementById('totalPrecio');
+        const referidoContainer = document.getElementById('referidoContainer');
         
         const precios = {
             '1': 1000,
             '3': 2800,
-            '4': 4000
+            '4': 4000,
+            '6': 5500,
+            '10': 9000
         };
         
+        // Calcular chances totales (incluyendo regalos)
+        const chancesRegalo = {
+            '1': 0,
+            '3': 0,
+            '4': 1,
+            '6': 2,
+            '10': 3
+        };
+        
+        // Mostrar/ocultar campo de referido según el pack seleccionado
+        const packsValidos = ['4', '6', '10'];
+        if (packsValidos.includes(cantidadChances)) {
+            referidoContainer.style.display = 'block';
+        } else {
+            referidoContainer.style.display = 'none';
+            // Limpiar campo de referido si se cambia a pack no válido
+            document.getElementById('dniReferido').value = '';
+            document.getElementById('referidoFeedback').innerHTML = '';
+        }
+        
         if (cantidadChances && precios[cantidadChances]) {
-            chancesDisplay.textContent = cantidadChances;
+            const chancesTotales = parseInt(cantidadChances) + chancesRegalo[cantidadChances];
+            chancesDisplay.textContent = chancesTotales;
             totalPrecio.textContent = `$${precios[cantidadChances].toLocaleString()}`;
         } else {
             chancesDisplay.textContent = '0';
@@ -207,9 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Links de pago según la cantidad de chances
     const paymentLinks = {
-        1: 'https://mpago.la/1rXwpEV', // $1000
-        3: 'https://mpago.la/1eSB8pw', // $2800
-        4: 'https://mpago.la/1kM9Q6y'  // $4000
+        1: 'https://mpago.la/1dNkdK5', // $1000
+        3: 'https://mpago.la/2sDNEXs', // $2800
+        4: 'https://mpago.la/1f7bfZb', // $4000
+        6: 'https://mpago.la/2jGc6UY', // $5500
+        10: 'https://mpago.la/2L4x5Xw' // $9000
     };
     
     console.log('🔗 Enlaces de pago cargados:', paymentLinks);
@@ -231,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formularioCompleto = validarFormularioCompleto();
         const cantidadChances = document.getElementById('cantidadChances').value;
         
-        if (formularioCompleto && ["1","3","4"].includes(cantidadChances)) {
+        if (formularioCompleto && ["1","3","4","6","10"].includes(cantidadChances)) {
             console.log('✅ Formulario completo - Mostrando botón de pago para', cantidadChances, 'chances');
             goToPayContainer.style.display = "block";
             goToPayBtn.disabled = false;
@@ -247,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Agregar event listeners a todos los campos del formulario
-    const camposFormulario = ['nombre', 'apellido', 'email', 'dni', 'telefono', 'cantidadChances'];
+    const camposFormulario = ['nombre', 'apellido', 'email', 'dni', 'telefono', 'cantidadChances', 'dniReferido'];
     camposFormulario.forEach(campo => {
         const elemento = document.getElementById(campo);
         if (elemento) {
@@ -335,6 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('email').value;
             const dni = document.getElementById('dni').value;
             const telefono = document.getElementById('telefono').value;
+            const dniReferido = document.getElementById('dniReferido').value.trim();
             
             // Generar Session ID único
             const sessionId = 'SES_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -348,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 email: email,
                 dni: dni,
                 telefono: telefono,
+                observaciones: dniReferido ? `REF:${dniReferido}` : '',
                 estadoPago: 'PENDIENTE',
                 pagoConfirmado: false,
                 fechaRegistro: new Date().toISOString()
@@ -418,5 +486,181 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 
+    // Verificar si el usuario regresó de MercadoPago
+    verificarRetornoDePago();
+
     console.log('✅ Sorteo.js inicializado correctamente');
 });
+
+// Función para verificar si el usuario regresó de MercadoPago
+function verificarRetornoDePago() {
+    // Verificar si hay parámetros en la URL que indiquen retorno de pago
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnFromPayment = urlParams.get('return_from_payment');
+    const paymentStatus = urlParams.get('status');
+    const collectionStatus = urlParams.get('collection_status');
+    const status = urlParams.get('status');
+    
+    // Verificar si hay datos en localStorage de un pago pendiente
+    const sorteoPendiente = localStorage.getItem('sorteo_pendiente');
+    
+    // Solo mostrar agradecimiento si realmente hay indicios de pago exitoso
+    const pagoExitoso = returnFromPayment === 'true' || 
+                       paymentStatus === 'success' || 
+                       collectionStatus === 'approved' || 
+                       status === 'approved';
+    
+    if (pagoExitoso) {
+        console.log('🔄 Usuario regresó de MercadoPago con pago exitoso - Mostrando mensaje de agradecimiento');
+        console.log('📊 Parámetros de pago:', {
+            returnFromPayment,
+            paymentStatus,
+            collectionStatus,
+            status
+        });
+        
+        // Limpiar datos del localStorage
+        if (sorteoPendiente) {
+            localStorage.removeItem('sorteo_pendiente');
+        }
+        
+        // Limpiar parámetros de la URL
+        const nuevaUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, nuevaUrl);
+        
+        // Mostrar mensaje de agradecimiento
+        mostrarMensajeAgradecimiento();
+    } else if (sorteoPendiente) {
+        // Si hay datos pendientes pero no hay confirmación de pago, mostrar mensaje de verificación
+        console.log('⏳ Hay datos pendientes pero no se confirmó el pago - Mostrando mensaje de verificación');
+        mostrarMensajeVerificacion();
+    }
+}
+
+// Función para mostrar mensaje de verificación (cuando hay datos pendientes pero no confirmación de pago)
+function mostrarMensajeVerificacion() {
+    // Ocultar el formulario
+    const formStep = document.getElementById('formStep');
+    const productCard = document.querySelector('.product-card');
+    
+    if (formStep) formStep.style.display = 'none';
+    if (productCard) productCard.style.display = 'none';
+    
+    // Crear y mostrar el mensaje de verificación
+    const container = document.querySelector('.sorteo-container .container');
+    if (container) {
+        container.innerHTML = `
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="product-card">
+                        <div class="product-details text-center">
+                            <div class="mb-4">
+                                <i class="bi bi-clock text-warning" style="font-size: 4rem;"></i>
+                            </div>
+                            <h2 class="product-title text-warning">Verificando tu pago...</h2>
+                            <h4 class="product-subtitle">Tu participación está siendo procesada</h4>
+                            
+                            <div class="alert alert-info mt-4" role="alert">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Información importante:</strong> Hemos registrado tu participación. Si realizaste el pago, será verificado manualmente y tus chances se actualizarán en las próximas 24 horas. Si no completaste el pago, podés intentarlo nuevamente.
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button onclick="limpiarYVolver()" class="btn btn-primary btn-lg me-3">
+                                    <i class="bi bi-arrow-left me-2"></i>Intentar nuevamente
+                                </button>
+                                <a href="verificar-chances.html" class="btn btn-outline-primary btn-lg">
+                                    <i class="bi bi-search me-2"></i>Consultar Chances
+                                </a>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <p class="text-muted">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    Si tenés alguna pregunta, contactanos en: <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Función global para limpiar localStorage y volver al formulario
+window.limpiarYVolver = function() {
+    console.log('🧹 Limpiando localStorage y volviendo al formulario...');
+    
+    // Limpiar localStorage
+    localStorage.removeItem('sorteo_pendiente');
+    
+    // Limpiar parámetros de URL si los hay
+    const nuevaUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, nuevaUrl);
+    
+    // Volver al formulario
+    const formStep = document.getElementById('formStep');
+    const productCard = document.querySelector('.product-card');
+    
+    if (formStep) {
+        formStep.style.display = 'block';
+        formStep.scrollIntoView({behavior: 'smooth'});
+    }
+    if (productCard) {
+        productCard.style.display = 'none';
+    }
+    
+    console.log('✅ Formulario restaurado correctamente');
+}
+
+// Función para mostrar mensaje de agradecimiento
+function mostrarMensajeAgradecimiento() {
+    // Ocultar el formulario
+    const formStep = document.getElementById('formStep');
+    const productCard = document.querySelector('.product-card');
+    
+    if (formStep) formStep.style.display = 'none';
+    if (productCard) productCard.style.display = 'none';
+    
+    // Crear y mostrar el mensaje de agradecimiento
+    const container = document.querySelector('.sorteo-container .container');
+    if (container) {
+        container.innerHTML = `
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="product-card">
+                        <div class="product-details text-center">
+                            <div class="mb-4">
+                                <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
+                            </div>
+                            <h2 class="product-title text-success">¡Gracias por tu compra!</h2>
+                            <h4 class="product-subtitle">Tu participación ha sido registrada</h4>
+                            
+                            <div class="alert alert-success mt-4" role="alert">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Información importante:</strong> Tu pago será verificado manualmente y tus chances se actualizarán en las próximas 24 horas. Podés consultar tus chances actuales en la sección "Consultar Chances".
+                            </div>
+                            
+                            <div class="mt-4">
+                                <a href="index.html" class="btn btn-primary btn-lg me-3">
+                                    <i class="bi bi-house me-2"></i>Volver al inicio
+                                </a>
+                                <a href="verificar-chances.html" class="btn btn-outline-primary btn-lg">
+                                    <i class="bi bi-search me-2"></i>Consultar Chances
+                                </a>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <p class="text-muted">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    Si tenés alguna pregunta, contactanos en: <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}

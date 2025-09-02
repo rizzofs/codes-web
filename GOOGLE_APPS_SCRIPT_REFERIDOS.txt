@@ -1,0 +1,83 @@
+// ========================================
+// CÓDIGO PARA AGREGAR AL GOOGLE APPS SCRIPT EXISTENTE
+// ========================================
+
+// Agregar esta función al script existente
+function validarReferido(dni) {
+  try {
+    // Obtener la hoja de datos
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Datos'); // Cambiar por el nombre de tu hoja
+    
+    // Obtener todos los datos
+    const data = sheet.getDataRange().getValues();
+    
+    // Buscar el DNI en la columna correspondiente (ajustar índice según tu estructura)
+    const dniColumnIndex = 4; // Columna E (índice 4) - ajustar según tu estructura
+    const chancesColumnIndex = 5; // Columna F (índice 5) - ajustar según tu estructura
+    
+    for (let i = 1; i < data.length; i++) { // Empezar desde 1 para saltar el header
+      const dniEnHoja = data[i][dniColumnIndex];
+      const chancesEnHoja = data[i][chancesColumnIndex];
+      
+      if (dniEnHoja && dniEnHoja.toString() === dni.toString()) {
+        // DNI encontrado, verificar si tiene al menos 1 chance
+        const chances = parseInt(chancesEnHoja) || 0;
+        return {
+          existe: true,
+          tieneChances: chances >= 1,
+          chancesActuales: chances,
+          nombre: data[i][0] + ' ' + data[i][1] // Nombre y apellido
+        };
+      }
+    }
+    
+    // DNI no encontrado
+    return {
+      existe: false,
+      tieneChances: false,
+      chancesActuales: 0,
+      nombre: ''
+    };
+    
+  } catch (error) {
+    console.error('Error validando referido:', error);
+    return {
+      existe: false,
+      tieneChances: false,
+      chancesActuales: 0,
+      nombre: '',
+      error: error.toString()
+    };
+  }
+}
+
+// Modificar la función doPost existente para manejar la validación de referidos
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    
+    // Si es una validación de referido
+    if (data.action === 'validarReferido') {
+      const resultado = validarReferido(data.dni);
+      
+      return ContentService
+        .createTextOutput(JSON.stringify(resultado))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // Si es el envío normal de datos (código existente)
+    // ... tu código actual para guardar datos ...
+    
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ error: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Función para probar la validación (opcional)
+function testValidarReferido() {
+  const resultado = validarReferido('12345678'); // DNI de prueba
+  console.log('Resultado:', resultado);
+}
+

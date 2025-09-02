@@ -156,8 +156,8 @@
                                                 <div class="d-flex align-items-start">
                                                     <i class="bi bi-gift text-success me-2 mt-1"></i>
                                                     <div>
-                                                        <strong>¡Chance de regalo!</strong>
-                                                        <p class="mb-0 small">Al comprar 4 chances, recibes 1 adicional de regalo (total: 5 chances).</p>
+                                                        <strong>¡Chances de regalo!</strong>
+                                                        <p class="mb-0 small">Al comprar 4 chances recibes 1 extra, 6 chances recibes 2 extra, y 10 chances recibes 3 extra.</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -169,22 +169,34 @@
                                                 Ejemplo:
                                             </h6>
                                             <div class="row g-2">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-6 col-md-4">
                                                     <div class="d-flex align-items-center">
                                                         <span class="badge bg-primary me-2">1</span>
                                                         <small>1 chance = Tu DNI participa 1 vez</small>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-6 col-md-4">
                                                     <div class="d-flex align-items-center">
                                                         <span class="badge bg-primary me-2">3</span>
                                                         <small>3 chances = Tu DNI participa 3 veces</small>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-6 col-md-4">
                                                     <div class="d-flex align-items-center">
                                                         <span class="badge bg-success me-2">4+1</span>
                                                         <small>4 chances = ¡Tu DNI participa 5 veces!</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge bg-success me-2">6+2</span>
+                                                        <small>6 chances = ¡Tu DNI participa 8 veces!</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="badge bg-success me-2">10+3</span>
+                                                        <small>10 chances = ¡Tu DNI participa 13 veces!</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -351,7 +363,38 @@
                                                     <option value="3">3 chances - $2.800</option>
                                                     <option value="4">4 chances - $4.000 (¡te regalamos 1 extra!)
                                                     </option>
+                                                    <option value="6">6 chances - $5.500 (¡te regalamos 2 extra!)
+                                                    </option>
+                                                    <option value="10">10 chances - $9.000 (¡te regalamos 3 extra!)
+                                                    </option>
                                                 </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Campo de DNI Referido (solo para packs válidos) -->
+                                        <div class="row mb-3" id="referidoContainer" style="display: none;">
+                                            <div class="col-12">
+                                                <div class="card border-info">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-info">
+                                                            <i class="bi bi-people me-2"></i>
+                                                            Sistema de Referidos
+                                                        </h6>
+                                                        <p class="card-text small mb-3">
+                                                            ¿Quién te invitó a participar? Ingresá su DNI y esa persona sumará +1 chance extra. <strong>Para que tu referido sume la chance de regalo, debe al menos haber realizado una compra.</strong>
+                                                        </p>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="dniReferido" class="form-label">DNI Referido</label>
+                                                                <input type="text" class="form-control" id="dniReferido" name="dniReferido"
+                                                                    maxlength="8" oninput="formatDNIReferido(this); validarReferido()" 
+                                                                    onblur="validarReferido()"
+                                                                    placeholder="¿Quién te refirió al sorteo? (opcional)">
+                                                            </div>
+                                                        </div>
+                                                        <div id="referidoFeedback" class="mt-2"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
