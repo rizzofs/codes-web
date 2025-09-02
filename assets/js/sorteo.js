@@ -4,6 +4,13 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎯 Sorteo.js cargado - Iniciando funcionalidad');
+    
+    // Guardar el contenido original del contenedor para poder restaurarlo
+    const container = document.querySelector('.sorteo-container .container');
+    if (container) {
+        window.originalContainerContent = container.innerHTML;
+        console.log('💾 Contenido original guardado para restauración');
+    }
 
     // Initialize tooltips if Bootstrap is available
     if (typeof bootstrap !== 'undefined') {
@@ -280,8 +287,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('🔗 Enlaces de pago cargados:', paymentLinks);
 
-    // Función para validar que el formulario esté completo
-    function validarFormularioCompleto() {
+    // Función para validar que el formulario esté completo (global para re-inicialización)
+    window.validarFormularioCompleto = function() {
         const nombre = document.getElementById('nombre').value.trim();
         const apellido = document.getElementById('apellido').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -292,8 +299,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return nombre && apellido && email && dni && telefono && cantidadChances;
     }
 
-    // Función para actualizar el botón de pago
-    function actualizarBotonPago() {
+    // Función para actualizar el botón de pago (global para re-inicialización)
+    window.actualizarBotonPago = function() {
         const formularioCompleto = validarFormularioCompleto();
         const cantidadChances = document.getElementById('cantidadChances').value;
         
@@ -486,11 +493,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 
+    // Limpiar datos antiguos al cargar la página
+    limpiarDatosAntiguos();
+    
     // Verificar si el usuario regresó de MercadoPago
     verificarRetornoDePago();
 
     console.log('✅ Sorteo.js inicializado correctamente');
 });
+
+// Función para limpiar datos antiguos del localStorage
+function limpiarDatosAntiguos() {
+    const sorteoPendiente = localStorage.getItem('sorteo_pendiente');
+    
+    if (sorteoPendiente) {
+        try {
+            const datosPendientes = JSON.parse(sorteoPendiente);
+            const tiempoRegistro = datosPendientes.timestamp || datosPendientes.fechaRegistro;
+            const tiempoActual = new Date().getTime();
+            const tiempoTranscurrido = tiempoActual - tiempoRegistro;
+            const veinticuatroHorasEnMs = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+            
+            if (tiempoTranscurrido > veinticuatroHorasEnMs) {
+                console.log('🧹 Limpiando datos muy antiguos del localStorage (más de 24 horas)');
+                localStorage.removeItem('sorteo_pendiente');
+            }
+        } catch (error) {
+            console.log('❌ Error al procesar datos antiguos - Limpiando localStorage');
+            localStorage.removeItem('sorteo_pendiente');
+        }
+    }
+}
 
 // Función para verificar si el usuario regresó de MercadoPago
 function verificarRetornoDePago() {
@@ -531,9 +564,29 @@ function verificarRetornoDePago() {
         // Mostrar mensaje de agradecimiento
         mostrarMensajeAgradecimiento();
     } else if (sorteoPendiente) {
-        // Si hay datos pendientes pero no hay confirmación de pago, mostrar mensaje de verificación
-        console.log('⏳ Hay datos pendientes pero no se confirmó el pago - Mostrando mensaje de verificación');
-        mostrarMensajeVerificacion();
+        // Verificar si los datos pendientes son recientes (menos de 2 horas)
+        try {
+            const datosPendientes = JSON.parse(sorteoPendiente);
+            const tiempoRegistro = datosPendientes.timestamp || datosPendientes.fechaRegistro;
+            const tiempoActual = new Date().getTime();
+            const tiempoTranscurrido = tiempoActual - tiempoRegistro;
+            const dosHorasEnMs = 2 * 60 * 60 * 1000; // 2 horas en milisegundos
+            
+            if (tiempoTranscurrido < dosHorasEnMs) {
+                // Si han pasado menos de 2 horas, mostrar mensaje de verificación
+                console.log('⏳ Hay datos pendientes recientes - Mostrando mensaje de verificación');
+                mostrarMensajeVerificacion();
+            } else {
+                // Si han pasado más de 2 horas, limpiar datos y mostrar formulario normal
+                console.log('⏰ Datos pendientes muy antiguos - Limpiando y mostrando formulario normal');
+                localStorage.removeItem('sorteo_pendiente');
+                // No hacer nada más, el formulario se mostrará normalmente
+            }
+        } catch (error) {
+            // Si hay error al parsear, limpiar datos
+            console.log('❌ Error al procesar datos pendientes - Limpiando localStorage');
+            localStorage.removeItem('sorteo_pendiente');
+        }
     }
 }
 
@@ -562,7 +615,7 @@ function mostrarMensajeVerificacion() {
                             
                             <div class="alert alert-info mt-4" role="alert">
                                 <i class="bi bi-info-circle me-2"></i>
-                                <strong>Información importante:</strong> Hemos registrado tu participación. Si realizaste el pago, será verificado manualmente y tus chances se actualizarán en las próximas 24 horas. Si no completaste el pago, podés intentarlo nuevamente.
+                                <strong>Información importante:</strong> Hemos registrado tu participación recientemente. Si realizaste el pago, será verificado manualmente y tus chances se actualizarán en las próximas 24 horas. Si no completaste el pago o quieres intentar nuevamente, podés usar el botón de abajo.
                             </div>
                             
                             <div class="mt-4">
@@ -599,19 +652,40 @@ window.limpiarYVolver = function() {
     const nuevaUrl = window.location.pathname;
     window.history.replaceState({}, document.title, nuevaUrl);
     
-    // Volver al formulario
-    const formStep = document.getElementById('formStep');
-    const productCard = document.querySelector('.product-card');
-    
-    if (formStep) {
-        formStep.style.display = 'block';
-        formStep.scrollIntoView({behavior: 'smooth'});
+    // Restaurar el contenido original del contenedor
+    const container = document.querySelector('.sorteo-container .container');
+    if (container && window.originalContainerContent) {
+        container.innerHTML = window.originalContainerContent;
+        console.log('✅ Contenido original restaurado');
+        
+        // Re-inicializar los event listeners del formulario
+        setTimeout(() => {
+            // Re-inicializar la funcionalidad del formulario
+            const cantidadChances = document.getElementById('cantidadChances');
+            const goToPayContainer = document.getElementById('goToPayContainer');
+            const goToPayBtn = document.getElementById('goToPayBtn');
+            
+            if (cantidadChances && goToPayContainer && goToPayBtn) {
+                // Re-aplicar event listeners
+                const camposFormulario = ['nombre', 'apellido', 'email', 'dni', 'telefono', 'cantidadChances', 'dniReferido'];
+                camposFormulario.forEach(campo => {
+                    const elemento = document.getElementById(campo);
+                    if (elemento) {
+                        elemento.addEventListener('input', actualizarBotonPago);
+                        elemento.addEventListener('change', actualizarBotonPago);
+                    }
+                });
+                
+                // Re-inicializar el botón de pago
+                actualizarBotonPago();
+                console.log('🔄 Event listeners del formulario re-inicializados');
+            }
+        }, 100);
+    } else {
+        // Si no hay contenido guardado, recargar la página
+        console.log('🔄 No hay contenido guardado - Recargando página...');
+        window.location.reload();
     }
-    if (productCard) {
-        productCard.style.display = 'none';
-    }
-    
-    console.log('✅ Formulario restaurado correctamente');
 }
 
 // Función para mostrar mensaje de agradecimiento
