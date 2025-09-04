@@ -1176,6 +1176,496 @@
          }
        }
        
+       /* Navbar Cyber Style */
+       .navbar {
+         background: linear-gradient(135deg, var(--cyber-bg) 0%, var(--cyber-card) 100%) !important;
+         border-bottom: 2px solid var(--cyber-primary);
+         box-shadow: 0 2px 20px rgba(0, 255, 136, 0.2);
+         backdrop-filter: blur(10px);
+         position: fixed;
+         top: 0;
+         width: 100%;
+         z-index: 1000;
+       }
+       
+       .navbar-brand {
+         filter: brightness(1.1) drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+         transition: all 0.4s ease;
+         position: relative;
+       }
+       
+       .navbar-brand:hover {
+         filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 25px rgba(0, 136, 255, 0.4));
+         transform: scale(1.02);
+       }
+       
+       .navbar-logo {
+         transition: all 0.4s ease;
+         animation: logoLuminosity 4s ease-in-out infinite;
+       }
+       
+       @keyframes logoLuminosity {
+         0% {
+           filter: brightness(1) contrast(1) saturate(1);
+         }
+         25% {
+           filter: brightness(1.15) contrast(1.1) saturate(1.2);
+         }
+         50% {
+           filter: brightness(1.25) contrast(1.15) saturate(1.3);
+         }
+         75% {
+           filter: brightness(1.15) contrast(1.1) saturate(1.2);
+         }
+         100% {
+           filter: brightness(1) contrast(1) saturate(1);
+         }
+       }
+       
+       .navbar-brand::after {
+         content: '';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         width: 120%;
+         height: 120%;
+         background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+         transform: translate(-50%, -50%);
+         border-radius: 50%;
+         opacity: 0;
+         z-index: -1;
+         transition: opacity 0.4s ease;
+         animation: luminosityPulse 3s ease-in-out infinite;
+       }
+       
+       .navbar-brand:hover::after {
+         opacity: 1;
+       }
+       
+       @keyframes luminosityPulse {
+         0%, 100% {
+           transform: translate(-50%, -50%) scale(0.8);
+           opacity: 0.3;
+         }
+         50% {
+           transform: translate(-50%, -50%) scale(1.2);
+           opacity: 0.6;
+         }
+       }
+       
+       /* Efecto de luz circular que funciona */
+       .navbar-logo {
+         transition: all 0.4s ease;
+         animation: logoLuminosity 4s ease-in-out infinite;
+         position: relative;
+         border-radius: 50%;
+         padding: 3px;
+       }
+       
+       .navbar-logo::before {
+         content: '';
+         position: absolute;
+         top: -3px;
+         left: -3px;
+         right: -3px;
+         bottom: -3px;
+         border-radius: 50%;
+         background: conic-gradient(from 0deg, transparent, transparent, var(--cyber-primary), var(--cyber-secondary), transparent, transparent);
+         opacity: 0;
+         z-index: -1;
+         animation: rotateLight 2s linear infinite;
+         transition: opacity 0.3s ease;
+       }
+       
+       .navbar-brand:hover .navbar-logo::before {
+         opacity: 1;
+       }
+       
+       @keyframes rotateLight {
+         0% {
+           transform: rotate(0deg);
+         }
+         100% {
+           transform: rotate(360deg);
+         }
+       }
+       
+       /* Contenedor del logo con efecto circular */
+       .logo-container {
+         position: relative;
+         display: inline-block;
+         border-radius: 50%;
+         padding: 2px;
+         overflow: hidden;
+       }
+       
+       .logo-container::before {
+         content: '';
+         position: absolute;
+         top: -2px;
+         left: -2px;
+         right: -2px;
+         bottom: -2px;
+         border-radius: 50%;
+         background: conic-gradient(from 0deg, transparent, transparent, var(--cyber-primary), var(--cyber-secondary), transparent, transparent);
+         opacity: 0.8;
+         z-index: -1;
+         animation: rotateLight 2s linear infinite;
+         transition: opacity 0.3s ease;
+       }
+       
+       .navbar-brand:hover .logo-container::before {
+         opacity: 1;
+       }
+       
+       /* Efecto adicional con box-shadow */
+       .navbar-brand:hover .navbar-logo {
+         box-shadow: 
+           0 0 20px var(--cyber-primary),
+           0 0 40px var(--cyber-primary),
+           0 0 60px var(--cyber-primary);
+       }
+       
+       .navbar-nav .nav-link {
+         color: var(--cyber-text) !important;
+         font-weight: 500;
+         transition: all 0.3s ease;
+         position: relative;
+       }
+       
+       .navbar-nav .nav-link:hover {
+         color: var(--cyber-primary) !important;
+         text-shadow: 0 0 10px var(--cyber-primary);
+         transform: translateY(-2px);
+       }
+       
+       .navbar-nav .nav-link::after {
+         content: '';
+         position: absolute;
+         bottom: -5px;
+         left: 0;
+         width: 0;
+         height: 2px;
+         background: var(--cyber-primary);
+         transition: width 0.3s ease;
+         box-shadow: 0 0 5px var(--cyber-primary);
+       }
+       
+       .navbar-nav .nav-link:hover::after {
+         width: 100%;
+       }
+       
+       /* Botón de volver */
+       .btn-back {
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+         padding: 0.5rem 1rem;
+         background: transparent;
+         border: 2px solid var(--cyber-primary);
+         border-radius: 25px;
+         color: var(--cyber-primary) !important;
+         text-decoration: none;
+         font-weight: 500;
+         transition: all 0.3s ease;
+         position: relative;
+         overflow: hidden;
+       }
+       
+       .btn-back:hover {
+         background: var(--cyber-primary);
+         color: var(--cyber-bg) !important;
+         transform: translateY(-2px);
+         box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+       }
+       
+       .btn-back i {
+         font-size: 1.1rem;
+         transition: transform 0.3s ease;
+       }
+       
+       .btn-back:hover i {
+         transform: translateX(-3px);
+       }
+       
+       .btn-back::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+         transition: left 0.5s ease;
+       }
+       
+       .btn-back:hover::before {
+         left: 100%;
+       }
+       
+       /* Efecto inverso para "¿Listo para el desafío?" */
+       .fade-out-title {
+         font-size: 3rem;
+         font-weight: 700;
+         color: var(--cyber-primary);
+         text-shadow: 0 0 20px var(--cyber-primary);
+         position: relative;
+         display: inline-block;
+       }
+       
+       .fade-out-title span {
+         display: inline-block;
+         opacity: 1;
+         text-shadow: 0 0 20px var(--cyber-primary);
+         animation: fadeOutLetter 4s ease-in-out infinite;
+       }
+       
+       @keyframes fadeOutLetter {
+         0% {
+           opacity: 1;
+           text-shadow: 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+         }
+         20% {
+           opacity: 1;
+           text-shadow: 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+         }
+         80% {
+           opacity: 0.3;
+           text-shadow: 0 0 5px var(--cyber-primary);
+         }
+         100% {
+           opacity: 0.1;
+           text-shadow: 0 0 2px var(--cyber-primary);
+         }
+       }
+       
+       /* Delays para cada letra */
+       .fade-out-title span:nth-child(1) { animation-delay: 0s; }
+       .fade-out-title span:nth-child(2) { animation-delay: 0.1s; }
+       .fade-out-title span:nth-child(3) { animation-delay: 0.2s; }
+       .fade-out-title span:nth-child(4) { animation-delay: 0.3s; }
+       .fade-out-title span:nth-child(5) { animation-delay: 0.4s; }
+       .fade-out-title span:nth-child(6) { animation-delay: 0.5s; }
+       .fade-out-title span:nth-child(7) { animation-delay: 0.6s; }
+       .fade-out-title span:nth-child(8) { animation-delay: 0.7s; }
+       .fade-out-title span:nth-child(9) { animation-delay: 0.8s; }
+       .fade-out-title span:nth-child(10) { animation-delay: 0.9s; }
+       .fade-out-title span:nth-child(11) { animation-delay: 1.0s; }
+       .fade-out-title span:nth-child(12) { animation-delay: 1.1s; }
+       .fade-out-title span:nth-child(13) { animation-delay: 1.2s; }
+       .fade-out-title span:nth-child(14) { animation-delay: 1.3s; }
+       .fade-out-title span:nth-child(15) { animation-delay: 1.4s; }
+       .fade-out-title span:nth-child(16) { animation-delay: 1.5s; }
+       .fade-out-title span:nth-child(17) { animation-delay: 1.6s; }
+       .fade-out-title span:nth-child(18) { animation-delay: 1.7s; }
+       .fade-out-title span:nth-child(19) { animation-delay: 1.8s; }
+       .fade-out-title span:nth-child(20) { animation-delay: 1.9s; }
+       .fade-out-title span:nth-child(21) { animation-delay: 2.0s; }
+       .fade-out-title span:nth-child(22) { animation-delay: 2.1s; }
+       .fade-out-title span:nth-child(23) { animation-delay: 2.2s; }
+       .fade-out-title span:nth-child(24) { animation-delay: 2.3s; }
+       .fade-out-title span:nth-child(25) { animation-delay: 2.4s; }
+       .fade-out-title span:nth-child(26) { animation-delay: 2.5s; }
+       .fade-out-title span:nth-child(27) { animation-delay: 2.6s; }
+       .fade-out-title span:nth-child(28) { animation-delay: 2.7s; }
+       .fade-out-title span:nth-child(29) { animation-delay: 2.8s; }
+       .fade-out-title span:nth-child(30) { animation-delay: 2.9s; }
+       
+       /* Responsive para móvil */
+       @media (max-width: 768px) {
+         .fade-out-title {
+           font-size: 2rem;
+         }
+       }
+       
+       /* Footer Cyber Style */
+       footer {
+         background: linear-gradient(135deg, var(--cyber-bg) 0%, var(--cyber-card) 100%);
+         border-top: 3px solid var(--cyber-primary);
+         position: relative;
+         overflow: hidden;
+       }
+       
+       footer::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10 0v20M0 10h20" stroke="%2300ff88" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>');
+         animation: circuitFlow 15s linear infinite;
+       }
+       
+       @keyframes circuitFlow {
+         0% { transform: translateX(0); }
+         100% { transform: translateX(20px); }
+       }
+       
+       .footer-content {
+         position: relative;
+         z-index: 2;
+         text-align: center;
+         padding: 3rem 0;
+       }
+       
+       .footer-title {
+         color: var(--cyber-primary);
+         font-weight: 600;
+         margin-bottom: 2rem;
+         text-shadow: 0 0 10px var(--cyber-primary);
+         font-size: 1.5rem;
+       }
+       
+       .contact-item {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         gap: 1rem;
+         margin-bottom: 1.5rem;
+         color: var(--cyber-text-muted);
+         transition: all 0.3s ease;
+       }
+       
+       .contact-item:hover {
+         color: var(--cyber-primary);
+         text-shadow: 0 0 5px var(--cyber-primary);
+         transform: translateY(-2px);
+       }
+       
+       .contact-item i {
+         color: var(--cyber-secondary);
+         font-size: 1.2rem;
+         text-shadow: 0 0 5px var(--cyber-secondary);
+       }
+       
+       .contact-item a {
+         color: inherit;
+         text-decoration: none;
+         transition: all 0.3s ease;
+       }
+       
+       .contact-item a:hover {
+         color: var(--cyber-primary);
+         text-shadow: 0 0 5px var(--cyber-primary);
+       }
+       
+       .social-links {
+         display: flex;
+         justify-content: center;
+         gap: 1.5rem;
+         margin-bottom: 2rem;
+       }
+       
+       .social-links a {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         width: 50px;
+         height: 50px;
+         background: var(--cyber-card);
+         border: 2px solid var(--cyber-primary);
+         border-radius: 50%;
+         color: var(--cyber-primary);
+         text-decoration: none;
+         transition: all 0.3s ease;
+         position: relative;
+         overflow: hidden;
+       }
+       
+       .social-links a:hover {
+         background: var(--cyber-primary);
+         color: var(--cyber-bg);
+         transform: translateY(-3px);
+         box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+       }
+       
+       .social-links a::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+         transition: left 0.5s ease;
+       }
+       
+       .social-links a:hover::before {
+         left: 100%;
+       }
+       
+       /* Botón de volver arriba */
+       .back-to-top {
+         position: fixed;
+         bottom: 30px;
+         right: 30px;
+         width: 60px;
+         height: 60px;
+         background: var(--cyber-card);
+         border: 2px solid var(--cyber-primary);
+         border-radius: 50%;
+         color: var(--cyber-primary);
+         text-decoration: none;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 1.5rem;
+         transition: all 0.3s ease;
+         z-index: 1000;
+         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+         opacity: 0;
+         visibility: hidden;
+         transform: translateY(20px);
+       }
+       
+       .back-to-top.show {
+         opacity: 1;
+         visibility: visible;
+         transform: translateY(0);
+       }
+       
+       .back-to-top:hover {
+         background: var(--cyber-primary);
+         color: var(--cyber-bg);
+         transform: translateY(-5px);
+         box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+       }
+       
+       .back-to-top::before {
+         content: '';
+         position: absolute;
+         top: -3px;
+         left: -3px;
+         right: -3px;
+         bottom: -3px;
+         border-radius: 50%;
+         background: conic-gradient(from 0deg, transparent, transparent, var(--cyber-primary), var(--cyber-secondary), transparent, transparent);
+         opacity: 0;
+         z-index: -1;
+         animation: rotateLight 2s linear infinite;
+         transition: opacity 0.3s ease;
+       }
+       
+       .back-to-top:hover::before {
+         opacity: 0.8;
+       }
+       
+       /* Responsive para móvil */
+       @media (max-width: 768px) {
+         .back-to-top {
+           bottom: 20px;
+           right: 20px;
+           width: 50px;
+           height: 50px;
+           font-size: 1.2rem;
+         }
+         
+         .footer-title {
+           font-size: 1.2rem;
+         }
+       }
+       
     </style>
   </head>
 
@@ -1188,22 +1678,18 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
           <a class="navbar-brand" href="index.html">
-            <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+            <div class="logo-container">
+              <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+            </div>
           </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <a href="index.html" class="btn-back">
+            <i class="bi bi-arrow-left"></i>
+            <span>Volver</span>
+          </a>
           <div
             class="collapse navbar-collapse justify-content-end"
             id="navbarNav"
+            style="display: none !important;"
           >
             <ul class="navbar-nav gap-2">
               <li class="nav-item">
@@ -1267,7 +1753,7 @@
                 <i class="bi bi-people-fill icon-futuristic" style="font-size: 2rem; color: var(--cyber-primary);"></i>
               </div>
               <div>
-                <h4 class="mb-2 terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><strong>¡Andá armando tu equipo!</strong></h4>
+                <h4 class="mb-2 terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><strong>¡Andá armando tu equipo! (3 personas obligatorio)</strong></h4>
                 <p class="mb-0" style="color: var(--cyber-text-muted);">
                   Reuní a tus compañeros más creativos y programadores. Este hackathon es tu oportunidad de 
                   demostrar lo que sabés, aprender cosas nuevas y crear algo increíble en equipo. 
@@ -1298,7 +1784,7 @@
               <div class="col-md-6">
                 <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-lightbulb" style="color: var(--cyber-secondary);"></i> ¿Qué se hace exactamente?</h5>
                 <ul style="color: var(--cyber-text-muted);">
-                  <li><strong>Desarrollar una solución digital</strong> desde cero en 50 horas</li>
+                  <li><strong>Desarrollar una solución digital</strong> desde cero en 48 horas</li>
                   <li><strong>Trabajar en equipo</strong> de forma colaborativa y organizada</li>
                   <li><strong>Aprender nuevas tecnologías</strong> y herramientas en tiempo real</li>
                   <li><strong>Resolver problemas reales</strong> de la comunidad o universidad</li>
@@ -1323,7 +1809,7 @@
                   <li><strong>Se recibe una consigna</strong> con el problema a resolver</li>
                   <li><strong>Se presentan 3 propuestas</strong> de solución</li>
                   <li><strong>Se selecciona una propuesta</strong> para desarrollar</li>
-                  <li><strong>50 horas de programación</strong> intensiva en equipo</li>
+                  <li><strong>48 horas de programación</strong> intensiva en equipo</li>
                   <li><strong>Entrega final</strong> y presentación del proyecto</li>
                 </ul>
               </div>
@@ -1411,12 +1897,12 @@
              </div>
              <div class="timeline-item">
                <h5>Sábado 27/9 y Domingo 28/9</h5>
-               <p><strong>Desarrollo del proyecto:</strong> Los equipos trabajan en sus proyectos de forma independiente durante 50 horas. 
+               <p><strong>Desarrollo del proyecto:</strong> Los equipos trabajan en sus proyectos de forma independiente durante 48 horas. 
                El centro estará conectado en Discord para monitorear el progreso y estar disponibles para consultas generales.</p>
              </div>
              <div class="timeline-item">
-               <h5>Domingo 28/9 - 23:59</h5>
-               <p><strong>Entrega final:</strong> Los equipos deben entregar sus proyectos antes de las 23:59 Hs del domingo.</p>
+               <h5>Domingo 28/9 - 22:00</h5>
+               <p><strong>Entrega final:</strong> Los equipos deben entregar sus proyectos antes de las 22:00 Hs del domingo.</p>
              </div>
              <div class="timeline-item">
                <h5>Semana del 30/9</h5>
@@ -1424,7 +1910,7 @@
              </div>
              <div class="alert alert-info mt-4">
                <i class="bi bi-info-circle me-2"></i>
-               <strong>Duración total:</strong> 50 horas para desarrollar el proyecto (desde el viernes 22:00 hasta el domingo 23:59)
+               <strong>Duración total:</strong> 48 horas para desarrollar el proyecto (desde el viernes 22:00 hasta el domingo 22:00)
              </div>
            </div>
          </div>
@@ -1523,8 +2009,8 @@
                 <ul style="color: var(--cyber-text-muted); margin-left: 1rem;">
                   <li><strong>Lunes 23/9:</strong> Se envía la consigna y tenés que presentar 3 propuestas</li>
                   <li><strong>Viernes 26/9 22:00:</strong> Se notifica qué propuesta desarrollar</li>
-                  <li><strong>Sábado 27/9 y Domingo 28/9:</strong> ¡50 horas de programación intensiva!</li>
-                  <li><strong>Domingo 28/9 23:59:</strong> Entrega final del proyecto</li>
+                  <li><strong>Sábado 27/9 y Domingo 28/9:</strong> ¡48 horas de programación intensiva!</li>
+                  <li><strong>Domingo 28/9 22:00:</strong> Entrega final del proyecto</li>
                   <li><strong>Semana del 30/9:</strong> Evaluación y anuncio de ganadores</li>
                 </ul>
                 <p><strong style="color: var(--cyber-accent);">¡Preparate para una experiencia intensa pero increíble!</strong></p>
@@ -1563,14 +2049,14 @@
        <div class="container">
          <div class="row justify-content-center">
            <div class="col-lg-8 text-center">
-                               <h2 class="mb-4 futuristic-title title-particles" data-text="¿LISTO PARA EL DESAFÍO?">¿Listo para el desafío?</h2>
+                               <h2 class="mb-4 fade-out-title">¿<span>L</span><span>i</span><span>s</span><span>t</span><span>o</span> <span>p</span><span>a</span><span>r</span><span>a</span> <span>e</span><span>l</span> <span>d</span><span>e</span><span>s</span><span>a</span><span>f</span><span>í</span><span>o</span>?</h2>
              <p class="lead mb-4">Formá parte de esta experiencia única de programación y colaboración en equipos.</p>
              <div class="d-flex flex-column align-items-center gap-3">
                <a href="#contacto" class="btn-hackathon">
                  <i class="bi bi-people-fill me-2"></i>Inscribir Equipos (Próximamente)
                </a>
                                    <div class="text-white" style="opacity: 0.8;">
-                      <small><i class="bi bi-clock me-1"></i>50 horas de programación virtual</small>
+                      <small><i class="bi bi-clock me-1"></i>48 horas de programación virtual</small>
                     </div>
              </div>
            </div>
@@ -1630,6 +2116,11 @@
       </div>
     </footer>
 
+    <!-- Botón de volver arriba -->
+    <a href="#" class="back-to-top" id="backToTop">
+      <i class="bi bi-arrow-up"></i>
+    </a>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1654,6 +2145,27 @@
         
         // Ejecutar glitch aleatorio cada 3 segundos
         setInterval(randomGlitch, 3000);
+        
+        // Botón de volver arriba
+        const backToTopButton = document.getElementById('backToTop');
+        
+        // Mostrar/ocultar botón según scroll
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('show');
+          } else {
+            backToTopButton.classList.remove('show');
+          }
+        });
+        
+        // Scroll suave al hacer clic
+        backToTopButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
       });
 
       // Función para toggle de FAQ
