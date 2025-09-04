@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hackathon de Fin de Semana - CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <meta
+      name="description"
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+    />
+    <meta
+      name="keywords"
+      content="hackathon, programación, competencia, equipos, CODES++, UNLu, sistemas, estudiantes"
+    />
+    <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
+    <meta name="robots" content="index, follow" />
+
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codes-unlu.github.io/hackathon.html" />
+    <meta
+      property="og:title"
+      content="Hackathon de Fin de Semana - CODES++"
+    />
+    <meta
+      property="og:description"
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+    />
+    <meta property="og:image" content="assets/images/Logo.svg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://codes-unlu.github.io/hackathon.html" />
+    <meta
+      property="twitter:title"
+      content="Hackathon de Fin de Semana - CODES++"
+    />
+    <meta
+      property="twitter:description"
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+    />
+    <meta property="twitter:image" content="assets/images/Logo.svg" />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C73GLNE05C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-C73GLNE05C', {
+        page_title: 'Hackathon de Fin de Semana - CODES++',
+        page_location: window.location.href,
+        send_page_view: true
+      });
+    </script>
+
+    <link
+      rel="icon"
+      href="assets/images/ISOLOGO SIN FONDO.png"
+      type="image/png"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <!-- Hackathon Custom Styles -->
+    <style>
+      /* Cyber Theme Variables */
+      :root {
+        --cyber-primary: #00ff88;
+        --cyber-secondary: #0088ff;
+        --cyber-accent: #ff0088;
+        --cyber-bg: #0a0a0a;
+        --cyber-card: #1a1a1a;
+        --cyber-border: #333;
+        --cyber-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        --cyber-text: #ffffff;
+        --cyber-text-muted: #888;
+      }
+
+      .hackathon-hero {
+        color: var(--cyber-text);
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        margin-top: 80px;
+        z-index: 2;
+      }
+      
+      .hackathon-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .hackathon-hero .subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        color: var(--cyber-secondary);
+        text-shadow: 0 0 10px var(--cyber-secondary);
+        position: relative;
+        z-index: 2;
+      }
+      
+      .hackathon-hero .description {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        color: var(--cyber-text-muted);
+        position: relative;
+        z-index: 2;
+      }
+      
+      @keyframes cyberGlow {
+        0% { text-shadow: 0 0 10px var(--cyber-primary), 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary); }
+        100% { text-shadow: 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary), 0 0 40px var(--cyber-primary); }
+      }
+      
+      .info-card {
+        background: var(--cyber-card);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 
+          0 10px 30px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        margin-bottom: 2rem;
+        border: 1px solid var(--cyber-border);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      
+      .info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyber-primary), transparent);
+        animation: cyberScan 3s infinite;
+      }
+      
+      .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 15px 40px rgba(0, 0, 0, 0.4),
+          0 0 20px rgba(0, 255, 136, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: var(--cyber-primary);
+      }
+      
+      @keyframes cyberScan {
+        0% { left: -100%; }
+        100% { left: 100%; }
+      }
+      
+      .info-card h3 {
+        color: var(--cyber-primary);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-shadow: 0 0 10px var(--cyber-primary);
+      }
+      
+      .info-card h3 i {
+        font-size: 1.5rem;
+        color: var(--cyber-secondary);
+        text-shadow: 0 0 5px var(--cyber-secondary);
+      }
+      
+      .info-card h5 {
+        color: var(--cyber-secondary);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 5px var(--cyber-secondary);
+      }
+      
+      .info-card p, .info-card li {
+        color: var(--cyber-text-muted);
+      }
+      
+      .timeline-item {
+        position: relative;
+        padding-left: 3rem;
+        margin-bottom: 2rem;
+      }
+      
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: var(--cyber-primary);
+        border-radius: 50%;
+        border: 4px solid var(--cyber-card);
+        box-shadow: 
+          0 0 0 4px var(--cyber-primary),
+          0 0 15px var(--cyber-primary);
+        animation: cyberPulse 2s infinite;
+      }
+      
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 20px;
+        width: 2px;
+        height: calc(100% + 1rem);
+        background: linear-gradient(to bottom, var(--cyber-primary), transparent);
+        box-shadow: 0 0 5px var(--cyber-primary);
+      }
+      
+      .timeline-item:last-child::after {
+        display: none;
+      }
+      
+      .timeline-item h5 {
+        color: var(--cyber-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 5px var(--cyber-primary);
+      }
+      
+      @keyframes cyberPulse {
+        0%, 100% { box-shadow: 0 0 0 4px var(--cyber-primary), 0 0 15px var(--cyber-primary); }
+        50% { box-shadow: 0 0 0 4px var(--cyber-primary), 0 0 25px var(--cyber-primary); }
+      }
+      
+      /* Estilos únicos por sección */
+      
+      /* Sección Hero - Estilo Matrix */
+      .hero-section {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        border-bottom: 3px solid var(--cyber-primary);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="matrix" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" font-family="monospace" font-size="12" fill="%2300ff88" opacity="0.1">01</text></pattern></defs><rect width="100" height="100" fill="url(%23matrix)"/></svg>');
+        animation: matrixFlow 20s linear infinite;
+      }
+      
+      @keyframes matrixFlow {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(20px); }
+      }
+      
+      /* Sección Motivacional - Estilo Terminal */
+      .motivational-section {
+        background: linear-gradient(45deg, #0a0a0a 0%, #1a1a1a 100%);
+        border-top: 2px solid var(--cyber-secondary);
+        border-bottom: 2px solid var(--cyber-secondary);
+        position: relative;
+      }
+      
+      .motivational-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 136, 255, 0.03) 2px,
+          rgba(0, 136, 255, 0.03) 4px
+        );
+      }
+      
+      /* Sección Información - Estilo Circuito */
+      .info-section {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        position: relative;
+      }
+      
+      .info-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="circuit" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M0,25 L50,25 M25,0 L25,50 M10,10 L40,40 M40,10 L10,40" stroke="%23ff0088" stroke-width="0.5" opacity="0.1" fill="none"/></pattern></defs><rect width="100" height="100" fill="url(%23circuit)"/></svg>');
+        opacity: 0.3;
+      }
+      
+      /* Sección Modalidad - Estilo Holograma */
+      .modalidad-section {
+        background: linear-gradient(45deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        background-size: 400% 400%;
+        animation: hologramShift 8s ease-in-out infinite;
+        border-top: 2px solid var(--cyber-accent);
+        border-bottom: 2px solid var(--cyber-accent);
+      }
+      
+      /* Sección Cronograma - Estilo Digital */
+      .cronograma-section {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        position: relative;
+      }
+      
+      .cronograma-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 255, 136, 0.05) 10px,
+          rgba(0, 255, 136, 0.05) 11px
+        );
+      }
+      
+      /* Sección CTA - Estilo Cyberpunk */
+      .cta-section {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        border-top: 3px solid var(--cyber-primary);
+        border-bottom: 3px solid var(--cyber-primary);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(255, 0, 136, 0.05) 0%, transparent 50%);
+        animation: cyberPulse 4s ease-in-out infinite;
+      }
+      
+      /* Efectos tecnológicos adicionales */
+      .tech-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+      
+      .particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: var(--cyber-primary);
+        border-radius: 50%;
+        animation: float 6s infinite linear;
+        box-shadow: 0 0 6px var(--cyber-primary);
+      }
+      
+      .particle:nth-child(2n) {
+        background: var(--cyber-secondary);
+        box-shadow: 0 0 6px var(--cyber-secondary);
+        animation-duration: 8s;
+      }
+      
+      .particle:nth-child(3n) {
+        background: var(--cyber-accent);
+        box-shadow: 0 0 6px var(--cyber-accent);
+        animation-duration: 10s;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) translateX(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) translateX(100px);
+          opacity: 0;
+        }
+      }
+      
+      /* Efecto futurista avanzado para títulos principales */
+      .futuristic-title {
+        position: relative;
+        background: linear-gradient(45deg, var(--cyber-primary), var(--cyber-secondary), var(--cyber-accent), var(--cyber-primary));
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: futuristicGradient 3s ease-in-out infinite, titlePulse 2s ease-in-out infinite;
+        text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      
+      .futuristic-title::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--cyber-accent), var(--cyber-primary), var(--cyber-secondary));
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: futuristicGradient 3s ease-in-out infinite reverse, glitch-1 0.8s infinite;
+        z-index: -1;
+        filter: blur(1px);
+      }
+      
+      .futuristic-title::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--cyber-secondary), var(--cyber-accent), var(--cyber-primary));
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: futuristicGradient 3s ease-in-out infinite, glitch-2 0.8s infinite;
+        z-index: -2;
+        filter: blur(2px);
+      }
+      
+      @keyframes futuristicGradient {
+        0%, 100% { background-position: 0% 50%; }
+        25% { background-position: 100% 50%; }
+        50% { background-position: 50% 100%; }
+        75% { background-position: 50% 0%; }
+      }
+      
+      @keyframes titlePulse {
+        0%, 100% { 
+          transform: scale(1);
+          filter: brightness(1) drop-shadow(0 0 20px var(--cyber-primary));
+        }
+        50% { 
+          transform: scale(1.02);
+          filter: brightness(1.3) drop-shadow(0 0 40px var(--cyber-primary));
+        }
+      }
+      
+      /* Efecto de partículas alrededor del título */
+      .title-particles {
+        position: relative;
+      }
+      
+      .title-particles::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        background: radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 50% 50%, rgba(255, 0, 136, 0.05) 0%, transparent 50%);
+        animation: titleEnergyFlow 4s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -3;
+      }
+      
+      @keyframes titleEnergyFlow {
+        0%, 100% { 
+          transform: scale(1) rotate(0deg);
+          opacity: 0.3;
+        }
+        50% { 
+          transform: scale(1.1) rotate(180deg);
+          opacity: 0.6;
+        }
+      }
+      
+      /* Estilos para FAQ */
+      .faq-section {
+        background: var(--cyber-bg);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .faq-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 90% 80%, rgba(0, 136, 255, 0.05) 0%, transparent 50%),
+          linear-gradient(45deg, transparent 30%, rgba(255, 0, 136, 0.02) 50%, transparent 70%);
+        animation: faqBackground 8s ease-in-out infinite;
+        pointer-events: none;
+      }
+      
+      @keyframes faqBackground {
+        0%, 100% { 
+          transform: scale(1) rotate(0deg);
+          opacity: 0.3;
+        }
+        50% { 
+          transform: scale(1.05) rotate(180deg);
+          opacity: 0.6;
+        }
+      }
+      
+      .faq-item {
+        background: var(--cyber-card);
+        border: 1px solid var(--cyber-border);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      
+      .faq-item:hover {
+        border-color: var(--cyber-primary);
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        transform: translateY(-2px);
+      }
+      
+      .faq-question {
+        background: linear-gradient(135deg, var(--cyber-card) 0%, var(--cyber-bg) 100%);
+        border: none;
+        color: var(--cyber-primary);
+        font-weight: 600;
+        text-align: left;
+        width: 100%;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .faq-question:hover {
+        background: linear-gradient(135deg, var(--cyber-bg) 0%, var(--cyber-card) 100%);
+        color: var(--cyber-secondary);
+      }
+      
+      .faq-question::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+        transition: left 0.5s ease;
+      }
+      
+      .faq-question:hover::before {
+        left: 100%;
+      }
+      
+      .faq-answer {
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        color: var(--cyber-text-muted);
+        line-height: 1.6;
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+      
+      .faq-answer.show {
+        display: block;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .faq-icon {
+        float: right;
+        transition: transform 0.3s ease;
+        color: var(--cyber-accent);
+      }
+      
+      .faq-icon.rotated {
+        transform: rotate(180deg);
+      }
+      
+      /* Efecto de iluminación letra por letra */
+      .letter-glow {
+        position: relative;
+        display: inline-block;
+        word-wrap: break-word;
+        hyphens: auto;
+      }
+      
+      .letter-glow .letter {
+        display: inline-block;
+        color: var(--cyber-text-muted);
+        text-shadow: none;
+        transition: all 0.3s ease;
+        animation: letterGlow 4s ease-in-out infinite;
+        animation-fill-mode: both;
+      }
+      
+      /* Responsive para móvil */
+      @media (max-width: 768px) {
+        .letter-glow {
+          font-size: 2rem !important;
+          line-height: 1.2;
+          word-spacing: 0.1em;
+        }
+        
+        .letter-glow .letter {
+          font-size: inherit;
+        }
+      }
+      
+      @media (max-width: 576px) {
+        .letter-glow {
+          font-size: 1.5rem !important;
+          line-height: 1.3;
+          word-spacing: 0.05em;
+        }
+      }
+      
+      /* Delays para cada letra */
+      .letter-glow .letter:nth-child(1) { animation-delay: 0s; }
+      .letter-glow .letter:nth-child(2) { animation-delay: 0.1s; }
+      .letter-glow .letter:nth-child(3) { animation-delay: 0.2s; }
+      .letter-glow .letter:nth-child(4) { animation-delay: 0.3s; }
+      .letter-glow .letter:nth-child(5) { animation-delay: 0.4s; }
+      .letter-glow .letter:nth-child(6) { animation-delay: 0.5s; }
+      .letter-glow .letter:nth-child(7) { animation-delay: 0.6s; }
+      .letter-glow .letter:nth-child(8) { animation-delay: 0.7s; }
+      .letter-glow .letter:nth-child(9) { animation-delay: 0.8s; }
+      .letter-glow .letter:nth-child(10) { animation-delay: 0.9s; }
+      .letter-glow .letter:nth-child(11) { animation-delay: 1.0s; }
+      .letter-glow .letter:nth-child(12) { animation-delay: 1.1s; }
+      .letter-glow .letter:nth-child(13) { animation-delay: 1.2s; }
+      .letter-glow .letter:nth-child(14) { animation-delay: 1.3s; }
+      .letter-glow .letter:nth-child(15) { animation-delay: 1.4s; }
+      .letter-glow .letter:nth-child(16) { animation-delay: 1.5s; }
+      .letter-glow .letter:nth-child(17) { animation-delay: 1.6s; }
+      .letter-glow .letter:nth-child(18) { animation-delay: 1.7s; }
+      .letter-glow .letter:nth-child(19) { animation-delay: 1.8s; }
+      .letter-glow .letter:nth-child(20) { animation-delay: 1.9s; }
+      .letter-glow .letter:nth-child(21) { animation-delay: 2.0s; }
+      .letter-glow .letter:nth-child(22) { animation-delay: 2.1s; }
+      .letter-glow .letter:nth-child(23) { animation-delay: 2.2s; }
+      .letter-glow .letter:nth-child(24) { animation-delay: 2.3s; }
+      .letter-glow .letter:nth-child(25) { animation-delay: 2.4s; }
+      .letter-glow .letter:nth-child(26) { animation-delay: 2.5s; }
+      .letter-glow .letter:nth-child(27) { animation-delay: 2.6s; }
+      .letter-glow .letter:nth-child(28) { animation-delay: 2.7s; }
+      .letter-glow .letter:nth-child(29) { animation-delay: 2.8s; }
+      .letter-glow .letter:nth-child(30) { animation-delay: 2.9s; }
+      
+      @keyframes letterGlow {
+        0% {
+          color: var(--cyber-text-muted);
+          text-shadow: none;
+          transform: scale(1);
+        }
+        20% {
+          color: var(--cyber-primary);
+          text-shadow: 0 0 10px var(--cyber-primary), 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+          transform: scale(1.05);
+        }
+        40% {
+          color: var(--cyber-primary);
+          text-shadow: 0 0 10px var(--cyber-primary), 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+          transform: scale(1.05);
+        }
+        60% {
+          color: var(--cyber-primary);
+          text-shadow: 0 0 10px var(--cyber-primary), 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+          transform: scale(1.05);
+        }
+        80% {
+          color: var(--cyber-primary);
+          text-shadow: 0 0 10px var(--cyber-primary), 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+          transform: scale(1.05);
+        }
+        100% {
+          color: var(--cyber-text-muted);
+          text-shadow: none;
+          transform: scale(1);
+        }
+      }
+      
+      @keyframes glitch {
+        0%, 100% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+      }
+      
+      @keyframes glitch-1 {
+        0%, 100% { transform: translate(0); }
+        20% { transform: translate(2px, -2px); }
+        40% { transform: translate(-2px, 2px); }
+        60% { transform: translate(-2px, -2px); }
+        80% { transform: translate(2px, 2px); }
+      }
+      
+      @keyframes glitch-2 {
+        0%, 100% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(-2px, -2px); }
+      }
+      
+      /* Efecto de terminal/código */
+      .terminal-effect {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .terminal-effect::before {
+        content: '> ';
+        position: absolute;
+        left: -20px;
+        color: var(--cyber-primary);
+        font-family: 'Courier New', monospace;
+        animation: blink 1s infinite;
+      }
+      
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+      
+      /* Efecto de escaneo horizontal */
+      .scan-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyber-primary), transparent);
+        animation: scan 3s infinite;
+        z-index: 10;
+      }
+      
+      @keyframes scan {
+        0% { top: 0; opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+      
+      /* Efecto de holograma */
+      .hologram {
+        position: relative;
+        background: linear-gradient(45deg, 
+          rgba(0, 255, 136, 0.1) 0%, 
+          rgba(0, 136, 255, 0.1) 50%, 
+          rgba(255, 0, 136, 0.1) 100%);
+        background-size: 400% 400%;
+        animation: hologramShift 4s ease-in-out infinite;
+      }
+      
+      @keyframes hologramShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      
+      /* Efectos futuristas para íconos */
+      .icon-futuristic {
+        animation: futuristicGlow 2s ease-in-out infinite;
+        position: relative;
+      }
+      
+      .icon-futuristic::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        background: linear-gradient(45deg, transparent, currentColor, transparent);
+        border-radius: 50%;
+        opacity: 0;
+        animation: energyRing 2s ease-in-out infinite;
+        z-index: -1;
+      }
+      
+      @keyframes futuristicGlow {
+        0%, 100% { 
+          transform: scale(1) rotate(0deg);
+          filter: brightness(1) drop-shadow(0 0 10px currentColor);
+        }
+        25% { 
+          transform: scale(1.1) rotate(90deg);
+          filter: brightness(1.3) drop-shadow(0 0 20px currentColor);
+        }
+        50% { 
+          transform: scale(1.05) rotate(180deg);
+          filter: brightness(1.5) drop-shadow(0 0 30px currentColor);
+        }
+        75% { 
+          transform: scale(1.1) rotate(270deg);
+          filter: brightness(1.3) drop-shadow(0 0 20px currentColor);
+        }
+      }
+      
+      @keyframes energyRing {
+        0%, 100% { 
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        50% { 
+          opacity: 0.6;
+          transform: scale(1.2);
+        }
+      }
+      
+      /* Efecto de partículas de energía */
+      .energy-particles {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .energy-particles::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 50% 50%, rgba(255, 0, 136, 0.05) 0%, transparent 50%);
+        animation: energyFlow 4s ease-in-out infinite;
+        pointer-events: none;
+      }
+      
+      @keyframes energyFlow {
+        0%, 100% { 
+          transform: scale(1) rotate(0deg);
+          opacity: 0.3;
+        }
+        50% { 
+          transform: scale(1.1) rotate(180deg);
+          opacity: 0.6;
+        }
+      }
+      
+      /* Efecto de ondas de energía */
+      .energy-waves {
+        position: relative;
+      }
+      
+      .energy-waves::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100px;
+        height: 100px;
+        border: 2px solid var(--cyber-primary);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: energyWave 3s ease-out infinite;
+        opacity: 0;
+      }
+      
+      .energy-waves::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150px;
+        height: 150px;
+        border: 1px solid var(--cyber-secondary);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: energyWave 3s ease-out infinite 0.5s;
+        opacity: 0;
+      }
+      
+      @keyframes energyWave {
+        0% {
+          transform: translate(-50%, -50%) scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(2);
+          opacity: 0;
+        }
+      }
+      
+
+      
+       .cta-section {
+         color: var(--cyber-text);
+         padding: 5rem 0;
+         text-align: center;
+         position: relative;
+         z-index: 2;
+       }
+       
+       .cta-section h2 {
+         font-size: 3rem;
+         font-weight: 700;
+         margin-bottom: 1.5rem;
+         position: relative;
+         z-index: 2;
+       }
+       
+       .cta-section p {
+         font-size: 1.3rem;
+         margin-bottom: 2rem;
+         color: var(--cyber-text-muted);
+         position: relative;
+         z-index: 2;
+       }
+       
+       .cta-section .lead {
+         font-weight: 500;
+         color: var(--cyber-text);
+         position: relative;
+         z-index: 2;
+       }
+      
+             .btn-hackathon {
+         background: linear-gradient(135deg, var(--cyber-primary) 0%, var(--cyber-secondary) 100%);
+         border: 2px solid var(--cyber-primary);
+         color: var(--cyber-bg);
+         padding: 1.2rem 2.5rem;
+         font-size: 1.3rem;
+         font-weight: 700;
+         border-radius: 50px;
+         text-decoration: none;
+         display: inline-block;
+         transition: all 0.3s ease;
+         box-shadow: 
+           0 8px 20px rgba(0, 255, 136, 0.4),
+           0 0 20px rgba(0, 255, 136, 0.2);
+         position: relative;
+         z-index: 2;
+         text-transform: uppercase;
+         letter-spacing: 0.5px;
+         overflow: hidden;
+       }
+       
+       .btn-hackathon::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: -100%;
+         width: 100%;
+         height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+         transition: left 0.5s;
+       }
+       
+       .btn-hackathon:hover::before {
+         left: 100%;
+       }
+       
+       .btn-hackathon:hover {
+         transform: translateY(-3px);
+         box-shadow: 
+           0 12px 30px rgba(0, 255, 136, 0.6),
+           0 0 30px rgba(0, 255, 136, 0.3);
+         color: var(--cyber-bg);
+         border-color: var(--cyber-secondary);
+       }
+       
+       .btn-hackathon:active {
+         transform: translateY(-1px);
+       }
+      
+      .modalidad-card {
+        background: var(--cyber-card);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 
+          0 5px 20px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--cyber-border);
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .modalidad-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyber-secondary), transparent);
+        animation: cyberScan 4s infinite;
+      }
+      
+      .modalidad-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+          0 15px 35px rgba(0, 0, 0, 0.4),
+          0 0 20px rgba(0, 136, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: var(--cyber-secondary);
+      }
+      
+      .modalidad-card h4 {
+        color: var(--cyber-primary);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px var(--cyber-primary);
+      }
+      
+      .modalidad-card p {
+        color: var(--cyber-text-muted);
+      }
+      
+      .modalidad-card .modalidad-icon {
+        font-size: 3rem;
+        color: var(--cyber-secondary);
+        margin-bottom: 1rem;
+        animation: futuristicGlow 2s ease-in-out infinite;
+        position: relative;
+      }
+      
+      .modalidad-card .modalidad-icon::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        background: linear-gradient(45deg, transparent, currentColor, transparent);
+        border-radius: 50%;
+        opacity: 0;
+        animation: energyRing 2s ease-in-out infinite;
+        z-index: -1;
+      }
+      
+             @media (max-width: 768px) {
+         .hackathon-hero {
+           margin-top: 70px; /* Menos espacio en móvil */
+           padding: 60px 0; /* Menos padding en móvil */
+         }
+         
+         .hackathon-hero h1 {
+           font-size: 2.5rem;
+         }
+         
+         .hackathon-hero .subtitle {
+           font-size: 1.1rem;
+         }
+         
+         .cta-section {
+           padding: 3rem 0;
+         }
+         
+         .cta-section h2 {
+           font-size: 2.2rem;
+         }
+         
+         .cta-section p {
+           font-size: 1.1rem;
+         }
+         
+         .btn-hackathon {
+           padding: 1rem 2rem;
+           font-size: 1.1rem;
+         }
+       }
+       
+       @media (max-width: 576px) {
+         .hackathon-hero {
+           margin-top: 60px; /* Aún menos espacio en móviles pequeños */
+           padding: 40px 0; /* Menos padding en móviles pequeños */
+         }
+         
+         .hackathon-hero h1 {
+           font-size: 2rem;
+         }
+         
+         .hackathon-hero .subtitle {
+           font-size: 1rem;
+         }
+         
+         .hackathon-hero .description {
+           font-size: 0.95rem;
+         }
+         
+         /* Mensaje motivacional responsive */
+         .alert-primary .d-flex {
+           flex-direction: column;
+           text-align: center;
+         }
+         
+         .alert-primary .me-3 {
+           margin-right: 0 !important;
+           margin-bottom: 1rem;
+         }
+         
+         .alert-primary h4 {
+           font-size: 1.3rem;
+         }
+         
+         .alert-primary p {
+           font-size: 0.95rem;
+         }
+         
+         /* CTA responsive - más espacio entre título y párrafo */
+         .cta-section h2 {
+           margin-bottom: 2.5rem !important;
+         }
+         
+         .cta-section .lead {
+           margin-top: 1rem;
+         }
+       }
+       
+    </style>
+  </head>
+
+  <body style="background: var(--cyber-bg); color: var(--cyber-text);">
+    <!-- Efectos tecnológicos -->
+    <div class="tech-particles" id="particles"></div>
+    
+    <!-- Header -->
+    <header id="header">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">
+            <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
+            <ul class="navbar-nav gap-2">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#nosotros">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#integrantes">Integrantes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#eventos">Actividades</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#extra">Recursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#faq">FAQ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html#contacto">Contacto</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hackathon Hero Section -->
+    <section class="hackathon-hero hero-section">
+      <div class="container">
+                    <h1 class="letter-glow">
+              <i class="bi bi-code-slash me-3"></i>
+              <div class="d-inline-block">
+                <span class="letter">H</span><span class="letter">a</span><span class="letter">c</span><span class="letter">k</span><span class="letter">a</span><span class="letter">t</span><span class="letter">h</span><span class="letter">o</span><span class="letter">n</span>
+              </div>
+              <br class="d-md-none">
+              <div class="d-inline-block">
+                <span class="letter">d</span><span class="letter">e</span> <span class="letter">F</span><span class="letter">i</span><span class="letter">n</span> <span class="letter">d</span><span class="letter">e</span> <span class="letter">S</span><span class="letter">e</span><span class="letter">m</span><span class="letter">a</span><span class="letter">n</span><span class="letter">a</span>
+              </div>
+            </h1>
+        <p class="subtitle">CODES++ - Centro de Estudiantes de Sistemas UNLu</p>
+        <div class="event-date mb-3">
+          <span class="badge bg-primary fs-6 px-3 py-2" style="background: linear-gradient(45deg, var(--cyber-primary), var(--cyber-secondary)) !important; border: 1px solid var(--cyber-primary); color: var(--cyber-bg); font-weight: 600;">
+            <i class="bi bi-calendar-event me-2"></i>Fecha tentativa: Viernes 26 de Septiembre
+          </span>
+        </div>
+        <p class="description">
+          Una competencia de programación en equipos donde podrás desarrollar tu proyecto, 
+          aprender nuevas tecnologías y conectar con otros estudiantes de la carrera.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mensaje Motivacional -->
+    <section class="container my-4 motivational-section">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="alert alert-primary border-0 shadow-sm hologram energy-particles" style="background: linear-gradient(135deg, var(--cyber-card) 0%, var(--cyber-bg) 100%); border: 1px solid var(--cyber-primary) !important; position: relative; overflow: hidden;">
+            <div class="scan-line"></div>
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <i class="bi bi-people-fill icon-futuristic" style="font-size: 2rem; color: var(--cyber-primary);"></i>
+              </div>
+              <div>
+                <h4 class="mb-2 terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><strong>¡Andá armando tu equipo!</strong></h4>
+                <p class="mb-0" style="color: var(--cyber-text-muted);">
+                  Reuní a tus compañeros más creativos y programadores. Este hackathon es tu oportunidad de 
+                  demostrar lo que sabés, aprender cosas nuevas y crear algo increíble en equipo. 
+                  <strong style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);">¡No te lo pierdas!</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Información General -->
+    <section class="container my-5 info-section">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="info-card hologram">
+            <div class="scan-line"></div>
+            <h3 class="terminal-effect"><i class="bi bi-info-circle"></i>¿Qué es un Hackathon?</h3>
+            <p class="mb-4">
+              Un hackathon es una competencia de programación donde equipos de 3 desarrolladores 
+              trabajan intensivamente durante un período limitado de tiempo para crear una solución 
+              digital innovadora. Es una oportunidad perfecta para aprender, experimentar con nuevas 
+              tecnologías y colaborar con otros estudiantes.
+            </p>
+            
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-lightbulb" style="color: var(--cyber-secondary);"></i> ¿Qué se hace exactamente?</h5>
+                <ul style="color: var(--cyber-text-muted);">
+                  <li><strong>Desarrollar una solución digital</strong> desde cero en 50 horas</li>
+                  <li><strong>Trabajar en equipo</strong> de forma colaborativa y organizada</li>
+                  <li><strong>Aprender nuevas tecnologías</strong> y herramientas en tiempo real</li>
+                  <li><strong>Resolver problemas reales</strong> de la comunidad o universidad</li>
+                  <li><strong>Presentar el proyecto</strong> al final del evento</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-people" style="color: var(--cyber-secondary);"></i> ¿Para quién es?</h5>
+                <ul style="color: var(--cyber-text-muted);">
+                  <li><strong>Estudiantes de Sistemas UNLu</strong> de cualquier año</li>
+                  <li><strong>Personas con ganas de aprender</strong> y experimentar</li>
+                  <li><strong>Desarrolladores principiantes</strong> que quieren practicar</li>
+                  <li><strong>Quienes disfrutan</strong> trabajando en equipo</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <h5 style="color: var(--cyber-accent); text-shadow: 0 0 5px var(--cyber-accent);"><i class="bi bi-clock" style="color: var(--cyber-accent);"></i> ¿Cómo funciona?</h5>
+                <ul style="color: var(--cyber-text-muted);">
+                  <li><strong>Se recibe una consigna</strong> con el problema a resolver</li>
+                  <li><strong>Se presentan 3 propuestas</strong> de solución</li>
+                  <li><strong>Se selecciona una propuesta</strong> para desarrollar</li>
+                  <li><strong>50 horas de programación</strong> intensiva en equipo</li>
+                  <li><strong>Entrega final</strong> y presentación del proyecto</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5 style="color: var(--cyber-accent); text-shadow: 0 0 5px var(--cyber-accent);"><i class="bi bi-trophy" style="color: var(--cyber-accent);"></i> ¿Qué se gana?</h5>
+                <ul style="color: var(--cyber-text-muted);">
+                  <li><strong>Experiencia práctica</strong> en desarrollo de software</li>
+                  <li><strong>Habilidades de trabajo en equipo</strong> y colaboración</li>
+                  <li><strong>Conocimientos técnicos</strong> nuevos y actualizados</li>
+                  <li><strong>Portfolio de proyectos</strong> para mostrar</li>
+                  <li><strong>Networking</strong> con otros estudiantes y profesionales</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alert alert-info" style="background: linear-gradient(135deg, var(--cyber-card) 0%, var(--cyber-bg) 100%); border: 1px solid var(--cyber-primary) !important; color: var(--cyber-text);">
+              <h6 style="color: var(--cyber-primary); text-shadow: 0 0 5px var(--cyber-primary);"><i class="bi bi-info-circle me-2"></i>¿Nunca participaste en un hackathon?</h6>
+              <p class="mb-0" style="color: var(--cyber-text-muted);">
+                <strong>¡No te preocupes!</strong> Este evento está diseñado para ser inclusivo y educativo. 
+                No necesitás ser un experto en programación. Lo importante es tener ganas de aprender, 
+                trabajar en equipo y crear algo útil. <strong style="color: var(--cyber-secondary);">¡Es la oportunidad perfecta para tu primer hackathon!</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+             <!-- Modalidad del Evento -->
+    <section class="container my-5 modalidad-section">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-center mb-5" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);">Modalidad del Evento</h2>
+        </div>
+         <div class="col-lg-8 mx-auto">
+           <div class="info-card hologram text-center">
+             <div class="scan-line"></div>
+             <div class="modalidad-icon mb-3">
+               <i class="bi bi-laptop icon-futuristic energy-waves" style="font-size: 4rem; color: var(--cyber-primary);"></i>
+             </div>
+             <h3 class="terminal-effect" style="color: var(--cyber-primary);">Modalidad Virtual</h3>
+             <p class="mb-3">
+               El Hackathon se realizará completamente de forma virtual. Los equipos trabajarán desde sus casas 
+               usando plataformas de videollamada y herramientas de colaboración en línea.
+             </p>
+             <div class="row">
+               <div class="col-md-6">
+                 <h5 style="color: var(--cyber-secondary);"><i class="bi bi-check-circle-fill me-2" style="color: var(--cyber-primary);"></i>Ventajas</h5>
+                 <ul class="list-unstyled text-start">
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-house me-2" style="color: var(--cyber-primary);"></i>Trabajás desde tu casa</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-clock me-2" style="color: var(--cyber-primary);"></i>Horarios flexibles</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-people me-2" style="color: var(--cyber-primary);"></i>Colaboración online</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-wifi me-2" style="color: var(--cyber-primary);"></i>Acceso a recursos digitales</li>
+                 </ul>
+               </div>
+               <div class="col-md-6">
+                 <h5 style="color: var(--cyber-secondary);"><i class="bi bi-tools me-2" style="color: var(--cyber-primary);"></i>Herramientas</h5>
+                 <ul class="list-unstyled text-start">
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-camera-video me-2" style="color: var(--cyber-primary);"></i>Discord del CODES++ para monitoreo</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-github me-2" style="color: var(--cyber-primary);"></i>GitHub para código</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-chat-dots me-2" style="color: var(--cyber-primary);"></i>WhatsApp para coordinación</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-cloud me-2" style="color: var(--cyber-primary);"></i>Google Drive para documentos</li>
+                 </ul>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+
+         <!-- Cronograma -->
+     <section class="container my-5 cronograma-section">
+       <div class="row">
+         <div class="col-lg-8 mx-auto">
+           <div class="info-card">
+             <h3><i class="bi bi-calendar-event"></i>Cronograma del Hackathon Virtual</h3>
+             <div class="timeline-item">
+               <h5>Lunes 23/9</h5>
+               <p><strong>Envío de la consigna:</strong> Se enviará la consigna del Hackathon a todos los equipos registrados. 
+               Los equipos tendrán que presentar 3 propuestas diferentes para el proyecto.</p>
+             </div>
+             <div class="timeline-item">
+               <h5>Viernes 26/9 - 22:00</h5>
+               <p><strong>Notificación de propuesta seleccionada:</strong> Se notifica a cada equipo cuál de sus 3 propuestas deben desarrollar durante el fin de semana.</p>
+             </div>
+             <div class="timeline-item">
+               <h5>Sábado 27/9 y Domingo 28/9</h5>
+               <p><strong>Desarrollo del proyecto:</strong> Los equipos trabajan en sus proyectos de forma independiente durante 50 horas. 
+               El centro estará conectado en Discord para monitorear el progreso y estar disponibles para consultas generales.</p>
+             </div>
+             <div class="timeline-item">
+               <h5>Domingo 28/9 - 23:59</h5>
+               <p><strong>Entrega final:</strong> Los equipos deben entregar sus proyectos antes de las 23:59 Hs del domingo.</p>
+             </div>
+             <div class="timeline-item">
+               <h5>Semana del 30/9</h5>
+               <p><strong>Evaluación y anuncio de ganadores:</strong> Se evaluarán todos los proyectos entregados y se informará cuál fue el equipo ganador a través de los canales oficiales del centro.</p>
+             </div>
+             <div class="alert alert-info mt-4">
+               <i class="bi bi-info-circle me-2"></i>
+               <strong>Duración total:</strong> 50 horas para desarrollar el proyecto (desde el viernes 22:00 hasta el domingo 23:59)
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+
+         
+
+    <!-- Requisitos -->
+    <section class="container my-5" style="background: var(--cyber-bg);">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="info-card hologram">
+            <div class="scan-line"></div>
+            <h3 class="terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><i class="bi bi-list-check"></i>Requisitos para Participar</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-person-check" style="color: var(--cyber-secondary);"></i> Requisitos Personales</h5>
+                <ul style="color: var(--cyber-text-muted);">
+                  <li>Ser estudiante de la carrera de Sistemas UNLu</li>
+                  <li>Tener conocimientos básicos de programación</li>
+                  <li>Disponibilidad durante el fin de semana</li>
+                  <li>Ganas de aprender y colaborar</li>
+                </ul>
+              </div>
+                             <div class="col-md-6">
+                 <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-laptop" style="color: var(--cyber-secondary);"></i> Requisitos Técnicos</h5>
+                 <ul style="color: var(--cyber-text-muted);">
+                   <li>Computadora con conexión a internet estable</li>
+                   <li>Cuenta de GitHub (gratuita)</li>
+                   <li>Herramientas de desarrollo básicas</li>
+                   <li>Acceso al Discord del CODES++ para monitoreo</li>
+                   <li>WhatsApp para coordinación de equipos</li>
+                 </ul>
+               </div>
+            </div>
+          </div>
+                </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="container my-5 faq-section">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2 class="text-center mb-5" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);">
+            <i class="bi bi-question-circle me-3"></i>Preguntas Frecuentes
+          </h2>
+          
+          <div class="faq-container">
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-people-fill me-2"></i>¿Puedo participar solo?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>No, la competencia está pensada para trabajar en equipo.</strong> Los equipos deben estar conformados por exactamente 3 integrantes. Una sola persona no sería capaz de desarrollar un proyecto completo en tan poco tiempo (48 horas), y además, el trabajo en equipo es una habilidad fundamental que queremos fomentar.</p>
+                <p>Si no tenés equipo aún, <strong style="color: var(--cyber-secondary);">¡andá armando tu equipo!</strong> Podés contactar a otros estudiantes a través de los canales del CODES++ o formar equipos con tus compañeros de clase.</p>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-robot me-2"></i>¿Qué pasa si no tengo experiencia en programación?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>¡No pasa nada! Este hackathon es perfecto para aprender.</strong> Está permitido que se ayuden con herramientas de IA para el desarrollo, pero <strong style="color: var(--cyber-accent);">¡ojo con abusar!</strong> La idea es que aprendas y desarrolles tus habilidades, no que la IA haga todo el trabajo.</p>
+                <p>Además, trabajar en equipo te permitirá aprender de tus compañeros más experimentados. <strong style="color: var(--cyber-primary);">La colaboración y el aprendizaje son los objetivos principales del evento.</strong></p>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-lightbulb me-2"></i>¿Qué tipo de proyectos se pueden hacer?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>La consigna específica se anunciará el día del evento,</strong> pero te podemos dar una pista: <strong style="color: var(--cyber-secondary);">el proyecto debe ser algo útil para la comunidad o para la UNLu.</strong></p>
+                <p>Pensá en problemas que enfrentás como estudiante, necesidades de la universidad, o desafíos de la comunidad local. <strong style="color: var(--cyber-primary);">La innovación y el impacto social serán clave en la evaluación.</strong></p>
+                <p>Podría ser una app, una web, un sistema, o cualquier solución digital que aporte valor real. ¡La creatividad no tiene límites!</p>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-clock me-2"></i>¿Cómo funciona el cronograma del evento?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>El hackathon tiene una estructura específica:</strong></p>
+                <ul style="color: var(--cyber-text-muted); margin-left: 1rem;">
+                  <li><strong>Lunes 23/9:</strong> Se envía la consigna y tenés que presentar 3 propuestas</li>
+                  <li><strong>Viernes 26/9 22:00:</strong> Se notifica qué propuesta desarrollar</li>
+                  <li><strong>Sábado 27/9 y Domingo 28/9:</strong> ¡50 horas de programación intensiva!</li>
+                  <li><strong>Domingo 28/9 23:59:</strong> Entrega final del proyecto</li>
+                  <li><strong>Semana del 30/9:</strong> Evaluación y anuncio de ganadores</li>
+                </ul>
+                <p><strong style="color: var(--cyber-accent);">¡Preparate para una experiencia intensa pero increíble!</strong></p>
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-trophy me-2"></i>¿Hay premios o reconocimientos?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>¡Sí! Habrá reconocimientos especiales para los mejores proyectos.</strong> Aunque los detalles específicos se anunciarán más cerca del evento.</p>
+              </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-people me-2"></i>¿Quién conforma el jurado?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>El jurado aún no está completamente definido,</strong> pero la idea es invitar a docentes de la carrera de Sistemas y representantes del centro de estudiantes CODES++.</p>
+                <p>Esto garantizará una evaluación justa y profesional, considerando tanto aspectos técnicos como la relevancia para la comunidad universitaria. <strong style="color: var(--cyber-secondary);">Los criterios de evaluación se comunicarán junto con la consigna del evento.</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+     <section class="cta-section">
+       <div class="container">
+         <div class="row justify-content-center">
+           <div class="col-lg-8 text-center">
+                               <h2 class="mb-4 futuristic-title title-particles" data-text="¿LISTO PARA EL DESAFÍO?">¿Listo para el desafío?</h2>
+             <p class="lead mb-4">Formá parte de esta experiencia única de programación y colaboración en equipos.</p>
+             <div class="d-flex flex-column align-items-center gap-3">
+               <a href="#contacto" class="btn-hackathon">
+                 <i class="bi bi-people-fill me-2"></i>Inscribir Equipos (Próximamente)
+               </a>
+                                   <div class="text-white" style="opacity: 0.8;">
+                      <small><i class="bi bi-clock me-1"></i>50 horas de programación virtual</small>
+                    </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+
+
+    <!-- Footer -->
+    <footer id="contacto">
+      <div class="container">
+        <div class="footer-content">
+          <h3 class="footer-title">
+            Centro Organizado de Estudiantes de Sistemas - CODES++
+          </h3>
+
+          <div class="contact-item">
+            <i class="bi bi-envelope-fill"></i>
+            <a href="mailto:codes.unlu@gmail.com">codes.unlu@gmail.com</a>
+          </div>
+
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/codes_unlu/"
+              target="_blank"
+              class="social-link"
+            >
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a
+              href="https://discord.gg/rDtEx4dMvD"
+              target="_blank"
+              class="social-link"
+            >
+              <i class="bi bi-discord"></i>
+            </a>
+            <a
+              href="https://github.com/CODES-UNLU"
+              target="_blank"
+              class="social-link"
+            >
+              <i class="bi bi-github"></i>
+            </a>
+            <a
+              href="https://chat.whatsapp.com/C3i38DQvAT0JD0tBoC0YxV?mode=r_c"
+              target="_blank"
+              class="social-link"
+            >
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+
+          <p class="mt-4 mb-0" style="opacity: 0.8; font-size: 0.9rem">
+            © 2025 CODES++. Todos los derechos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+    
+    <!-- Cyber Effects Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Efecto de glitch aleatorio en títulos
+        function randomGlitch() {
+          const glitchElements = document.querySelectorAll('.glitch');
+          glitchElements.forEach(element => {
+            if (Math.random() < 0.1) { // 10% de probabilidad
+              element.style.animation = 'none';
+              setTimeout(() => {
+                element.style.animation = 'glitch 2s infinite';
+              }, 100);
+            }
+          });
+        }
+        
+        // Ejecutar glitch aleatorio cada 3 segundos
+        setInterval(randomGlitch, 3000);
+      });
+
+      // Función para toggle de FAQ
+      function toggleFAQ(button) {
+        const faqItem = button.parentElement;
+        const answer = faqItem.querySelector('.faq-answer');
+        const icon = button.querySelector('.faq-icon');
+        
+        // Cerrar otros FAQs abiertos
+        document.querySelectorAll('.faq-item').forEach(item => {
+          if (item !== faqItem) {
+            const otherAnswer = item.querySelector('.faq-answer');
+            const otherIcon = item.querySelector('.faq-icon');
+            otherAnswer.classList.remove('show');
+            otherIcon.classList.remove('rotated');
+          }
+        });
+        
+        // Toggle del FAQ actual
+        answer.classList.toggle('show');
+        icon.classList.toggle('rotated');
+      }
+    </script>
+
+    <!-- Back to Top Button -->
+    <button
+      class="btn btn-primary position-fixed"
+      id="backToTop"
+      style="
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      "
+    >
+      <i class="bi bi-arrow-up"></i>
+    </button>
+  </body>
+</html>

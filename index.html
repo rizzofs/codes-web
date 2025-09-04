@@ -126,6 +126,219 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css" />
     
+    <!-- Carrusel Custom Styles -->
+    <style>
+      /* Carrusel completamente manual - sin auto-movimiento */
+      #activitiesCarousel {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      #activitiesCarousel .carousel-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+      }
+      
+      #activitiesCarousel .carousel-item {
+        position: relative;
+        display: none;
+        width: 100%;
+        flex: 0 0 100%;
+      }
+      
+      #activitiesCarousel .carousel-item.active {
+        display: block;
+      }
+      
+      /* Deshabilitar cualquier animación automática */
+      #activitiesCarousel.carousel {
+        --bs-carousel-transition: none;
+      }
+      
+      /* El usuario controla completamente el desplazamiento del carrusel */
+      
+              /* Carrusel de actividades */
+        .activities-carousel-container {
+          margin: 2rem 0;
+        }
+        
+        .activities-carousel-container .carousel-item {
+          min-height: 500px;
+        }
+        
+        .activities-carousel-container .event-card {
+          height: 100%;
+          margin: 0 auto;
+          max-width: 600px;
+        }
+        
+        /* Posicionar indicadores debajo de las etiquetas */
+        .activities-carousel-container .carousel-indicators {
+          position: static;
+          margin: 1rem 0 0 0;
+          padding: 0;
+        }
+        
+        .activities-carousel-container .carousel-indicators button {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin: 0 6px;
+          border: 2px solid var(--primary);
+          background-color: transparent;
+          opacity: 0.5;
+          transition: all 0.3s ease;
+        }
+        
+        .activities-carousel-container .carousel-indicators button.active {
+          background-color: var(--primary);
+          opacity: 1;
+        }
+      
+      
+      /* Botones de control removidos - solo indicadores y gestos táctiles */
+      
+      /* Títulos resaltados del carrusel */
+      #activitiesCarousel .event-card h3 {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white !important;
+        padding: 15px 20px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 10px 10px 0 0;
+        font-weight: 700;
+        font-size: 1.4rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      #activitiesCarousel .event-card h3::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
+      #activitiesCarousel .event-card:hover h3::before {
+        left: 100%;
+      }
+      
+      #activitiesCarousel .event-card h3 i {
+        color: white !important;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+      }
+      
+      /* Título especial para el sorteo */
+      #activitiesCarousel .event-card h3 .text-warning {
+        color: #ffd700 !important;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        animation: goldGlow 2s ease-in-out infinite alternate;
+      }
+      
+      @keyframes goldGlow {
+        from {
+          text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        to {
+          text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+      }
+      
+      /* Títulos resaltados para desktop */
+      .event-card h3 {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white !important;
+        padding: 15px 20px;
+        margin: -20px -20px 20px -20px;
+        border-radius: 10px 10px 0 0;
+        font-weight: 700;
+        font-size: 1.4rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .event-card h3::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+      }
+      
+      .event-card:hover h3::before {
+        left: 100%;
+      }
+      
+      .event-card h3 i {
+        color: white !important;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+      }
+      
+      /* Título especial para el sorteo en desktop */
+      .event-card h3 .text-warning {
+        color: #ffd700 !important;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        animation: goldGlow 2s ease-in-out infinite alternate;
+      }
+      
+      /* Alineación de botones en las tarjetas - Desktop */
+      .row.g-4.d-none.d-md-flex {
+        display: flex !important;
+        align-items: stretch;
+      }
+      
+      .row.g-4.d-none.d-md-flex .col-md-4 {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .event-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 600px;
+      }
+      
+      .event-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .event-button {
+        margin-top: auto;
+        padding-top: 20px;
+      }
+      
+      /* Alineación de botones en las tarjetas - Mobile */
+      .carousel-item .event-card {
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .carousel-item .event-content {
+        flex: 1;
+      }
+      
+      .carousel-item .event-button {
+        margin-top: auto;
+        padding-top: 20px;
+      }
+    </style>
+    
     <!-- Analytics Debug Script (Development Only) -->
     <script src="assets/js/analytics-debug.js"></script>
   </head>
@@ -588,63 +801,22 @@
         Mantente al día con nuestras próximas actividades y eventos.
       </p>
 
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="event-card">
-            <h3><i class="bi bi-calendar-event text-primary me-2"></i>Taller de Resolución de Problemas</h3>
-            <p>
-              Durante el taller se trabajará en: Técnicas de resolución
-              (backtracking, greedy, divide and conquer, DP), análisis de
-              complejidad y estrategias para competencias e instancias técnicas.
-            </p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdVr3BW_2QYmjdmKAIU0_xXRhZUL9kKbFvOnbd44GxG1WBFng/viewform?usp=header" 
-               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
-              <i class="bi bi-pencil-square me-2"></i>Preinscribirme
-              <span class="loading-spinner d-none">
-                <i class="bi bi-arrow-clockwise spin"></i>
-              </span>
-            </a>
+      <!-- Carrusel para Desktop y Móvil -->
+      <div class="activities-carousel-container">
+        <div id="activitiesCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false" data-bs-touch="true" data-bs-wrap="true">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Sorteo Tablet"></button>
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="1" aria-label="Hackathon"></button>
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="2" aria-label="Expo UNLu"></button>
           </div>
-        </div>
-        
-        <div class="col-md-4">
-          <div class="event-card">
-            <h3><i class="bi bi-trophy text-primary me-2"></i>CACIC 2025</h3>
-            <p>
-              Si estás interesado en participar de la competencia de
-              programación CACIC 2025, completa el siguiente formulario para
-              preinscribirte. Recibirás más información por correo electrónico.
-            </p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPpSJjsfLoa_DSWc6ilkRm1ArFGG8OkTBNHuz_CJLzJgMIw/viewform?usp=header" 
-               class="btn btn-primary external-link" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Abrir formulario de preinscripción">
-              <i class="bi bi-pencil-square me-2"></i>Preinscribirme
-              <span class="loading-spinner d-none">
-                <i class="bi bi-arrow-clockwise spin"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-        
-        <div class="col-md-4">
-          <div class="event-card">
-            <h3><i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025</h3>
-            <p>
-              La Expo UNLu es un evento anual pensado para que estudiantes de
-              escuelas secundarias conozcan las carreras que ofrece la
-              universidad. Es una instancia clave para acercar a nuevos
-              ingresantes.
-            </p>
-            <a href="ExpoUnlu.html" class="btn btn-primary external-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver información de Expo UNLU">
-              <i class="bi bi-building me-2"></i>Ver más información
-              <span class="loading-spinner d-none">
-                <i class="bi bi-arrow-clockwise spin"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="event-card" id="rifa-event">
+          
+          <div class="carousel-inner">
+            <!-- Slide 1: Sorteo -->
+            <div class="carousel-item active">
+              <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                  <div class="event-card" id="rifa-event">
+            <div class="event-content">
             <h3>
               <i class="bi bi-gift text-warning me-2"></i>
               SORTEO DE UNA TABLET
@@ -655,43 +827,19 @@
             <ul class="mb-2">
               <li>Participás con tu número de DNI</li>
               <li>¡Más chances, más oportunidades de ganar!</li>
+              <li>Sistema de referidos disponible</li>
             </ul>
             <div class="mb-2">
-              <strong>Valores por cantidad de chances:</strong>
-              <ul class="mb-2">
-                <li>✅ 1 chance → $1000</li>
-                <li>✅ 3 chances → $2800</li>
-                <li>✅ 4 chances → $4000 <span class="badge bg-success">¡te regalamos 1 extra!</span></li>
-                <li>✅ 6 chances → $5500 <span class="badge bg-success">¡te regalamos 2 extra!</span></li>
-                <li>✅ 10 chances → $9000 <span class="badge bg-success">¡te regalamos 3 extra!</span></li>
-              </ul>
-            </div>
-            
-            <div class="mb-2">
-              <strong>⚡ Sistema de Referidos:</strong>
-              <ul class="mb-2">
-                <li>🎯 Comprá 4, 6 o 10 chances y podés referir a alguien</li>
-                <li>🎁 Por cada compra válida con tu DNI como referido, sumás +1 chance</li>
-                <li>🚀 ¡Sin límite de chances extra por referir!</li>
-                <li>✅ Solo DNIs que ya participaron en el sorteo</li>
-              </ul>
+              <strong>Valores desde $1000</strong>
+              <p class="mb-1 small text-muted">1 chance → $1000 | 3 chances → $2800 | 4+ chances con regalos</p>
             </div>
             <p class="mb-1">
               <i class="bi bi-calendar-event text-primary"></i>
               <strong>Sorteo:</strong> 30 de septiembre de 2025
             </p>
-            <p class="mb-1">
-              <i class="bi bi-person-badge text-primary"></i>
-              Participan todos los DNIs registrados que hayan abonado
-            </p>
-            <p class="mb-2">
-              <i class="bi bi-envelope-check text-primary"></i>
-              Para participar, completá el formulario y realizá el 
-              pago por el link de <strong class="text-primary">Mercado Pago</strong> al que te dirige el botón.
-            </p>
             <p class="mb-2">
               <i class="bi bi-mortarboard text-primary"></i>
-              <strong>Todo lo recaudado será destinado a cubrir los costos de viaje de estudiantes que participarán del CACIC 2025</strong>
+              <strong>Destino:</strong> Costos de viaje para CACIC 2025
             </p>
             
             <!-- Reglamento del Sorteo -->
@@ -735,11 +883,289 @@
                 </div>
               </div>
             </div>
+                </div>
             
-            <a href="sorteo.html" class="btn btn-primary btn-lg w-100 mt-3 fw-bold">
-              <i class="bi bi-ticket-perforated me-2"></i>¡PARTICIPAR AHORA!
-            </a>
+            <div class="event-button">
+              <a href="sorteo.html" class="btn btn-primary btn-lg w-100 fw-bold">
+                <i class="bi bi-ticket-perforated me-2"></i>¡PARTICIPAR AHORA!
+              </a>
+            </div>
           </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: Hackathon -->
+            <div class="carousel-item">
+              <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                  <div class="event-card">
+                    <div class="event-content">
+                      <h3>
+                        <i class="bi bi-code-slash text-primary me-2"></i>
+                        HACKATHON VIRTUAL
+                      </h3>
+                      <p class="mb-2">
+                        <strong>Organiza:</strong> CODES++
+                      </p>
+                      <ul class="mb-2">
+                        <li>Competencia de programación en equipos</li>
+                        <li>50 horas de desarrollo intensivo</li>
+                        <li>Reconocimientos especiales para ganadores</li>
+                        <li>Proyectos para la comunidad UNLu</li>
+                      </ul>
+                      <p class="mb-2">
+                        <i class="bi bi-calendar-event text-primary"></i>
+                        <strong>Fecha:</strong> Viernes 26 de Septiembre (tentativa)
+                      </p>
+                      <p class="mb-2">
+                        <i class="bi bi-people text-primary"></i>
+                        <strong>Equipos:</strong> 3 personas obligatorio
+                      </p>
+                      <p class="mb-2">
+                        <i class="bi bi-laptop text-primary"></i>
+                        <strong>Modalidad:</strong> Virtual
+                      </p>
+                      <p class="mb-3">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        <strong>¿Nunca participaste?</strong> ¡No te preocupes! Es perfecto para aprender y experimentar.
+                      </p>
+                    </div>
+                    
+                    <div class="event-button">
+                      <a href="hackathon.html" class="btn btn-primary w-100">
+                        <i class="bi bi-code-slash me-2"></i>
+                        Ver Información Completa
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: Expo UNLu -->
+            <div class="carousel-item">
+              <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                  <div class="event-card">
+                    <div class="event-content">
+                      <h3><i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025</h3>
+                      <p class="mb-2">
+                        <strong>Evento anual de la Universidad Nacional de Luján</strong>
+                      </p>
+                      <p>
+                        La Expo UNLu es un evento anual pensado para que estudiantes de
+                        escuelas secundarias conozcan las carreras que ofrece la
+                        universidad. Es una instancia clave para acercar a nuevos
+                        ingresantes y mostrar las oportunidades académicas disponibles.
+                      </p>
+                      
+                      <div class="mb-3">
+                        <h6 class="fw-bold text-primary mb-2">
+                          <i class="bi bi-calendar-check me-1"></i>¿Qué encontrarás?
+                        </h6>
+                        <ul class="mb-2 small">
+                          <li>📚 Información detallada de todas las carreras</li>
+                          <li>👥 Charlas con estudiantes y graduados</li>
+                          <li>🏫 Recorridos por las instalaciones</li>
+                          <li>💼 Orientación vocacional y académica</li>
+                          <li>🎓 Experiencias de vida universitaria</li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div class="event-button">
+                      <a href="ExpoUnlu.html" class="btn btn-primary external-link w-100" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver información completa de Expo UNLU">
+                        <i class="bi bi-building me-2"></i>Ver información completa
+                        <span class="loading-spinner d-none">
+                          <i class="bi bi-arrow-clockwise spin"></i>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+            
+      <!-- Mobile Carousel Layout - ELIMINADO -->
+      <div class="d-md-none" style="display: none !important;">
+        <div id="activitiesCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false" data-bs-touch="true" data-bs-wrap="true" data-bs-pause="true">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Sorteo Tablet"></button>
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="1" aria-label="Expo UNLu"></button>
+            <button type="button" data-bs-target="#activitiesCarousel" data-bs-slide-to="2" aria-label="Hackathon"></button>
+          </div>
+          
+          <div class="carousel-inner">
+            <!-- Slide 1: Sorteo -->
+            <div class="carousel-item active">
+              <div class="event-card" id="rifa-event-mobile">
+                <div class="event-content">
+                  <h3>
+                    <i class="bi bi-gift text-warning me-2"></i>
+                    SORTEO DE UNA TABLET
+                  </h3>
+                  <p class="mb-2">
+                    <strong>Organiza:</strong> Centro de Estudiantes
+                  </p>
+                  <ul class="mb-2">
+                    <li>Participás con tu número de DNI</li>
+                    <li>¡Más chances, más oportunidades de ganar!</li>
+                    <li>Sistema de referidos disponible</li>
+                  </ul>
+                  <div class="mb-2">
+                    <strong>Valores desde $1000</strong>
+                    <p class="mb-1 small text-muted">1 chance → $1000 | 3 chances → $2800 | 4+ chances con regalos</p>
+                  </div>
+                  <p class="mb-1">
+                    <i class="bi bi-calendar-event text-primary"></i>
+                    <strong>Sorteo:</strong> 30 de septiembre de 2025
+                  </p>
+                  <p class="mb-2">
+                    <i class="bi bi-mortarboard text-primary"></i>
+                    <strong>Destino:</strong> Costos de viaje para CACIC 2025
+                  </p>
+            
+            <!-- Reglamento del Sorteo -->
+            <div class="mb-3">
+                  <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#reglamentoSorteoMobile" aria-expanded="false" aria-controls="reglamentoSorteoMobile">
+                <i class="bi bi-file-text me-2"></i> Ver Reglamento Completo del Sorteo
+              </button>
+                  <div class="collapse mt-2" id="reglamentoSorteoMobile">
+                <div class="card card-body bg-light">
+                  <h6 class="fw-bold mb-2">📋 Reglamento del Sorteo</h6>
+                  <ol class="mb-0 small">
+                    <li><strong>Participación:</strong> Podrán participar todas las personas que completen el formulario y abonen su participación.</li>
+                    <li><strong>Inscripción:</strong> La inscripción se realiza únicamente a través del formulario oficial y el pago correspondiente.</li>
+                    <li><strong>Sistema de Chances:</strong> 
+                      <ul class="mb-0 mt-1">
+                        <li>Cada chance representa una entrada del DNI en el sorteo.</li>
+                        <li>Al comprar 4 chances, recibes 1 adicional de regalo (total: 5 entradas).</li>
+                        <li>Al comprar 6 chances, recibes 2 adicionales de regalo (total: 8 entradas).</li>
+                        <li>Al comprar 10 chances, recibes 3 adicionales de regalo (total: 13 entradas).</li>
+                        <li>Puedes realizar múltiples compras - todas las chances se suman.</li>
+                        <li>Es posible comprar chances para otra persona - solo asegúrate de cargar sus datos en el formulario.</li>
+                      </ul>
+                    </li>
+                    <li><strong>Sistema de Referidos:</strong> 
+                      <ul class="mb-0 mt-1">
+                        <li>Al comprar 4, 6 o 10 chances, puedes ingresar el DNI de quien te refirió.</li>
+                        <li>Por cada compra válida donde ingresen tu DNI como referido, sumas +1 chance extra.</li>
+                        <li>No hay límite de chances extra por referir.</li>
+                        <li>Solo se pueden referir DNIs que ya participaron en el sorteo.</li>
+                        <li>No se permite auto-referencia (referirse a uno mismo).</li>
+                      </ul>
+                    </li>
+                    <li><strong>Validación:</strong> Solo participarán los DNIs que hayan completado el formulario y realizado el pago correspondiente.</li>
+                    <li><strong>Sorteo:</strong> El sorteo se realizará el 30 de septiembre de 2025 de manera pública y transparente.</li>
+                    <li><strong>Ganador:</strong> Se sorteará un único ganador entre todos los DNIs válidos registrados.</li>
+                    <li><strong>Premio:</strong> El premio consiste en una Tablet Android 15 de última generación.</li>
+                    <li><strong>Entrega:</strong> Previa notificación al ganador, se lo enviaremos al domicilio que nos indique.</li>
+                    <li><strong>Comunicación:</strong> El ganador será contactado por los medios proporcionados en el formulario.</li>
+                    <li><strong>Destino de fondos:</strong> Todo lo recaudado será destinado a cubrir los costos de viaje de estudiantes que participarán del CACIC 2025.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+                </div>
+            
+                <div class="event-button">
+                  <a href="sorteo.html" class="btn btn-primary btn-lg w-100 fw-bold">
+                    <i class="bi bi-ticket-perforated me-2"></i>¡PARTICIPAR AHORA!
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Slide 2: Expo UNLu -->
+            <div class="carousel-item">
+              <div class="event-card">
+                <div class="event-content">
+                  <h3><i class="bi bi-building text-primary me-2"></i>Expo UNLu 2025</h3>
+                  <p class="mb-2">
+                    <strong>Evento anual de la Universidad Nacional de Luján</strong>
+                  </p>
+                  <p>
+                    La Expo UNLu es un evento anual pensado para que estudiantes de
+                    escuelas secundarias conozcan las carreras que ofrece la
+                    universidad. Es una instancia clave para acercar a nuevos
+                    ingresantes y mostrar las oportunidades académicas disponibles.
+                  </p>
+                  
+                  <div class="mb-3">
+                    <h6 class="fw-bold text-primary mb-2">
+                      <i class="bi bi-calendar-check me-1"></i>¿Qué encontrarás?
+                    </h6>
+                    <ul class="mb-2 small">
+                      <li>📚 Información detallada de todas las carreras</li>
+                      <li>👥 Charlas con estudiantes y graduados</li>
+                      <li>🏫 Recorridos por las instalaciones</li>
+                      <li>💼 Orientación vocacional y académica</li>
+                      <li>🎓 Experiencias de vida universitaria</li>
+                    </ul>
+                  </div>
+                  
+                </div>
+                
+                <div class="event-button">
+                  <a href="ExpoUnlu.html" class="btn btn-primary external-link w-100">
+                    <i class="bi bi-building me-2"></i>Ver información completa
+                    <span class="loading-spinner d-none">
+                      <i class="bi bi-arrow-clockwise spin"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Slide 3: Hackathon -->
+          <div class="carousel-item">
+            <div class="event-card">
+              <div class="event-content">
+                <h3>
+                  <i class="bi bi-code-slash text-primary me-2"></i>
+                  HACKATHON VIRTUAL
+                </h3>
+                <p class="mb-2">
+                  <strong>Organiza:</strong> CODES++
+                </p>
+                <ul class="mb-2">
+                  <li>Competencia de programación en equipos</li>
+                  <li>50 horas de desarrollo intensivo</li>
+                  <li>Reconocimientos especiales para ganadores</li>
+                  <li>Proyectos para la comunidad UNLu</li>
+                </ul>
+                <p class="mb-2">
+                  <i class="bi bi-calendar-event text-primary"></i>
+                  <strong>Fecha:</strong> Viernes 26 de Septiembre (tentativa)
+                </p>
+                <p class="mb-2">
+                  <i class="bi bi-people text-primary"></i>
+                  <strong>Equipos:</strong> 3 personas obligatorio
+                </p>
+                <p class="mb-2">
+                  <i class="bi bi-laptop text-primary"></i>
+                  <strong>Modalidad:</strong> Virtual
+                </p>
+                <p class="mb-3">
+                  <i class="bi bi-info-circle text-primary"></i>
+                  <strong>¿Nunca participaste?</strong> ¡No te preocupes! Es perfecto para aprender y experimentar.
+                </p>
+              </div>
+              
+              <div class="event-button">
+                <a href="hackathon.html" class="btn btn-primary w-100">
+                  <i class="bi bi-code-slash me-2"></i>
+                  Ver Información Completa
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -1267,9 +1693,18 @@
           
           // Hacer scroll a la sección del sorteo
           var sorteoSection = document.getElementById('rifa-event');
-          if (sorteoSection) {
-            var y = sorteoSection.getBoundingClientRect().top + window.pageYOffset - 90;
+          var sorteoSectionMobile = document.getElementById('rifa-event-mobile');
+          var targetSection = sorteoSection || sorteoSectionMobile;
+          
+          if (targetSection) {
+            var y = targetSection.getBoundingClientRect().top + window.pageYOffset - 90;
             window.scrollTo({ top: y, behavior: 'smooth' });
+            
+            // Si es móvil, cambiar al slide del sorteo
+            if (window.innerWidth < 768 && sorteoSectionMobile) {
+              var carousel = new bootstrap.Carousel(document.getElementById('activitiesCarousel'));
+              carousel.to(1); // Ir al slide 2 (índice 1)
+            }
           }
         });
       });
@@ -1352,9 +1787,18 @@
         if (goToRifaBtn) {
           goToRifaBtn.addEventListener('click', function() {
             var rifaCard = document.getElementById('rifa-event');
-            if (rifaCard) {
-              var y = rifaCard.getBoundingClientRect().top + window.pageYOffset - 90;
+            var rifaCardMobile = document.getElementById('rifa-event-mobile');
+            var targetCard = rifaCard || rifaCardMobile;
+            
+            if (targetCard) {
+              var y = targetCard.getBoundingClientRect().top + window.pageYOffset - 90;
               window.scrollTo({ top: y, behavior: 'smooth' });
+              
+              // Si es móvil, cambiar al slide del sorteo
+              if (window.innerWidth < 768 && rifaCardMobile) {
+                var carousel = new bootstrap.Carousel(document.getElementById('activitiesCarousel'));
+                carousel.to(0); // Ir al slide 1 (índice 0) - ahora es el sorteo
+              }
             }
           });
         }
@@ -1363,12 +1807,61 @@
         if (window.location.hash === '#rifa-event') {
           setTimeout(function() {
             var rifaCard = document.getElementById('rifa-event');
-            if (rifaCard) {
-              var y = rifaCard.getBoundingClientRect().top + window.pageYOffset - 90;
+            var rifaCardMobile = document.getElementById('rifa-event-mobile');
+            var targetCard = rifaCard || rifaCardMobile;
+            
+            if (targetCard) {
+              var y = targetCard.getBoundingClientRect().top + window.pageYOffset - 90;
               window.scrollTo({ top: y, behavior: 'smooth' });
+              
+              // Si es móvil, cambiar al slide del sorteo
+              if (window.innerWidth < 768 && rifaCardMobile) {
+                var carousel = new bootstrap.Carousel(document.getElementById('activitiesCarousel'));
+                carousel.to(0); // Ir al slide 1 (índice 0) - ahora es el sorteo
+              }
             }
           }, 500);
         }
+        
+        // Inicializar el carrusel de actividades
+        setTimeout(function() {
+          var carousel = document.getElementById('activitiesCarousel');
+          if (carousel) {
+            // Inicializar Bootstrap Carousel
+            var bsCarousel = new bootstrap.Carousel(carousel, {
+              interval: false,
+              touch: true,
+              wrap: true,
+              ride: false
+            });
+            
+            // Asegurar que solo se muestre un slide a la vez
+            var carouselItems = carousel.querySelectorAll('.carousel-item');
+            carouselItems.forEach(function(item, index) {
+              if (index === 0) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+              }
+            });
+            
+            // Navegación con flechas del teclado
+            document.addEventListener('keydown', function(e) {
+              if (e.key === 'ArrowLeft') {
+                bsCarousel.prev();
+              } else if (e.key === 'ArrowRight') {
+                bsCarousel.next();
+              }
+            });
+            
+            // Feedback táctil mejorado sin scroll automático
+            carousel.addEventListener('slide.bs.carousel', function (e) {
+              console.log('Carrusel cambiado al slide:', e.to);
+            });
+            
+            console.log('Carrusel inicializado correctamente con navegación por teclado');
+          }
+        }, 100);
       });
     </script>
   </body>
