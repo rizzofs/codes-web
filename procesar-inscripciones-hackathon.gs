@@ -796,7 +796,7 @@ function crearPaginaExito(tipo, data) {
         <div class="success-icon">✅</div>
         <h1 class="title">${titulo}</h1>
         <p class="message">${mensaje}</p>
-        <a href="hackathon.html" class="btn">Volver al Hackathon</a>
+        <a href="https://codes-unlu.github.io/hackathon.html" class="btn">Volver al Hackathon</a>
         <div class="footer">
             Centro Organizado de Estudiantes de Sistemas - CODES++
         </div>
@@ -898,8 +898,9 @@ function crearPaginaInfo() {
             organizado por <strong>CODES++</strong>.
         </p>
         <div class="links">
-            <a href="hackathon.html" class="btn">Ver Hackathon</a>
-            <a href="incripcion-hakathon-equipos.html" class="btn">Inscribir Equipo</a>
+            <a href="https://codes-unlu.github.io/hackathon.html" class="btn">Ver Hackathon</a>
+            <a href="https://codes-unlu.github.io/incripcion-hakathon-equipos.html" class="btn">Inscribir Equipo</a>
+            <a href="https://codes-unlu.github.io/incripcion-hackathon-individual.html" class="btn">Inscribirse Solo</a>
         </div>
         <div class="footer">
             Centro Organizado de Estudiantes de Sistemas - CODES++<br>
