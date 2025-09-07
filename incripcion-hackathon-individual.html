@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción Individual - Hackathon | CODES++</title>
+    <meta name="description" content="Inscribite individualmente al Hackathon de Fin de Semana organizado por CODES++">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <style>
+        /* Cyber Theme Variables */
+        :root {
+            --cyber-primary: #00ff88;
+            --cyber-secondary: #0088ff;
+            --cyber-accent: #ff0088;
+            --cyber-bg: #0a0a0a;
+            --cyber-card: #1a1a1a;
+            --cyber-border: #333;
+            --cyber-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+            --cyber-text: #ffffff;
+            --cyber-text-muted: #888;
+        }
+
+        body {
+            background: var(--cyber-bg);
+            color: var(--cyber-text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            border-bottom: 3px solid var(--cyber-secondary);
+            position: relative;
+            overflow: hidden;
+            padding: 120px 0 80px 0;
+            margin-top: 80px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="matrix" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" font-family="monospace" font-size="12" fill="%230088ff" opacity="0.1">01</text></pattern></defs><rect width="100" height="100" fill="url(%23matrix)"/></svg>');
+            animation: matrixFlow 20s linear infinite;
+        }
+
+        @keyframes matrixFlow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cyber-secondary);
+            text-shadow: 0 0 20px var(--cyber-secondary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--cyber-primary);
+            text-shadow: 0 0 10px var(--cyber-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-container {
+            background: var(--cyber-card);
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--cyber-border);
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyber-secondary), transparent);
+            animation: cyberScan 3s infinite;
+        }
+
+        @keyframes cyberScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .form-title {
+            color: var(--cyber-secondary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--cyber-secondary);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--cyber-primary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 5px var(--cyber-primary);
+        }
+
+        .form-control {
+            background: var(--cyber-bg);
+            border: 2px solid var(--cyber-border);
+            border-radius: 8px;
+            color: var(--cyber-text);
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: var(--cyber-bg);
+            border-color: var(--cyber-secondary);
+            color: var(--cyber-text);
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.3);
+        }
+
+        .form-control::placeholder {
+            color: var(--cyber-text-muted);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--cyber-secondary) 0%, var(--cyber-accent) 100%);
+            border: 2px solid var(--cyber-secondary);
+            color: var(--cyber-bg);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 8px 20px rgba(0, 136, 255, 0.4),
+                0 0 20px rgba(0, 136, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 30px rgba(0, 136, 255, 0.6),
+                0 0 30px rgba(0, 136, 255, 0.3);
+            color: var(--cyber-bg);
+            border-color: var(--cyber-accent);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--cyber-bg) 0%, var(--cyber-card) 100%) !important;
+            border-bottom: 2px solid var(--cyber-secondary);
+            box-shadow: 0 2px 20px rgba(0, 136, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            filter: brightness(1.1) drop-shadow(0 0 8px rgba(0, 136, 255, 0.4));
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .navbar-brand:hover {
+            filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 136, 255, 0.6)) drop-shadow(0 0 25px rgba(0, 255, 136, 0.4));
+            transform: scale(1.02);
+        }
+
+        .navbar-logo {
+            transition: all 0.4s ease;
+            animation: logoLuminosity 4s ease-in-out infinite;
+        }
+
+        @keyframes logoLuminosity {
+            0% {
+                filter: brightness(1) contrast(1) saturate(1);
+            }
+            25% {
+                filter: brightness(1.1) contrast(1.1) saturate(1.2);
+            }
+            50% {
+                filter: brightness(1.2) contrast(1.2) saturate(1.4);
+            }
+            75% {
+                filter: brightness(1.1) contrast(1.1) saturate(1.2);
+            }
+            100% {
+                filter: brightness(1) contrast(1) saturate(1);
+            }
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(0, 136, 255, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            animation: luminosityPulse 3s ease-in-out infinite;
+        }
+
+        .navbar-brand:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes luminosityPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .navbar-logo::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--cyber-secondary);
+            border-right: 2px solid var(--cyber-primary);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            animation: rotateLight 2s linear infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-brand:hover .navbar-logo::before {
+            opacity: 1;
+        }
+
+        @keyframes rotateLight {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, transparent, var(--cyber-secondary), var(--cyber-primary), transparent, transparent);
+            opacity: 0.8;
+            z-index: -1;
+            animation: rotateLight 2s linear infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-brand:hover .logo-container::before {
+            opacity: 1;
+        }
+
+        /* Efecto adicional con box-shadow */
+        .navbar-brand:hover .navbar-logo {
+            box-shadow: 
+                0 0 20px var(--cyber-secondary),
+                0 0 40px var(--cyber-secondary),
+                0 0 60px var(--cyber-secondary);
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 2px solid var(--cyber-secondary);
+            border-radius: 25px;
+            color: var(--cyber-secondary) !important;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--cyber-secondary);
+            color: var(--cyber-bg) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 136, 255, 0.3);
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, var(--cyber-card) 0%, var(--cyber-bg) 100%);
+            border: 1px solid var(--cyber-secondary) !important;
+            color: var(--cyber-text);
+            border-radius: 10px;
+        }
+
+        .alert-info .alert-heading {
+            color: var(--cyber-secondary);
+            text-shadow: 0 0 5px var(--cyber-secondary);
+        }
+
+        .team-formation-info {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--cyber-primary);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .team-formation-info h5 {
+            color: var(--cyber-primary);
+            text-shadow: 0 0 5px var(--cyber-primary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem 0;
+            }
+            
+            .hero-section {
+                padding: 100px 0 60px 0;
+                margin-top: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo-container">
+                    <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" style="height: 40px;" />
+                </div>
+            </a>
+            <a href="hackathon.html" class="btn-back">
+                <i class="bi bi-arrow-left"></i>
+                <span>Volver al Hackathon</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="hero-title">
+                        <i class="bi bi-person-plus me-3"></i>
+                        Inscripción Individual
+                    </h1>
+                    <p class="hero-subtitle">
+                        Hackathon de Fin de Semana - CODES++
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <!-- Info Alert -->
+                <div class="alert alert-info mb-4">
+                    <h4 class="alert-heading">
+                        <i class="bi bi-info-circle me-2"></i>
+                        ¿No tenés equipo?
+                    </h4>
+                    <p class="mb-0">
+                        <strong>¡No te preocupes!</strong> Te ayudaremos a formar un equipo con otros participantes individuales. 
+                        Una vez que te inscribas, nos pondremos en contacto contigo para conectarte con otros estudiantes.
+                    </p>
+                </div>
+
+                <!-- Team Formation Info -->
+                <div class="team-formation-info">
+                    <h5><i class="bi bi-people-fill me-2"></i>Formación de Equipos</h5>
+                    <ul class="mb-0" style="color: var(--cyber-text-muted);">
+                        <li>Te contactaremos por email para formar tu equipo</li>
+                        <li>Podrás conocer a tus futuros compañeros</li>
+                        <li>Trabajarás en equipo de 3 personas</li>
+                        <li>El trabajo en equipo es una habilidad fundamental</li>
+                    </ul>
+                </div>
+
+                <!-- Form -->
+                <div class="form-container">
+                    <h2 class="form-title">
+                        <i class="bi bi-person me-2"></i>
+                        Tus Datos
+                    </h2>
+
+                    <form id="individualForm" action="https://script.google.com/macros/s/AKfycbxD3WuDpfNfCA5LjHDaeg8gs0dfyMIxu1892wE6hYGstdRpsul10q6WY_EDWmDTe_b2/exec" method="POST">
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <label for="name" class="form-label">
+                                <i class="bi bi-person me-2"></i>
+                                Nombre *
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   placeholder="Tu nombre" required>
+                        </div>
+
+                        <!-- Apellido -->
+                        <div class="form-group">
+                            <label for="surname" class="form-label">
+                                <i class="bi bi-person me-2"></i>
+                                Apellido *
+                            </label>
+                            <input type="text" class="form-control" id="surname" name="surname" 
+                                   placeholder="Tu apellido" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope me-2"></i>
+                                Email *
+                            </label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   placeholder="tu.email@ejemplo.com" required>
+                        </div>
+
+                        <!-- Usuario Discord -->
+                        <div class="form-group">
+                            <label for="discord" class="form-label">
+                                <i class="bi bi-discord me-2"></i>
+                                Usuario de Discord *
+                            </label>
+                            <input type="text" class="form-control" id="discord" name="discord" 
+                                   placeholder="usuario_ejemplo" required>
+                            <small class="form-text" style="color: var(--cyber-text-muted);">
+                                Solo el nombre de usuario (ej: usuario_ejemplo)
+                            </small>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn-submit">
+                                <i class="bi bi-send me-2"></i>
+                                Inscribirme Individualmente
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Form Validation and Submission Script -->
+    <script>
+        document.getElementById('individualForm').addEventListener('submit', function(e) {
+            // Basic validation
+            const name = document.getElementById('name').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const discord = document.getElementById('discord').value.trim();
+            
+            // Check if fields are not empty
+            if (!name || !surname || !email || !discord) {
+                e.preventDefault();
+                alert('Por favor, completá todos los campos obligatorios.');
+                return false;
+            }
+            
+            // Check email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                alert('Por favor, ingresá un email válido.');
+                return false;
+            }
+            
+            // Check Discord format (basic check for username without #)
+            const discordRegex = /^[a-zA-Z0-9._-]{3,32}$/;
+            if (!discordRegex.test(discord)) {
+                e.preventDefault();
+                alert('Por favor, ingresá un usuario de Discord válido (ej: usuario_ejemplo).');
+                return false;
+            }
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Enviando...';
+            submitBtn.disabled = true;
+            
+            // Add hidden field for the form data
+            addHiddenField('tipo', 'individual');
+            
+            // Let the form submit naturally to Google Apps Script
+            // The form will redirect to a success page
+        });
+        
+        function addHiddenField(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            document.getElementById('individualForm').appendChild(input);
+        }
+    </script>
+</body>
+</html>

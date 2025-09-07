@@ -159,6 +159,34 @@
       
       /* El usuario controla completamente el desplazamiento del carrusel */
       
+      /* Botón del hackathon personalizado */
+      .hackathon-btn {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        border: 2px solid #28a745 !important;
+        color: white !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+        transition: all 0.3s ease !important;
+        height: 38px !important;
+        width: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      
+      .hackathon-btn:hover {
+        background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%) !important;
+        border-color: #20c997 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4) !important;
+        color: white !important;
+      }
+      
+      .hackathon-btn:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+      }
+      
               /* Carrusel de actividades */
         .activities-carousel-container {
           margin: 2rem 0;
@@ -392,6 +420,18 @@
                 <i class="bi bi-gift"></i>
               </button>
               <span class="fw-bold text-dark">Participá</span>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <button
+                class="btn btn-success btn-sm hackathon-btn"
+                id="goToHackathonBtn"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="Hackathon de Fin de Semana"
+              >
+                <i class="bi bi-code-slash"></i>
+              </button>
+              <span class="fw-bold text-dark">Hackathon</span>
             </div>
           </div>
           <button
@@ -1655,6 +1695,14 @@
               Tenemos un sorteo increíble con una <strong>Tablet Android 15</strong> como premio. 
               ¡No te lo pierdas!
             </p>
+            <div class="alert alert-info mb-4">
+              <h6 class="alert-heading mb-2">
+                <i class="bi bi-airplane me-2"></i>¡Ayudanos a viajar al Cacic 2025!
+              </h6>
+              <p class="mb-0 small">
+                Tu participación nos ayuda a financiar el viaje de los estudiantes al Congreso Argentino de Ciencias de la Computación 2025.
+              </p>
+            </div>
             <div class="d-grid gap-2">
               <button type="button" class="btn btn-primary btn-lg" id="participarSorteoBtn">
                 <i class="bi bi-ticket-perforated me-2"></i>¡PARTICIPAR AHORA!
@@ -1721,10 +1769,10 @@
               <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#eventos" data-bs-dismiss="modal">Actividades</a></li>
               <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#extra" data-bs-dismiss="modal">Recursos</a></li>
               <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#faq" data-bs-dismiss="modal">FAQ</a></li>
-                                                                                      <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="verificar-chances.html">
-                                    <i class="bi bi-search me-1"></i>Consultar Chances
-                                    </a></li>
-                        <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#contacto" data-bs-dismiss="modal">Contacto</a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="verificar-chances.html">
+                <i class="bi bi-search me-1"></i>Consultar Chances
+              </a></li>
+              <li class="nav-item"><a class="nav-link fs-5 fw-bold" href="#contacto" data-bs-dismiss="modal">Contacto</a></li>
             </ul>
           </div>
         </div>
@@ -1800,6 +1848,29 @@
                 carousel.to(0); // Ir al slide 1 (índice 0) - ahora es el sorteo
               }
             }
+          });
+        }
+        
+        // Botón del hackathon
+        var goToHackathonBtn = document.getElementById('goToHackathonBtn');
+        if (goToHackathonBtn) {
+          goToHackathonBtn.addEventListener('click', function() {
+            window.location.href = 'hackathon.html';
+          });
+        }
+        
+        // Efecto hover para el botón del hackathon (verde vibrante)
+        if (goToHackathonBtn) {
+          goToHackathonBtn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 8px 25px rgba(40, 167, 69, 0.4)';
+            this.style.transition = 'all 0.3s ease';
+          });
+          
+          goToHackathonBtn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.3)';
+            this.style.transition = 'all 0.3s ease';
           });
         }
         

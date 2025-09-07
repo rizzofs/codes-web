@@ -6,7 +6,7 @@
     <title>Hackathon de Fin de Semana - CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
     <meta
       name="description"
-      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas, Informática y carreras afines de cualquier universidad."
     />
     <meta
       name="keywords"
@@ -35,7 +35,7 @@
     />
     <meta
       property="og:description"
-      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas, Informática y carreras afines de cualquier universidad."
     />
     <meta property="og:image" content="assets/images/Logo.svg" />
 
@@ -48,7 +48,7 @@
     />
     <meta
       property="twitter:description"
-      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas UNLu."
+      content="Participá del Hackathon de Fin de Semana organizado por CODES++. Una competencia de programación en equipos para estudiantes de Sistemas, Informática y carreras afines de cualquier universidad."
     />
     <meta property="twitter:image" content="assets/images/Logo.svg" />
 
@@ -534,9 +534,11 @@
       
       /* Estilos para FAQ */
       .faq-section {
-        background: var(--cyber-bg);
+        background: #0a0a0a;
         position: relative;
         overflow: hidden;
+        border-radius: 15px;
+        margin: 2rem 0;
       }
       
       .faq-section::before {
@@ -640,6 +642,17 @@
       
       .faq-icon.rotated {
         transform: rotate(180deg);
+      }
+      
+      /* Efectos para las tarjetas de criterios */
+      .criterio-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        border-color: var(--cyber-primary);
+      }
+      
+      .criterio-card:hover .criterio-card {
+        transform: translateY(-5px);
       }
       
       /* Efecto de iluminación letra por letra */
@@ -1732,12 +1745,12 @@
         <p class="subtitle">CODES++ - Centro de Estudiantes de Sistemas UNLu</p>
         <div class="event-date mb-3">
           <span class="badge bg-primary fs-6 px-3 py-2" style="background: linear-gradient(45deg, var(--cyber-primary), var(--cyber-secondary)) !important; border: 1px solid var(--cyber-primary); color: var(--cyber-bg); font-weight: 600;">
-            <i class="bi bi-calendar-event me-2"></i>Fecha tentativa: Viernes 26 de Septiembre
+            <i class="bi bi-calendar-event me-2"></i>Viernes 26 de Septiembre
           </span>
         </div>
         <p class="description">
           Una competencia de programación en equipos donde podrás desarrollar tu proyecto, 
-          aprender nuevas tecnologías y conectar con otros estudiantes de la carrera.
+          aprender nuevas tecnologías y conectar con otros estudiantes de Sistemas, Informática y carreras afines de cualquier universidad.
         </p>
       </div>
     </section>
@@ -1753,10 +1766,10 @@
                 <i class="bi bi-people-fill icon-futuristic" style="font-size: 2rem; color: var(--cyber-primary);"></i>
               </div>
               <div>
-                <h4 class="mb-2 terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><strong>¡Andá armando tu equipo! (3 personas obligatorio)</strong></h4>
+                <h4 class="mb-2 terminal-effect" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);"><strong>¡Armá tu equipo o inscribite solo!</strong></h4>
                 <p class="mb-0" style="color: var(--cyber-text-muted);">
-                  Reuní a tus compañeros más creativos y programadores. Este hackathon es tu oportunidad de 
-                  demostrar lo que sabés, aprender cosas nuevas y crear algo increíble en equipo. 
+                  Si ya tenés equipo de 3 personas, ¡perfecto! Si no, también podés inscribirte solo y te ayudaremos a formar un equipo. 
+                  Este hackathon es tu oportunidad de demostrar lo que sabés, aprender cosas nuevas y crear algo increíble. 
                   <strong style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);">¡No te lo pierdas!</strong>
                 </p>
               </div>
@@ -1794,7 +1807,8 @@
               <div class="col-md-6">
                 <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-people" style="color: var(--cyber-secondary);"></i> ¿Para quién es?</h5>
                 <ul style="color: var(--cyber-text-muted);">
-                  <li><strong>Estudiantes de Sistemas UNLu</strong> de cualquier año</li>
+                  <li><strong>Estudiantes de Sistemas, Informática y carreras afines</strong> de cualquier universidad</li>
+                  <li><strong>Estudiantes de cualquier año</strong> (desde primer año hasta posgrado)</li>
                   <li><strong>Personas con ganas de aprender</strong> y experimentar</li>
                   <li><strong>Desarrolladores principiantes</strong> que quieren practicar</li>
                   <li><strong>Quienes disfrutan</strong> trabajando en equipo</li>
@@ -1868,7 +1882,7 @@
                <div class="col-md-6">
                  <h5 style="color: var(--cyber-secondary);"><i class="bi bi-tools me-2" style="color: var(--cyber-primary);"></i>Herramientas</h5>
                  <ul class="list-unstyled text-start">
-                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-camera-video me-2" style="color: var(--cyber-primary);"></i>Discord del CODES++ para monitoreo</li>
+                   <li style="color: var(--cyber-text-muted);"><i class="bi bi-camera-video me-2" style="color: var(--cyber-primary);"></i>Discord del CODES++ (opcional, cada equipo tendrá su canal)</li>
                    <li style="color: var(--cyber-text-muted);"><i class="bi bi-github me-2" style="color: var(--cyber-primary);"></i>GitHub para código</li>
                    <li style="color: var(--cyber-text-muted);"><i class="bi bi-chat-dots me-2" style="color: var(--cyber-primary);"></i>WhatsApp para coordinación</li>
                    <li style="color: var(--cyber-text-muted);"><i class="bi bi-cloud me-2" style="color: var(--cyber-primary);"></i>Google Drive para documentos</li>
@@ -1892,13 +1906,17 @@
                Los equipos tendrán que presentar 3 propuestas diferentes para el proyecto.</p>
              </div>
              <div class="timeline-item">
+               <h5>Jueves 25/9 - 23:59</h5>
+               <p><strong>Entrega de propuestas:</strong> Los equipos deben entregar sus 3 propuestas antes de las 23:59 Hs del jueves.</p>
+             </div>
+             <div class="timeline-item">
                <h5>Viernes 26/9 - 22:00</h5>
                <p><strong>Notificación de propuesta seleccionada:</strong> Se notifica a cada equipo cuál de sus 3 propuestas deben desarrollar durante el fin de semana.</p>
              </div>
              <div class="timeline-item">
                <h5>Sábado 27/9 y Domingo 28/9</h5>
                <p><strong>Desarrollo del proyecto:</strong> Los equipos trabajan en sus proyectos de forma independiente durante 48 horas. 
-               El centro estará conectado en Discord para monitorear el progreso y estar disponibles para consultas generales.</p>
+               El centro estará disponible para consultas generales y cada equipo tendrá su canal de Discord opcional si lo necesita.</p>
              </div>
              <div class="timeline-item">
                <h5>Domingo 28/9 - 22:00</h5>
@@ -1930,7 +1948,7 @@
               <div class="col-md-6">
                 <h5 style="color: var(--cyber-secondary); text-shadow: 0 0 5px var(--cyber-secondary);"><i class="bi bi-person-check" style="color: var(--cyber-secondary);"></i> Requisitos Personales</h5>
                 <ul style="color: var(--cyber-text-muted);">
-                  <li>Ser estudiante de la carrera de Sistemas UNLu</li>
+                  <li>Ser estudiante de Sistemas, Informática o carreras afines de cualquier universidad</li>
                   <li>Tener conocimientos básicos de programación</li>
                   <li>Disponibilidad durante el fin de semana</li>
                   <li>Ganas de aprender y colaborar</li>
@@ -1942,7 +1960,7 @@
                    <li>Computadora con conexión a internet estable</li>
                    <li>Cuenta de GitHub (gratuita)</li>
                    <li>Herramientas de desarrollo básicas</li>
-                   <li>Acceso al Discord del CODES++ para monitoreo</li>
+                   <li>Acceso al Discord del CODES++ (opcional, cada equipo tendrá su canal)</li>
                    <li>WhatsApp para coordinación de equipos</li>
                  </ul>
                </div>
@@ -1952,10 +1970,139 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="container my-5 faq-section">
+    <!-- Criterios de Evaluación Section -->
+    <section class="container my-5" style="background: var(--cyber-bg); border-radius: 15px; padding: 3rem; position: relative; overflow: hidden;">
       <div class="row">
         <div class="col-lg-10 mx-auto">
+          <h2 class="text-center mb-5" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);">
+            <i class="bi bi-clipboard-check me-3"></i>Criterios de Evaluación
+          </h2>
+          
+          <div class="row">
+            <!-- Criterio 1: Funcionalidad -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: var(--cyber-card); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-gear-fill" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-secondary); text-align: center; margin-bottom: 1rem;">Funcionalidad</h4>
+                <p style="color: var(--cyber-text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1rem;"><strong>30%</strong></p>
+                <ul style="color: var(--cyber-text-muted); font-size: 0.85rem; padding-left: 1rem;">
+                  <li>Funcionamiento básico del MVP</li>
+                  <li>Flujo de usuario intuitivo</li>
+                  <li>Resolución del problema planteado</li>
+                  <li>Integración de componentes</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Criterio 2: Innovación -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: var(--cyber-card); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-lightbulb-fill" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-secondary); text-align: center; margin-bottom: 1rem;">Innovación</h4>
+                <p style="color: var(--cyber-text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1rem;"><strong>25%</strong></p>
+                <ul style="color: var(--cyber-text-muted); font-size: 0.85rem; padding-left: 1rem;">
+                  <li>Originalidad de la solución</li>
+                  <li>Relevancia para la comunidad</li>
+                  <li>Potencial de impacto</li>
+                  <li>Creatividad tecnológica</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Criterio 3: Calidad Técnica -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: var(--cyber-card); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-secondary), var(--cyber-accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-code-slash" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-secondary); text-align: center; margin-bottom: 1rem;">Calidad Técnica</h4>
+                <p style="color: var(--cyber-text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1rem;"><strong>20%</strong></p>
+                <ul style="color: var(--cyber-text-muted); font-size: 0.85rem; padding-left: 1rem;">
+                  <li>Arquitectura del código</li>
+                  <li>Uso apropiado de tecnologías</li>
+                  <li>Rendimiento eficiente</li>
+                  <li>Escalabilidad futura</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Criterio 4: Presentación -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: var(--cyber-card); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-presentation" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-secondary); text-align: center; margin-bottom: 1rem;">Presentación</h4>
+                <p style="color: var(--cyber-text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1rem;"><strong>15%</strong></p>
+                <ul style="color: var(--cyber-text-muted); font-size: 0.85rem; padding-left: 1rem;">
+                  <li>Documentación en Markdown clara</li>
+                  <li>Explicación del problema y solución</li>
+                  <li>Capturas de pantalla o demo grabada</li>
+                  <li>Interfaz atractiva y profesional</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Criterio 5: Viabilidad -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: var(--cyber-card); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-accent), var(--cyber-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-check-circle-fill" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-secondary); text-align: center; margin-bottom: 1rem;">Viabilidad</h4>
+                <p style="color: var(--cyber-text-muted); font-size: 0.9rem; text-align: center; margin-bottom: 1rem;"><strong>10%</strong></p>
+                <ul style="color: var(--cyber-text-muted); font-size: 0.85rem; padding-left: 1rem;">
+                  <li>Factibilidad de implementación</li>
+                  <li>Recursos accesibles</li>
+                  <li>Desarrollo en plazo razonable</li>
+                  <li>Sostenibilidad en el tiempo</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Escala de Puntuación -->
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="criterio-card" style="background: linear-gradient(135deg, var(--cyber-card), var(--cyber-bg)); border: 2px solid var(--cyber-primary); border-radius: 10px; padding: 1.5rem; height: 100%; transition: all 0.3s ease;">
+                <div class="text-center mb-3">
+                  <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--cyber-primary), var(--cyber-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="bi bi-star-fill" style="font-size: 1.5rem; color: white;"></i>
+                  </div>
+                </div>
+                <h4 style="color: var(--cyber-primary); text-align: center; margin-bottom: 1rem;">Escala de Puntuación</h4>
+                <div style="color: var(--cyber-text-muted); font-size: 0.85rem;">
+                  <p style="margin-bottom: 0.5rem;"><strong style="color: var(--cyber-primary);">9-10:</strong> Excelente</p>
+                  <p style="margin-bottom: 0.5rem;"><strong style="color: var(--cyber-secondary);">7-8:</strong> Muy Bueno</p>
+                  <p style="margin-bottom: 0.5rem;"><strong style="color: var(--cyber-accent);">5-6:</strong> Bueno</p>
+                  <p style="margin-bottom: 0.5rem;"><strong style="color: #ffc107;">3-4:</strong> Regular</p>
+                  <p style="margin-bottom: 0.5rem;"><strong style="color: #dc3545;">1-2:</strong> Deficiente</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" style="padding: 4rem 0; background: #0a0a0a !important;">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
           <h2 class="text-center mb-5" style="color: var(--cyber-primary); text-shadow: 0 0 10px var(--cyber-primary);">
             <i class="bi bi-question-circle me-3"></i>Preguntas Frecuentes
           </h2>
@@ -1968,8 +2115,9 @@
                 <i class="bi bi-chevron-down faq-icon"></i>
               </button>
               <div class="faq-answer">
-                <p><strong>No, la competencia está pensada para trabajar en equipo.</strong> Los equipos deben estar conformados por exactamente 3 integrantes. Una sola persona no sería capaz de desarrollar un proyecto completo en tan poco tiempo (48 horas), y además, el trabajo en equipo es una habilidad fundamental que queremos fomentar.</p>
-                <p>Si no tenés equipo aún, <strong style="color: var(--cyber-secondary);">¡andá armando tu equipo!</strong> Podés contactar a otros estudiantes a través de los canales del CODES++ o formar equipos con tus compañeros de clase.</p>
+                <p><strong>¡Sí, podés participar solo!</strong> Aunque la competencia está pensada para trabajar en equipo de 3 integrantes, entendemos que no siempre es fácil encontrar compañeros.</p>
+                <p>Si te inscribís solo, <strong style="color: var(--cyber-secondary);">te ayudaremos a formar un equipo</strong> con otros participantes que también estén buscando compañeros. Podés contactar a otros estudiantes a través de los canales del CODES++ o nosotros te conectaremos con otros participantes solos.</p>
+                <p><strong style="color: var(--cyber-primary);">El trabajo en equipo es una habilidad fundamental que queremos fomentar,</strong> por eso te facilitamos la formación de equipos.</p>
               </div>
             </div>
 
@@ -1981,7 +2129,7 @@
               </button>
               <div class="faq-answer">
                 <p><strong>¡No pasa nada! Este hackathon es perfecto para aprender.</strong> Está permitido que se ayuden con herramientas de IA para el desarrollo, pero <strong style="color: var(--cyber-accent);">¡ojo con abusar!</strong> La idea es que aprendas y desarrolles tus habilidades, no que la IA haga todo el trabajo.</p>
-                <p>Además, trabajar en equipo te permitirá aprender de tus compañeros más experimentados. <strong style="color: var(--cyber-primary);">La colaboración y el aprendizaje son los objetivos principales del evento.</strong></p>
+                <p>Además, trabajar en equipo te permitirá aprender de tus compañeros más experimentados. <strong style="color: var(--cyber-primary);">La colaboración y el aprendizaje son los objetivos principales del evento.</strong> Si venís de otra universidad o carrera afine, podrás aplicar tus conocimientos y aprender nuevas tecnologías.</p>
               </div>
             </div>
 
@@ -2035,8 +2183,37 @@
                 <i class="bi bi-chevron-down faq-icon"></i>
               </button>
               <div class="faq-answer">
-                <p><strong>El jurado aún no está completamente definido,</strong> pero la idea es invitar a docentes de la carrera de Sistemas y representantes del centro de estudiantes CODES++.</p>
-                <p>Esto garantizará una evaluación justa y profesional, considerando tanto aspectos técnicos como la relevancia para la comunidad universitaria. <strong style="color: var(--cyber-secondary);">Los criterios de evaluación se comunicarán junto con la consigna del evento.</strong></p>
+                <p><strong>El jurado está conformado por docentes y miembros del centro de estudiantes CODES++.</strong></p>
+                <p>Esta composición garantiza una evaluación equilibrada que considera tanto los aspectos técnicos y académicos (evaluados por los docentes) como la relevancia y viabilidad para la comunidad estudiantil (evaluada por los miembros del centro).</p>
+                <p><strong style="color: var(--cyber-secondary);">Los criterios de evaluación se comunicarán junto con la consigna del evento.</strong></p>
+              </div>
+            </div>
+
+            <!-- FAQ 7 -->
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFAQ(this)">
+                <i class="bi bi-file-text me-2"></i>¿Cómo debo presentar mi proyecto?
+                <i class="bi bi-chevron-down faq-icon"></i>
+              </button>
+              <div class="faq-answer">
+                <p><strong>Tu proyecto debe incluir una presentación en formato Markdown (.md)</strong> que explique claramente:</p>
+                <ul style="color: var(--cyber-text-muted); margin-left: 1rem;">
+                  <li>El problema que resuelve tu solución</li>
+                  <li>Características principales del MVP</li>
+                  <li>Tecnologías utilizadas</li>
+                  <li>Instrucciones para ejecutar el proyecto</li>
+                  <li>Capturas de pantalla o demo grabada</li>
+                </ul>
+                
+                <p><strong style="color: var(--cyber-secondary);">Para el repositorio:</strong></p>
+                <ul style="color: var(--cyber-text-muted); margin-left: 1rem;">
+                  <li>Creá tu repositorio en GitHub</li>
+                  <li>Nombre sugerido: <code>hackathon-2025-[nombre-del-proyecto]</code></li>
+                  <li>Invitá a <code>@CODES-UNLU</code> como colaborador</li>
+                  <li>Subí el código fuente y documentación</li>
+                </ul>
+                
+                <p><strong style="color: var(--cyber-primary);">Además, si querés exponer tu proyecto en público,</strong> habrá una sesión de presentaciones durante la semana posterior al hackathon (día y hora a confirmar). Esta es una oportunidad opcional para mostrar tu trabajo a otros participantes y recibir feedback adicional.</p>
               </div>
             </div>
           </div>
@@ -2052,8 +2229,11 @@
                                <h2 class="mb-4 fade-out-title">¿<span>L</span><span>i</span><span>s</span><span>t</span><span>o</span> <span>p</span><span>a</span><span>r</span><span>a</span> <span>e</span><span>l</span> <span>d</span><span>e</span><span>s</span><span>a</span><span>f</span><span>í</span><span>o</span>?</h2>
              <p class="lead mb-4">Formá parte de esta experiencia única de programación y colaboración en equipos.</p>
              <div class="d-flex flex-column align-items-center gap-3">
-               <a href="#contacto" class="btn-hackathon">
-                 <i class="bi bi-people-fill me-2"></i>Inscribir Equipos (Próximamente)
+               <a href="incripcion-hakathon-equipos.html" class="btn-hackathon">
+                 <i class="bi bi-people-fill me-2"></i>Inscribir Equipo
+               </a>
+               <a href="incripcion-hackathon-individual.html" class="btn-hackathon" style="background: linear-gradient(135deg, var(--cyber-secondary) 0%, var(--cyber-accent) 100%); border-color: var(--cyber-secondary);">
+                 <i class="bi bi-person-plus me-2"></i>Inscribirme Solo
                </a>
                                    <div class="text-white" style="opacity: 0.8;">
                       <small><i class="bi bi-clock me-1"></i>48 horas de programación virtual</small>
