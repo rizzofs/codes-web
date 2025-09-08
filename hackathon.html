@@ -994,26 +994,533 @@
          z-index: 2;
        }
       
-             .btn-hackathon {
-         background: linear-gradient(135deg, var(--cyber-primary) 0%, var(--cyber-secondary) 100%);
-         border: 2px solid var(--cyber-primary);
-         color: var(--cyber-bg);
-         padding: 1.2rem 2.5rem;
-         font-size: 1.3rem;
-         font-weight: 700;
-         border-radius: 50px;
-         text-decoration: none;
-         display: inline-block;
-         transition: all 0.3s ease;
-         box-shadow: 
-           0 8px 20px rgba(0, 255, 136, 0.4),
-           0 0 20px rgba(0, 255, 136, 0.2);
-         position: relative;
-         z-index: 2;
-         text-transform: uppercase;
-         letter-spacing: 0.5px;
-         overflow: hidden;
-       }
+      .btn-hackathon {
+        background: linear-gradient(135deg, var(--cyber-primary) 0%, var(--cyber-secondary) 100%);
+        border: 2px solid var(--cyber-primary);
+        color: var(--cyber-bg);
+        padding: 1.2rem 2.5rem;
+        font-size: 1.3rem;
+        font-weight: 700;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 
+          0 8px 20px rgba(0, 255, 136, 0.4),
+          0 0 20px rgba(0, 255, 136, 0.2);
+        position: relative;
+        z-index: 2;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        overflow: hidden;
+      }
+      
+      /* Call to Action Buttons */
+      .btn-hackathon-cta {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        border: 2px solid var(--cyber-primary);
+        color: #ffffff;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 15px;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: all 0.4s ease;
+        box-shadow: 
+          0 0 20px rgba(0, 255, 136, 0.3),
+          0 0 40px rgba(0, 255, 136, 0.1),
+          inset 0 1px 0 rgba(0, 255, 136, 0.2);
+        position: relative;
+        z-index: 2;
+        width: 240px;
+        height: 140px;
+        overflow: hidden;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .btn-hackathon-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+        transition: left 0.6s ease;
+      }
+      
+      .btn-hackathon-cta::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.1) 0%, transparent 50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .btn-hackathon-cta:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+          0 20px 40px rgba(0, 255, 136, 0.5),
+          0 0 50px rgba(0, 255, 136, 0.3),
+          0 0 80px rgba(0, 255, 136, 0.1),
+          inset 0 1px 0 rgba(0, 255, 136, 0.4);
+        color: #ffffff;
+        border-color: var(--cyber-accent);
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+      }
+      
+      .btn-hackathon-cta:hover::before {
+        left: 100%;
+      }
+      
+      .btn-hackathon-cta:hover::after {
+        opacity: 1;
+      }
+      
+      .btn-hackathon-cta span {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        text-shadow: 0 0 10px currentColor;
+        position: relative;
+        z-index: 3;
+        font-family: 'Courier New', monospace;
+        color: inherit;
+        line-height: 1.2;
+      }
+      
+      .btn-hackathon-cta small {
+        font-size: 0.75rem;
+        opacity: 0.9;
+        font-weight: 500;
+        text-shadow: 0 0 5px currentColor;
+        position: relative;
+        z-index: 3;
+        font-family: 'Courier New', monospace;
+        color: inherit;
+        line-height: 1.1;
+        text-align: center;
+      }
+      
+      .btn-hackathon-cta i {
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+        text-shadow: 0 0 10px currentColor;
+        position: relative;
+        z-index: 3;
+        filter: drop-shadow(0 0 5px currentColor);
+        color: inherit;
+      }
+      
+      .btn-hackathon-team {
+        border-color: var(--cyber-primary);
+        color: #00ff88;
+        box-shadow: 
+          0 0 20px rgba(0, 255, 136, 0.3),
+          0 0 40px rgba(0, 255, 136, 0.1),
+          inset 0 1px 0 rgba(0, 255, 136, 0.2);
+      }
+      
+      .btn-hackathon-team:hover {
+        box-shadow: 
+          0 20px 40px rgba(0, 255, 136, 0.5),
+          0 0 50px rgba(0, 255, 136, 0.3),
+          0 0 80px rgba(0, 255, 136, 0.1),
+          inset 0 1px 0 rgba(0, 255, 136, 0.4);
+      }
+      
+      .btn-hackathon-individual {
+        border-color: var(--cyber-accent);
+        color: #ff0088;
+        box-shadow: 
+          0 0 20px rgba(255, 0, 136, 0.3),
+          0 0 40px rgba(255, 0, 136, 0.1),
+          inset 0 1px 0 rgba(255, 0, 136, 0.2);
+      }
+      
+      .btn-hackathon-individual:hover {
+        box-shadow: 
+          0 20px 40px rgba(255, 0, 136, 0.5),
+          0 0 50px rgba(255, 0, 136, 0.3),
+          0 0 80px rgba(255, 0, 136, 0.1),
+          inset 0 1px 0 rgba(255, 0, 136, 0.4);
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+        border-color: var(--cyber-accent);
+      }
+      
+      .cta-buttons .text-muted {
+        color: var(--cyber-text-muted) !important;
+        font-size: 0.95rem;
+      }
+      
+      .cta-buttons .text-muted strong {
+        color: var(--cyber-primary) !important;
+        text-shadow: 0 0 5px var(--cyber-primary);
+      }
+      
+      /* Terminal Window Styles */
+      .terminal-container {
+        background: #000000;
+        border: 2px solid var(--cyber-primary);
+        border-radius: 10px;
+        box-shadow: 
+          0 20px 40px rgba(0, 0, 0, 0.5),
+          0 0 30px rgba(0, 255, 136, 0.2),
+          inset 0 1px 0 rgba(0, 255, 136, 0.1);
+        overflow: hidden;
+        font-family: 'Courier New', monospace;
+        position: relative;
+        margin: 2rem 0;
+        max-width: 100%;
+        width: 100%;
+      }
+      
+      .terminal-header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid var(--cyber-primary);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .terminal-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+      
+      .terminal-btn {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      
+      .terminal-btn.close {
+        background: #ff5f56;
+        box-shadow: 0 0 5px rgba(255, 95, 86, 0.5);
+      }
+      
+      .terminal-btn.minimize {
+        background: #ffbd2e;
+        box-shadow: 0 0 5px rgba(255, 189, 46, 0.5);
+      }
+      
+      .terminal-btn.maximize {
+        background: #27ca3f;
+        box-shadow: 0 0 5px rgba(39, 202, 63, 0.5);
+      }
+      
+      .terminal-title {
+        color: var(--cyber-primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-shadow: 0 0 5px var(--cyber-primary);
+      }
+      
+      .terminal-body {
+        padding: 1.5rem;
+        background: #000000;
+        height: 300px;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      
+      .terminal-line {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+      .terminal-prompt {
+        color: var(--cyber-primary);
+        font-weight: 600;
+        margin-right: 0.5rem;
+        text-shadow: 0 0 5px var(--cyber-primary);
+      }
+      
+      .terminal-command {
+        color: #ffffff;
+        font-weight: 500;
+      }
+      
+      .terminal-cursor {
+        color: var(--cyber-primary);
+        animation: blink 1s infinite;
+        font-weight: bold;
+        text-shadow: 0 0 10px var(--cyber-primary);
+      }
+      
+      .terminal-output {
+        color: #00ff88;
+        line-height: 1.6;
+        font-size: 0.9rem;
+        text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+        white-space: pre-line;
+        max-height: 100%;
+        overflow-y: auto;
+      }
+      
+      /* Custom scrollbar for terminal */
+      .terminal-body::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      .terminal-body::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 4px;
+      }
+      
+      .terminal-body::-webkit-scrollbar-thumb {
+        background: var(--cyber-primary);
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+      }
+      
+      .terminal-body::-webkit-scrollbar-thumb:hover {
+        background: #00ff88;
+        box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+      }
+      
+      .terminal-footer {
+        background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        padding: 0.8rem 1rem;
+        border-top: 1px solid var(--cyber-primary);
+        text-align: center;
+      }
+      
+      .simulation-notice {
+        color: #ffaa00;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
+        font-family: 'Courier New', monospace;
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+      }
+      
+      .terminal-output .success {
+        color: #00ff88;
+        text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+      }
+      
+      .terminal-output .error {
+        color: #ff0088;
+        text-shadow: 0 0 5px rgba(255, 0, 136, 0.5);
+      }
+      
+      .terminal-output .warning {
+        color: #ffaa00;
+        text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
+      }
+      
+      .terminal-output .info {
+        color: #0088ff;
+        text-shadow: 0 0 5px rgba(0, 136, 255, 0.5);
+      }
+      
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+      
+      .terminal-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          linear-gradient(90deg, transparent 0%, rgba(0, 255, 136, 0.03) 50%, transparent 100%);
+        animation: scan 3s linear infinite;
+        pointer-events: none;
+      }
+      
+      @keyframes scan {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      /* Tech Stats Styles */
+      .tech-stats-container {
+        background: transparent;
+        border-radius: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+      }
+      
+      .tech-stats-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(255, 0, 136, 0.03) 0%, transparent 50%);
+        animation: statsBackground 8s ease-in-out infinite;
+        pointer-events: none;
+      }
+      
+      @keyframes statsBackground {
+        0%, 100% { 
+          transform: scale(1) rotate(0deg);
+          opacity: 0.3;
+        }
+        50% { 
+          transform: scale(1.05) rotate(180deg);
+          opacity: 0.6;
+        }
+      }
+      
+      .tech-stat-card {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        border: 1px solid var(--cyber-border);
+        border-radius: 15px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .tech-stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyber-primary), transparent);
+        animation: cyberScan 3s infinite;
+      }
+      
+      .tech-stat-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--cyber-primary);
+        box-shadow: 
+          0 15px 35px rgba(0, 255, 136, 0.2),
+          0 0 20px rgba(0, 255, 136, 0.1);
+      }
+      
+      .stat-icon {
+        font-size: 2.5rem;
+        color: var(--cyber-primary);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px var(--cyber-primary);
+        animation: iconPulse 2s ease-in-out infinite;
+      }
+      
+      @keyframes iconPulse {
+        0%, 100% { 
+          transform: scale(1);
+          text-shadow: 0 0 10px var(--cyber-primary);
+        }
+        50% { 
+          transform: scale(1.1);
+          text-shadow: 0 0 20px var(--cyber-primary), 0 0 30px var(--cyber-primary);
+        }
+      }
+      
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--cyber-secondary);
+        text-shadow: 0 0 15px var(--cyber-secondary);
+        margin-bottom: 0.5rem;
+        font-family: 'Courier New', monospace;
+        position: relative;
+      }
+      
+      .stat-number::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--cyber-secondary), transparent);
+        animation: numberGlow 2s ease-in-out infinite;
+      }
+      
+      @keyframes numberGlow {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+      
+      .stat-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--cyber-text);
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .stat-subtitle {
+        font-size: 0.9rem;
+        color: var(--cyber-text-muted);
+        font-weight: 400;
+      }
+      
+      /* Responsive Stats */
+      @media (max-width: 768px) {
+        .tech-stats-container {
+          padding: 2rem 1rem;
+        }
+        
+        .tech-stat-card {
+          padding: 1.5rem 1rem;
+        }
+        
+        .stat-icon {
+          font-size: 2rem;
+        }
+        
+        .stat-number {
+          font-size: 2.5rem;
+        }
+        
+        .stat-label {
+          font-size: 1rem;
+        }
+        
+        .stat-subtitle {
+          font-size: 0.8rem;
+        }
+      }
        
        .btn-hackathon::before {
          content: '';
@@ -1140,6 +1647,33 @@
          .btn-hackathon {
            padding: 1rem 2rem;
            font-size: 1.1rem;
+         }
+         
+         /* CTA Buttons Responsive */
+         .btn-hackathon-cta {
+           width: 220px;
+           height: 130px;
+           padding: 0.8rem 1.2rem;
+           font-size: 0.9rem;
+         }
+         
+         .btn-hackathon-cta span {
+           font-size: 0.9rem;
+           margin-bottom: 0.1rem;
+         }
+         
+         .btn-hackathon-cta small {
+           font-size: 0.7rem;
+         }
+         
+         .btn-hackathon-cta i {
+           font-size: 1.2rem;
+           margin-bottom: 0.2rem;
+         }
+         
+         .cta-buttons .d-flex {
+           flex-direction: column !important;
+           gap: 1rem !important;
          }
        }
        
@@ -1753,6 +2287,115 @@
           Una competencia de programación en equipos donde podrás desarrollar tu proyecto, 
           aprender nuevas tecnologías y conectar con otros estudiantes de Sistemas, Informática y carreras afines de cualquier universidad.
         </p>
+        
+        <!-- Call to Action Buttons -->
+        <div class="cta-buttons mt-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
+                <a href="incripcion-hakathon-equipos.html" class="btn-hackathon-cta btn-hackathon-team">
+                  <i class="bi bi-people-fill me-2"></i>
+                  <span>Inscribir Equipo</span>
+                  <small>3 integrantes</small>
+                </a>
+                <a href="incripcion-hackathon-individual.html" class="btn-hackathon-cta btn-hackathon-individual">
+                  <i class="bi bi-person-plus me-2"></i>
+                  <span>Inscribirme Solo</span>
+                  <small>Te ayudamos a formar equipo</small>
+                </a>
+              </div>
+              <div class="text-center mt-3">
+                <p class="text-muted mb-0">
+                  <i class="bi bi-clock me-1"></i>
+                  <strong>48 horas</strong> de programación virtual • 
+                  <i class="bi bi-calendar-event me-1"></i>
+                  <strong>26-28 de Septiembre</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Tecnológicos -->
+    <section class="container-fluid my-5" style="background: #000000; padding: 3rem 0;">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+          <div class="tech-stats-container" style="background: transparent; padding: 3rem 2rem; border-radius: 20px; border: 2px solid var(--cyber-primary); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(0, 255, 136, 0.2), 0 0 30px rgba(0, 255, 136, 0.1);">
+            <div class="row g-4">
+              <div class="col-md-3 col-6">
+                <div class="tech-stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-code-slash"></i>
+                  </div>
+                  <div class="stat-number" data-target="48">0</div>
+                  <div class="stat-label">Horas de Código</div>
+                  <div class="stat-subtitle">Programación Intensiva</div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="tech-stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+                  <div class="stat-number" data-target="3">0</div>
+                  <div class="stat-label">Integrantes</div>
+                  <div class="stat-subtitle">Por Equipo</div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="tech-stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-laptop"></i>
+                  </div>
+                  <div class="stat-number" data-target="100">0</div>
+                  <div class="stat-label">% Virtual</div>
+                  <div class="stat-subtitle">Modalidad Online</div>
+                </div>
+              </div>
+              <div class="col-md-3 col-6">
+                <div class="tech-stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-trophy-fill"></i>
+                  </div>
+                  <div class="stat-number" data-target="1">0</div>
+                  <div class="stat-label">Proyecto</div>
+                  <div class="stat-subtitle">Desarrollado</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal Window -->
+    <section class="container-fluid my-5">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+          <div class="terminal-container">
+            <div class="terminal-header">
+              <div class="terminal-buttons">
+                <span class="terminal-btn close"></span>
+                <span class="terminal-btn minimize"></span>
+                <span class="terminal-btn maximize"></span>
+              </div>
+              <div class="terminal-title">hackathon@codes-unlu:~$</div>
+            </div>
+            <div class="terminal-body">
+              <div class="terminal-line">
+                <span class="terminal-prompt">hackathon@codes-unlu:~$</span>
+                <span class="terminal-command" id="terminal-command"></span>
+                <span class="terminal-cursor">|</span>
+              </div>
+              <div class="terminal-output" id="terminal-output"></div>
+            </div>
+            <div class="terminal-footer">
+              <span class="simulation-notice">⚠️ SIMULACIÓN - Esta es una demostración visual del proceso del hackathon</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2369,6 +3012,183 @@
         answer.classList.toggle('show');
         icon.classList.toggle('rotated');
       }
+      
+      // Animación de números en stats
+      function animateNumbers() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const target = parseInt(entry.target.getAttribute('data-target'));
+              const duration = 2000; // 2 segundos
+              const increment = target / (duration / 16); // 60fps
+              let current = 0;
+              
+              const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                  current = target;
+                  clearInterval(timer);
+                }
+                entry.target.textContent = Math.floor(current);
+              }, 16);
+              
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        
+        statNumbers.forEach(number => {
+          observer.observe(number);
+        });
+      }
+      
+      // Inicializar animación de números cuando se carga la página
+      // Terminal Animation
+      function initTerminal() {
+        const commandElement = document.getElementById('terminal-command');
+        const outputElement = document.getElementById('terminal-output');
+        
+        if (!commandElement || !outputElement) return;
+        
+        const commands = [
+          'npm install hackathon-codes',
+          'git clone https://github.com/codes-unlu/hackathon-2025.git',
+          'cd hackathon-2025',
+          'npm run start',
+          'echo "¡Bienvenido al Hackathon CODES++ 2025!"',
+          'ls -la',
+          'cat README.md',
+          'node --version',
+          'python --version',
+          'echo "Sistema listo para programar..."'
+        ];
+        
+        const outputs = [
+          '',
+          'Conformando equipos...',
+          '✓ Equipos formados exitosamente',
+          'Conformando jurado...',
+          '✓ Jurado conformado exitosamente',
+          'Iniciando servidor de desarrollo...',
+          '✓ Servidor iniciado en puerto 3000',
+          '',
+          '¡Bienvenido al Hackathon CODES++ 2025!',
+          '',
+          'total 12K',
+          'drwxr-xr-x 3 user user 4.0K Sep 15 10:30 .',
+          'drwxr-xr-x 5 user user 4.0K Sep 15 10:30 ..',
+          '-rw-r--r-- 1 user user 2.1K Sep 15 10:30 README.md',
+          '-rw-r--r-- 1 user user 1.5K Sep 15 10:30 package.json',
+          '-rw-r--r-- 1 user user 3.2K Sep 15 10:30 index.html',
+          '',
+          '# HACKATHON CODES++ 2025',
+          '',
+          '## 🚀 Competencia de Programación',
+          '- **Duración**: 48 horas',
+          '- **Modalidad**: 100% Virtual',
+          '- **Equipos**: 3 integrantes máximo',
+          '- **Fecha**: 26-28 de Septiembre',
+          '',
+          '## 🛠️ Tecnologías Permitidas',
+          '- Frontend: React, Vue, Angular, HTML/CSS/JS',
+          '- Backend: Node.js, Python, Java, C#',
+          '- Bases de datos: MySQL, PostgreSQL, MongoDB',
+          '- Cloud: AWS, Azure, Google Cloud',
+          '',
+          'v18.17.0',
+          '',
+          'Python 3.11.5',
+          '',
+          'Sistema listo para programar...',
+          '',
+          '🎯 ¡Todo listo! Comienza tu proyecto innovador.',
+          '💡 Recuerda: La creatividad es tu mejor herramienta.',
+          '⚡ ¡Que comience la programación!'
+        ];
+        
+        let currentCommand = 0;
+        let currentOutput = 0;
+        let isTyping = false;
+        
+        function typeCommand() {
+          if (currentCommand >= commands.length) {
+            // Reiniciar la animación
+            setTimeout(() => {
+              currentCommand = 0;
+              currentOutput = 0;
+              commandElement.textContent = '';
+              outputElement.innerHTML = '';
+              typeCommand();
+            }, 5000);
+            return;
+          }
+          
+          const command = commands[currentCommand];
+          let i = 0;
+          isTyping = true;
+          
+          commandElement.textContent = '';
+          
+          function typeChar() {
+            if (i < command.length) {
+              commandElement.textContent += command.charAt(i);
+              i++;
+              setTimeout(typeChar, 100 + Math.random() * 50);
+            } else {
+              isTyping = false;
+              setTimeout(() => {
+                showOutput();
+              }, 1000);
+            }
+          }
+          
+          typeChar();
+        }
+        
+        function showOutput() {
+          if (currentOutput >= outputs.length) {
+            currentCommand++;
+            currentOutput = 0;
+            setTimeout(() => {
+              typeCommand();
+            }, 2000);
+            return;
+          }
+          
+          const output = outputs[currentOutput];
+          if (output.trim() === '') {
+            outputElement.innerHTML += '<br>';
+          } else {
+            let className = '';
+            if (output.includes('✓') || output.includes('exitosamente') || output.includes('listo')) {
+              className = 'success';
+            } else if (output.includes('error') || output.includes('Error')) {
+              className = 'error';
+            } else if (output.includes('⚠') || output.includes('warning')) {
+              className = 'warning';
+            } else if (output.includes('🎯') || output.includes('💡') || output.includes('⚡')) {
+              className = 'info';
+            }
+            
+            outputElement.innerHTML += `<span class="${className}">${output}</span><br>`;
+          }
+          
+          currentOutput++;
+          setTimeout(showOutput, 200 + Math.random() * 300);
+        }
+        
+        // Iniciar la animación después de un delay
+        setTimeout(() => {
+          typeCommand();
+        }, 2000);
+      }
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        animateNumbers();
+        initTerminal();
+      });
     </script>
 
     <!-- Back to Top Button -->
