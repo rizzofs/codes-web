@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jurados - Hackathon CODES++ | Centro de Estudiantes de Sistemas - UNLu</title>
+    <meta
+      name="description"
+      content="Jurados del Hackathon de Fin de Semana organizado por CODES++. Conocé a los profesionales que evaluarán los proyectos de los participantes."
+    />
+    <meta
+      name="keywords"
+      content="jurados, hackathon, programación, CODES++, UNLu, sistemas, evaluación, profesionales"
+    />
+    <meta name="author" content="CODES++ - Centro de Estudiantes de Sistemas" />
+    <meta name="robots" content="index, follow" />
+
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codes-unlu.github.io/jurados.html" />
+    <meta
+      property="og:title"
+      content="Jurados - Hackathon CODES++"
+    />
+    <meta
+      property="og:description"
+      content="Jurados del Hackathon de Fin de Semana organizado por CODES++. Conocé a los profesionales que evaluarán los proyectos de los participantes."
+    />
+    <meta property="og:image" content="assets/images/Logo.svg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://codes-unlu.github.io/jurados.html" />
+    <meta
+      property="twitter:title"
+      content="Jurados - Hackathon CODES++"
+    />
+    <meta
+      property="twitter:description"
+      content="Jurados del Hackathon de Fin de Semana organizado por CODES++. Conocé a los profesionales que evaluarán los proyectos de los participantes."
+    />
+    <meta property="twitter:image" content="assets/images/Logo.svg" />
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C73GLNE05C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-C73GLNE05C', {
+        page_title: 'Jurados - Hackathon CODES++',
+        page_location: window.location.href,
+        send_page_view: true
+      });
+    </script>
+
+    <link
+      rel="icon"
+      href="assets/images/Logo.svg"
+      type="image/svg+xml"
+      style="background-color: white;"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <!-- Jurados Custom Styles -->
+    <style>
+      /* Cyber Theme Variables */
+      :root {
+        --cyber-primary: #00ff88;
+        --cyber-secondary: #00d4ff;
+        --cyber-accent: #ff6b35;
+        --cyber-dark: #0a0a0a;
+        --cyber-gray: #1a1a1a;
+        --cyber-light-gray: #2a2a2a;
+        --cyber-text: #ffffff;
+        --cyber-text-muted: #b0b0b0;
+        --cyber-border: #333333;
+        --cyber-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+        --cyber-glow-strong: 0 0 30px rgba(0, 255, 136, 0.6);
+      }
+
+      /* Jurados Page Styles */
+      .jurados-hero {
+        background: linear-gradient(135deg, var(--cyber-dark) 0%, var(--cyber-gray) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .jurados-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+      }
+
+      .jurados-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        color: var(--cyber-text);
+      }
+
+      .jurados-title {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, var(--cyber-primary), var(--cyber-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: var(--cyber-glow);
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      .jurados-subtitle {
+        font-size: 1.5rem;
+        color: var(--cyber-text-muted);
+        margin-bottom: 3rem;
+        font-weight: 300;
+      }
+
+      .cyber-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.3;
+        animation: grid-move 20s linear infinite;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: var(--cyber-glow);
+        }
+        to {
+          text-shadow: var(--cyber-glow-strong);
+        }
+      }
+
+      @keyframes grid-move {
+        0% {
+          transform: translate(0, 0);
+        }
+        100% {
+          transform: translate(50px, 50px);
+        }
+      }
+
+      /* Estilos para selects de calificación */
+      .calificacion-select {
+        background: var(--cyber-light-gray) !important;
+        border: 1px solid var(--cyber-border) !important;
+        color: var(--cyber-text) !important;
+      }
+
+      .calificacion-select:focus {
+        background: var(--cyber-light-gray) !important;
+        border-color: var(--cyber-primary) !important;
+        color: var(--cyber-text) !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 136, 0.25) !important;
+      }
+
+      .calificacion-select option {
+        background: var(--cyber-light-gray) !important;
+        color: var(--cyber-text) !important;
+      }
+
+      .calificacion-select option:hover {
+        background: var(--cyber-gray) !important;
+        color: var(--cyber-primary) !important;
+      }
+
+      .form-label {
+        color: var(--cyber-text) !important;
+        font-weight: 500;
+      }
+
+      /* ========================================
+         NAVBAR STYLES (Del Hackathon)
+         ======================================== */
+      
+      /* Efectos tecnológicos de fondo */
+      .tech-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        background: 
+          radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+        animation: particleFloat 20s ease-in-out infinite;
+      }
+      
+      @keyframes particleFloat {
+        0%, 100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        33% {
+          transform: translateY(-20px) rotate(1deg);
+        }
+        66% {
+          transform: translateY(10px) rotate(-1deg);
+        }
+      }
+      
+      /* Header con efectos cyber */
+      header {
+        position: relative;
+        z-index: 1000;
+        background: rgba(10, 10, 10, 0.95) !important;
+        backdrop-filter: blur(15px);
+        border-bottom: 2px solid var(--cyber-primary);
+        box-shadow: 
+          0 4px 20px rgba(0, 255, 136, 0.2),
+          0 0 40px rgba(0, 255, 136, 0.1);
+      }
+
+      /* Forzar fondo oscuro en navbar */
+      .navbar {
+        background: rgba(10, 10, 10, 0.95) !important;
+        backdrop-filter: blur(15px);
+      }
+
+      .navbar-light {
+        background: rgba(10, 10, 10, 0.95) !important;
+      }
+
+      /* Asegurar que todos los elementos del navbar tengan fondo oscuro */
+      .navbar .container {
+        background: transparent;
+      }
+
+      .navbar-nav {
+        background: transparent;
+      }
+
+      .navbar-collapse {
+        background: transparent;
+      }
+
+      /* Override de Bootstrap para navbar-light */
+      .navbar-light .navbar-brand {
+        color: var(--cyber-text) !important;
+      }
+
+      .navbar-light .navbar-nav .nav-link {
+        color: var(--cyber-text) !important;
+      }
+
+      .navbar-light .navbar-toggler {
+        border-color: var(--cyber-primary);
+        color: var(--cyber-text);
+      }
+
+      .navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 255, 136, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+      }
+      
+      /* Efectos del navbar-brand */
+      .navbar-brand {
+        filter: brightness(1.1) drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+        transition: all 0.4s ease;
+        position: relative;
+      }
+      
+      .navbar-brand:hover {
+        filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 255, 136, 0.6)) drop-shadow(0 0 25px rgba(0, 136, 255, 0.4));
+        transform: scale(1.02);
+      }
+      
+      .navbar-logo {
+        transition: all 0.4s ease;
+        animation: logoLuminosity 4s ease-in-out infinite;
+      }
+      
+      @keyframes logoLuminosity {
+        0%, 100% {
+          filter: brightness(1) contrast(1) saturate(1);
+        }
+        50% {
+          filter: brightness(1.2) contrast(1.1) saturate(1.1);
+        }
+      }
+      
+      .navbar-brand::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.4s ease;
+        animation: luminosityPulse 3s ease-in-out infinite;
+      }
+      
+      .navbar-brand:hover::after {
+        opacity: 1;
+      }
+      
+      @keyframes luminosityPulse {
+        0%, 100% {
+          transform: translate(-50%, -50%) scale(0.8);
+          opacity: 0.3;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.2);
+          opacity: 0.6;
+        }
+      }
+      
+      /* Contenedor del logo con efecto circular */
+      .logo-container {
+        position: relative;
+        display: inline-block;
+        border-radius: 50%;
+        padding: 2px;
+        overflow: hidden;
+      }
+      
+      .logo-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent, transparent, var(--cyber-primary), var(--cyber-secondary), transparent, transparent);
+        opacity: 0.8;
+        z-index: -1;
+        animation: rotateLight 2s linear infinite;
+        transition: opacity 0.3s ease;
+      }
+      
+      .navbar-brand:hover .logo-container::before {
+        opacity: 1;
+      }
+      
+      @keyframes rotateLight {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      /* Efecto adicional con box-shadow */
+      .navbar-brand:hover .navbar-logo {
+        box-shadow: 
+          0 0 20px var(--cyber-primary),
+          0 0 40px var(--cyber-primary),
+          0 0 60px var(--cyber-primary);
+      }
+      
+      /* Enlaces de navegación */
+      .navbar-nav .nav-link {
+        color: var(--cyber-text) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        color: var(--cyber-primary) !important;
+        background: rgba(0, 255, 136, 0.1);
+        transform: translateY(-2px);
+      }
+      
+      .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--cyber-primary);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+      
+      .navbar-nav .nav-link:hover::after {
+        width: 100%;
+      }
+      
+      /* Botón de volver */
+      .btn-back {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: transparent;
+        border: 2px solid var(--cyber-primary);
+        border-radius: 25px;
+        color: var(--cyber-primary) !important;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-back:hover {
+        background: var(--cyber-primary);
+        color: var(--cyber-bg) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+      }
+      
+      .btn-back i {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+      }
+      
+      .btn-back:hover i {
+        transform: translateX(-3px);
+      }
+      
+      .btn-back::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+      }
+      
+      .btn-back:hover::before {
+        left: 100%;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .jurados-title {
+          font-size: 2.5rem;
+        }
+        
+        .jurados-subtitle {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .jurados-title {
+          font-size: 2rem;
+        }
+        
+        .jurados-subtitle {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Efectos tecnológicos -->
+    <div class="tech-particles" id="particles"></div>
+    
+    <!-- Header -->
+    <header id="header">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand" href="./index.html">
+            <div class="logo-container">
+              <img src="assets/images/Logo.svg" alt="Logo CODES++" id="navbarLogo" class="navbar-logo" />
+            </div>
+          </a>
+          <a href="./hackathon.html" class="btn-back">
+            <i class="bi bi-arrow-left"></i>
+            <span>Volver al Hackathon</span>
+          </a>
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+            style="display: none !important;"
+          >
+            <ul class="navbar-nav gap-2">
+              <li class="nav-item">
+                <a class="nav-link" href="./index.html#nosotros">Nosotros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./index.html#integrantes">Integrantes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./index.html#eventos">Actividades</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./index.html#extra">Recursos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./index.html#faq">FAQ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Jurados Hero Section -->
+      <section class="jurados-hero">
+        <div class="cyber-grid"></div>
+        <div class="container">
+          <div class="jurados-content">
+            <h1 class="jurados-title">Jurados</h1>
+            <p class="jurados-subtitle">
+              Los profesionales que evaluarán los proyectos del Hackathon
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel Principal de Jurados -->
+      <section class="jurados-panel py-5" style="background: var(--cyber-dark); color: var(--cyber-text);">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h2 class="text-center mb-5" style="color: var(--cyber-primary); font-weight: 700;">
+                Panel de Evaluación - Jurados
+              </h2>
+              <p class="text-center mb-5" style="color: var(--cyber-text-muted);">
+                Sistema completo de evaluación para el Hackathon CODES++
+              </p>
+            </div>
+          </div>
+
+          <!-- Selector de Jurado -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="card" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: var(--cyber-primary);">
+                    <i class="bi bi-person-badge me-2"></i>Seleccionar Jurado
+                  </h5>
+                  <select id="juradoSelector" class="form-select" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                    <option value="">Selecciona tu nombre como jurado</option>
+                    <option value="jurado1">Dr. María González - Especialista en IA</option>
+                    <option value="jurado2">Ing. Carlos Rodríguez - Desarrollador Senior</option>
+                    <option value="jurado3">Lic. Ana Martínez - Product Manager</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones Principales -->
+          <div class="row mb-5">
+            <div class="col-md-6 mb-3">
+              <button id="btnSeleccionarPropuestas" class="btn btn-lg w-100" style="background: var(--cyber-primary); border: none; color: var(--cyber-dark); font-weight: 600; padding: 1rem;">
+                <i class="bi bi-list-check me-2"></i>Seleccionar Propuestas
+                <small class="d-block mt-1">Evaluar y seleccionar la mejor propuesta de cada equipo</small>
+              </button>
+            </div>
+            <div class="col-md-6 mb-3">
+              <button id="btnCalificarProyectos" class="btn btn-lg w-100" style="background: var(--cyber-secondary); border: none; color: var(--cyber-dark); font-weight: 600; padding: 1rem;">
+                <i class="bi bi-star-fill me-2"></i>Calificar Proyectos
+                <small class="d-block mt-1">Evaluar proyectos finales según criterios oficiales</small>
+              </button>
+            </div>
+          </div>
+
+
+          <!-- Contenido Dinámico -->
+          <div id="contenidoDinamico">
+            <div class="row">
+              <div class="col-12">
+                <div class="card" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                  <div class="card-body text-center">
+                    <i class="bi bi-arrow-up-circle" style="font-size: 3rem; color: var(--cyber-text-muted); margin-bottom: 1rem;"></i>
+                    <h5 style="color: var(--cyber-text-muted);">Selecciona una opción para comenzar</h5>
+                    <p class="text-muted">Elige entre seleccionar propuestas o calificar proyectos finales</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sistema de Selección de Propuestas (Oculto inicialmente) -->
+      <section id="seccionPropuestas" class="voting-system py-5" style="background: var(--cyber-dark); color: var(--cyber-text); display: none;">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h2 class="text-center mb-5" style="color: var(--cyber-primary); font-weight: 700;">
+                <i class="bi bi-list-check me-2"></i>Selección de Propuestas
+              </h2>
+              <p class="text-center mb-5" style="color: var(--cyber-text-muted);">
+                Cada equipo ha enviado 3 propuestas. Selecciona la que consideres más innovadora y viable.
+              </p>
+            </div>
+          </div>
+
+          <!-- Equipos y Propuestas -->
+          <div id="equiposContainer" class="row">
+            <!-- Los equipos se cargarán dinámicamente -->
+          </div>
+
+          <!-- Resultados de Propuestas -->
+          <div class="row mt-5">
+            <div class="col-12">
+              <div class="card" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: var(--cyber-primary);">
+                    <i class="bi bi-graph-up me-2"></i>Resultados de Votación de Propuestas
+                  </h5>
+                  <div id="resultadosContainer">
+                    <p class="text-muted">Los resultados aparecerán aquí una vez que los jurados comiencen a votar.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sistema de Calificación de Proyectos (Oculto inicialmente) -->
+      <section id="seccionCalificacion" class="calification-system py-5" style="background: var(--cyber-dark); color: var(--cyber-text); display: none;">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h2 class="text-center mb-5" style="color: var(--cyber-primary); font-weight: 700;">
+                <i class="bi bi-star-fill me-2"></i>Calificación de Proyectos Finales
+              </h2>
+              <p class="text-center mb-5" style="color: var(--cyber-text-muted);">
+                Evalúa los proyectos finales según los criterios oficiales del hackathon
+              </p>
+            </div>
+          </div>
+
+          <!-- Criterios de Evaluación -->
+          <div class="row mb-5">
+            <div class="col-12">
+              <div class="card" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: var(--cyber-primary);">
+                    <i class="bi bi-clipboard-check me-2"></i>Criterios de Evaluación
+                  </h5>
+                  <div class="row">
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <div class="criterio-card" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); border-radius: 8px; padding: 1rem;">
+                        <h6 style="color: var(--cyber-secondary);">Funcionalidad (30%)</h6>
+                        <small style="color: var(--cyber-text-muted);">Funcionamiento básico, flujo intuitivo, resolución del problema</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <div class="criterio-card" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); border-radius: 8px; padding: 1rem;">
+                        <h6 style="color: var(--cyber-secondary);">Innovación (25%)</h6>
+                        <small style="color: var(--cyber-text-muted);">Originalidad, relevancia, potencial de impacto</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <div class="criterio-card" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); border-radius: 8px; padding: 1rem;">
+                        <h6 style="color: var(--cyber-secondary);">Calidad Técnica (20%)</h6>
+                        <small style="color: var(--cyber-text-muted);">Arquitectura, tecnologías, rendimiento, escalabilidad</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <div class="criterio-card" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); border-radius: 8px; padding: 1rem;">
+                        <h6 style="color: var(--cyber-secondary);">Presentación (15%)</h6>
+                        <small style="color: var(--cyber-text-muted);">Documentación, explicación, demo, interfaz</small>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                      <div class="criterio-card" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); border-radius: 8px; padding: 1rem;">
+                        <h6 style="color: var(--cyber-secondary);">Viabilidad (10%)</h6>
+                        <small style="color: var(--cyber-text-muted);">Factibilidad, recursos, plazo, sostenibilidad</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Proyectos para Calificar -->
+          <div id="proyectosContainer" class="row">
+            <!-- Los proyectos se cargarán dinámicamente -->
+          </div>
+
+          <!-- Resultados de Calificación -->
+          <div class="row mt-5">
+            <div class="col-12">
+              <div class="card" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: var(--cyber-primary);">
+                    <i class="bi bi-trophy me-2"></i>Ranking de Proyectos
+                  </h5>
+                  <div id="rankingContainer">
+                    <p class="text-muted">El ranking aparecerá aquí una vez que comiences a calificar proyectos.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sistema de Votación JS -->
+    <script>
+      // Datos de ejemplo - 3 equipos con 3 propuestas cada uno
+      const equipos = [
+        {
+          id: 'equipo1',
+          nombre: 'Tech Innovators',
+          integrantes: ['Juan Pérez', 'María García', 'Carlos López'],
+          pdf: 'https://drive.google.com/file/d/1ABC123DEF456GHI789JKL/view?usp=sharing',
+          propuestas: [
+            {
+              id: 'propuesta1_1',
+              titulo: 'App de Gestión de Inventario Inteligente',
+              descripcion: 'Sistema que utiliza IA para predecir demanda y optimizar stock automáticamente.',
+              categoria: 'Inteligencia Artificial'
+            },
+            {
+              id: 'propuesta1_2',
+              titulo: 'Plataforma de E-learning Gamificada',
+              descripcion: 'Aplicación web que convierte el aprendizaje en un juego interactivo con recompensas.',
+              categoria: 'Educación'
+            },
+            {
+              id: 'propuesta1_3',
+              titulo: 'Sistema de Monitoreo Ambiental IoT',
+              descripcion: 'Red de sensores conectados para monitorear calidad del aire en tiempo real.',
+              categoria: 'IoT'
+            }
+          ]
+        },
+        {
+          id: 'equipo2',
+          nombre: 'Code Warriors',
+          integrantes: ['Ana Rodríguez', 'Luis Fernández', 'Sofia Martín'],
+          pdf: 'https://drive.google.com/file/d/1DEF456GHI789JKL012MNO/view?usp=sharing',
+          propuestas: [
+            {
+              id: 'propuesta2_1',
+              titulo: 'Marketplace de Servicios Locales',
+              descripcion: 'Plataforma que conecta proveedores de servicios con clientes en su zona.',
+              categoria: 'E-commerce'
+            },
+            {
+              id: 'propuesta2_2',
+              titulo: 'App de Salud Mental y Bienestar',
+              descripcion: 'Herramienta con ejercicios de mindfulness y seguimiento del estado emocional.',
+              categoria: 'Salud'
+            },
+            {
+              id: 'propuesta2_3',
+              titulo: 'Sistema de Gestión de Residuos Inteligente',
+              descripcion: 'App que optimiza rutas de recolección de basura usando algoritmos genéticos.',
+              categoria: 'Sostenibilidad'
+            }
+          ]
+        },
+        {
+          id: 'equipo3',
+          nombre: 'Digital Pioneers',
+          integrantes: ['Roberto Silva', 'Elena Vargas', 'Diego Morales'],
+          pdf: 'https://drive.google.com/file/d/1MNO345PQR678STU901VWX/view?usp=sharing',
+          propuestas: [
+            {
+              id: 'propuesta3_1',
+              titulo: 'Plataforma de Crowdfunding para Startups',
+              descripcion: 'Sistema que conecta emprendedores con inversores usando blockchain.',
+              categoria: 'Fintech'
+            },
+            {
+              id: 'propuesta3_2',
+              titulo: 'App de Turismo Sostenible',
+              descripcion: 'Guía inteligente que promueve turismo responsable y local.',
+              categoria: 'Turismo'
+            },
+            {
+              id: 'propuesta3_3',
+              titulo: 'Sistema de Predicción de Tráfico',
+              descripcion: 'IA que analiza patrones de tráfico y sugiere rutas óptimas en tiempo real.',
+              categoria: 'Movilidad'
+            }
+          ]
+        }
+      ];
+
+      // Jurados
+      const jurados = {
+        'jurado1': 'Dr. María González - Especialista en IA',
+        'jurado2': 'Ing. Carlos Rodríguez - Desarrollador Senior',
+        'jurado3': 'Lic. Ana Martínez - Product Manager'
+      };
+
+      // Sistema de votación
+      let votos = {};
+      let calificaciones = {};
+      let juradoActual = null;
+      let modoActual = null; // 'propuestas' o 'calificacion'
+
+      // Funciones globales para ser llamadas desde HTML
+      window.mostrarResultadosParciales = function() {
+        const resultadosContainer = document.getElementById('resultadosContainer');
+        
+        // Calcular votos por propuesta
+        const conteoVotos = {};
+        Object.values(votos).forEach(votosJurado => {
+          Object.values(votosJurado).forEach(propuestaId => {
+            conteoVotos[propuestaId] = (conteoVotos[propuestaId] || 0) + 1;
+          });
+        });
+
+        // Crear tabla de resultados
+        let html = '<div class="table-responsive"><table class="table table-dark table-striped">';
+        html += '<thead><tr><th>Equipo</th><th>Propuesta Ganadora</th><th>Votos</th><th>Estado</th></tr></thead><tbody>';
+
+        equipos.forEach(equipo => {
+          const propuestaGanadora = equipo.propuestas.find(p => conteoVotos[p.id] === Math.max(...equipo.propuestas.map(prop => conteoVotos[prop.id] || 0)));
+          const votosPropuesta = conteoVotos[propuestaGanadora.id] || 0;
+          const esGanadora = votosPropuesta > 0;
+          
+          html += `<tr>
+            <td><strong>${equipo.nombre}</strong></td>
+            <td>${propuestaGanadora.titulo}</td>
+            <td><span class="badge bg-primary">${votosPropuesta}</span></td>
+            <td>${esGanadora ? '<span class="badge bg-success">Seleccionada</span>' : '<span class="badge bg-secondary">Sin votos</span>'}</td>
+          </tr>`;
+        });
+
+        html += '</tbody></table></div>';
+
+        // Mostrar resumen
+        const totalVotos = Object.values(conteoVotos).reduce((sum, count) => sum + count, 0);
+        const juradosQueHanVotado = Object.keys(votos).length;
+        const totalJurados = Object.keys(jurados).length;
+        
+        html += `<div class="mt-3">
+          <div class="alert alert-info">
+            <strong>Resultados Parciales:</strong> ${totalVotos} votos registrados de ${juradosQueHanVotado} jurados (${totalJurados} total).
+          </div>
+          <div class="text-center">
+            <button class="btn" style="background: var(--cyber-accent); border: none; color: var(--cyber-dark); font-weight: 600;" onclick="actualizarResultados()">
+              <i class="bi bi-arrow-clockwise me-2"></i>Actualizar Resultados
+            </button>
+          </div>
+        </div>`;
+
+        resultadosContainer.innerHTML = html;
+      };
+
+      window.actualizarResultados = function() {
+        actualizarResultados();
+      };
+
+      // Proyectos finales (ejemplo)
+      const proyectosFinales = [
+        {
+          id: 'proyecto1',
+          equipo: 'Tech Innovators',
+          titulo: 'App de Gestión de Inventario Inteligente',
+          descripcion: 'Sistema completo desarrollado con IA para predecir demanda y optimizar stock automáticamente.',
+          tecnologias: ['React', 'Node.js', 'Python', 'TensorFlow', 'MongoDB'],
+          github: 'https://github.com/tech-innovators/inventario-ia',
+          demo: 'https://inventario-ia-demo.com'
+        },
+        {
+          id: 'proyecto2',
+          equipo: 'Code Warriors',
+          titulo: 'App de Salud Mental y Bienestar',
+          descripcion: 'Herramienta completa con ejercicios de mindfulness y seguimiento del estado emocional.',
+          tecnologias: ['Vue.js', 'Express', 'PostgreSQL', 'JWT', 'Chart.js'],
+          github: 'https://github.com/code-warriors/salud-mental',
+          demo: 'https://salud-mental-app.com'
+        },
+        {
+          id: 'proyecto3',
+          equipo: 'Digital Pioneers',
+          titulo: 'Sistema de Predicción de Tráfico',
+          descripcion: 'IA avanzada que analiza patrones de tráfico y sugiere rutas óptimas en tiempo real.',
+          tecnologias: ['Angular', 'Django', 'Python', 'OpenCV', 'Redis'],
+          github: 'https://github.com/digital-pioneers/trafico-ia',
+          demo: 'https://trafico-prediccion.com'
+        }
+      ];
+
+      // Inicializar el sistema
+      document.addEventListener('DOMContentLoaded', function() {
+        const juradoSelector = document.getElementById('juradoSelector');
+        const btnSeleccionarPropuestas = document.getElementById('btnSeleccionarPropuestas');
+        const btnCalificarProyectos = document.getElementById('btnCalificarProyectos');
+
+        // Manejar selección de jurado
+        juradoSelector.addEventListener('change', function() {
+          juradoActual = this.value;
+          if (juradoActual && modoActual) {
+            if (modoActual === 'propuestas') {
+              cargarEquipos();
+              actualizarResultados();
+            } else if (modoActual === 'calificacion') {
+              cargarProyectos();
+              actualizarRanking();
+            }
+          }
+        });
+
+        // Manejar botón de selección de propuestas
+        btnSeleccionarPropuestas.addEventListener('click', function() {
+          if (!juradoActual) {
+            alert('Por favor selecciona un jurado primero.');
+            return;
+          }
+          modoActual = 'propuestas';
+          mostrarSeccion('propuestas');
+          cargarEquipos();
+          actualizarResultados();
+          
+          // Scroll hacia la sección de propuestas
+          setTimeout(() => {
+            document.getElementById('seccionPropuestas').scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 100);
+        });
+
+        // Manejar botón de calificación de proyectos
+        btnCalificarProyectos.addEventListener('click', function() {
+          if (!juradoActual) {
+            alert('Por favor selecciona un jurado primero.');
+            return;
+          }
+          modoActual = 'calificacion';
+          mostrarSeccion('calificacion');
+          cargarProyectos();
+          actualizarRanking();
+          
+          // Scroll hacia la sección de calificación
+          setTimeout(() => {
+            document.getElementById('seccionCalificacion').scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 100);
+        });
+
+
+        function mostrarSeccion(tipo) {
+          // Ocultar todas las secciones
+          document.getElementById('seccionPropuestas').style.display = 'none';
+          document.getElementById('seccionCalificacion').style.display = 'none';
+          
+          // Mostrar la sección seleccionada
+          if (tipo === 'propuestas') {
+            document.getElementById('seccionPropuestas').style.display = 'block';
+          } else if (tipo === 'calificacion') {
+            document.getElementById('seccionCalificacion').style.display = 'block';
+          }
+        }
+
+        function cargarEquipos() {
+          const equiposContainer = document.getElementById('equiposContainer');
+          if (!juradoActual) {
+            equiposContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">Selecciona un jurado para comenzar a votar.</div></div>';
+            return;
+          }
+
+          equiposContainer.innerHTML = '';
+          
+          equipos.forEach(equipo => {
+            const equipoCard = document.createElement('div');
+            equipoCard.className = 'col-lg-4 col-md-6 mb-4';
+            equipoCard.innerHTML = `
+              <div class="card h-100" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-header" style="background: var(--cyber-light-gray); border-bottom: 1px solid var(--cyber-border);">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="card-title mb-0" style="color: var(--cyber-primary);">
+                        <i class="bi bi-people me-2"></i>${equipo.nombre}
+                      </h5>
+                      <small class="text-muted">${equipo.integrantes.join(', ')}</small>
+                    </div>
+                    <a href="${equipo.pdf}" target="_blank" class="btn btn-sm" style="background: var(--cyber-secondary); border: none; color: var(--cyber-dark); font-weight: 600;">
+                      <i class="bi bi-file-earmark-pdf me-1"></i>Ver PDF
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h6 class="mb-3" style="color: var(--cyber-secondary);">Propuestas:</h6>
+                  ${equipo.propuestas.map(propuesta => `
+                    <div class="propuesta-item mb-3 p-3" style="background: var(--cyber-light-gray); border-radius: 8px; border: 1px solid var(--cyber-border);">
+                      <h6 style="color: var(--cyber-text);">${propuesta.titulo}</h6>
+                      <p class="small mb-2" style="color: var(--cyber-text-muted);">${propuesta.descripcion}</p>
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge" style="background: var(--cyber-accent); color: var(--cyber-dark);">${propuesta.categoria}</span>
+                      </div>
+                      <div class="mt-2">
+                        <button class="btn btn-sm votar-btn" 
+                                data-equipo="${equipo.id}" 
+                                data-propuesta="${propuesta.id}"
+                                style="background: var(--cyber-primary); border: none; color: var(--cyber-dark); font-weight: 600;">
+                          <i class="bi bi-check-circle me-1"></i>Votar por esta propuesta
+                        </button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+            equiposContainer.appendChild(equipoCard);
+          });
+
+          // Agregar event listeners a los botones de votar
+          document.querySelectorAll('.votar-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const equipoId = this.dataset.equipo;
+              const propuestaId = this.dataset.propuesta;
+              votar(equipoId, propuestaId);
+            });
+          });
+        }
+
+        function votar(equipoId, propuestaId) {
+          if (!juradoActual) {
+            alert('Por favor selecciona un jurado primero.');
+            return;
+          }
+
+          // Verificar si ya votó por este equipo
+          if (votos[juradoActual] && votos[juradoActual][equipoId]) {
+            if (confirm('Ya has votado por una propuesta de este equipo. ¿Deseas cambiar tu voto?')) {
+              votos[juradoActual][equipoId] = propuestaId;
+            } else {
+              return;
+            }
+          } else {
+            if (!votos[juradoActual]) {
+              votos[juradoActual] = {};
+            }
+            votos[juradoActual][equipoId] = propuestaId;
+          }
+
+          // Actualizar interfaz
+          actualizarBotonesVotacion();
+          actualizarResultados();
+          
+          // Mostrar confirmación
+          const equipo = equipos.find(e => e.id === equipoId);
+          const propuesta = equipo.propuestas.find(p => p.id === propuestaId);
+          alert(`¡Voto registrado! Has seleccionado "${propuesta.titulo}" del equipo ${equipo.nombre}.`);
+        }
+
+        function actualizarBotonesVotacion() {
+          document.querySelectorAll('.votar-btn').forEach(btn => {
+            const equipoId = btn.dataset.equipo;
+            const propuestaId = btn.dataset.propuesta;
+            
+            if (votos[juradoActual] && votos[juradoActual][equipoId] === propuestaId) {
+              btn.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>Votado ✓';
+              btn.style.background = 'var(--cyber-accent)';
+              btn.disabled = true;
+            } else {
+              btn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Votar por esta propuesta';
+              btn.style.background = 'var(--cyber-primary)';
+              btn.disabled = false;
+            }
+          });
+        }
+
+        function actualizarResultados() {
+          const resultadosContainer = document.getElementById('resultadosContainer');
+          
+          if (!juradoActual) {
+            resultadosContainer.innerHTML = '<p class="text-muted">Los resultados aparecerán aquí una vez que los jurados comiencen a votar.</p>';
+            return;
+          }
+
+          // Verificar si el jurado actual ha completado su votación
+          const votosJuradoActual = votos[juradoActual] || {};
+          const equiposVotados = Object.keys(votosJuradoActual).length;
+          const totalEquipos = equipos.length;
+          const haCompletadoVotacion = equiposVotados === totalEquipos;
+
+          // Calcular votos por propuesta
+          const conteoVotos = {};
+          Object.values(votos).forEach(votosJurado => {
+            Object.values(votosJurado).forEach(propuestaId => {
+              conteoVotos[propuestaId] = (conteoVotos[propuestaId] || 0) + 1;
+            });
+          });
+
+          // Contar jurados que han votado
+          const juradosQueHanVotado = Object.keys(votos).length;
+          const totalJurados = Object.keys(jurados).length;
+
+          if (Object.keys(conteoVotos).length === 0) {
+            resultadosContainer.innerHTML = '<p class="text-muted">Aún no hay votos registrados.</p>';
+            return;
+          }
+
+          // Si el jurado ha completado su votación, mostrar mensaje de espera
+          if (haCompletadoVotacion) {
+            let html = `
+              <div class="text-center py-4">
+                <div class="mb-4">
+                  <i class="bi bi-check-circle-fill" style="font-size: 3rem; color: var(--cyber-primary);"></i>
+                </div>
+                <h4 style="color: var(--cyber-primary);">¡Votación Completada!</h4>
+                <p class="mb-4" style="color: var(--cyber-text-muted);">
+                  Has terminado de votar por todas las propuestas. 
+                  ${juradosQueHanVotado < totalJurados ? 
+                    `Esperando que los demás jurados voten... (${juradosQueHanVotado}/${totalJurados})` : 
+                    'Todos los jurados han votado. ¡Puedes ver los resultados finales!'
+                  }
+                </p>
+                <div class="mb-4">
+                  <div class="progress" style="height: 8px; background: var(--cyber-light-gray);">
+                    <div class="progress-bar" style="background: var(--cyber-primary); width: ${(juradosQueHanVotado / totalJurados) * 100}%;"></div>
+                  </div>
+                  <small class="text-muted">${juradosQueHanVotado} de ${totalJurados} jurados han votado</small>
+                </div>
+                <button class="btn" style="background: var(--cyber-secondary); border: none; color: var(--cyber-dark); font-weight: 600;" onclick="mostrarResultadosParciales()">
+                  <i class="bi bi-graph-up me-2"></i>Ver Resultados Parciales
+                </button>
+              </div>
+            `;
+            resultadosContainer.innerHTML = html;
+            return;
+          }
+
+          // Mostrar resultados normales si no ha completado
+          mostrarResultadosNormales();
+        }
+
+
+        function mostrarResultadosNormales() {
+          const resultadosContainer = document.getElementById('resultadosContainer');
+          
+          // Calcular votos por propuesta
+          const conteoVotos = {};
+          Object.values(votos).forEach(votosJurado => {
+            Object.values(votosJurado).forEach(propuestaId => {
+              conteoVotos[propuestaId] = (conteoVotos[propuestaId] || 0) + 1;
+            });
+          });
+
+          // Crear tabla de resultados
+          let html = '<div class="table-responsive"><table class="table table-dark table-striped">';
+          html += '<thead><tr><th>Equipo</th><th>Propuesta Ganadora</th><th>Votos</th><th>Estado</th></tr></thead><tbody>';
+
+          equipos.forEach(equipo => {
+            const propuestaGanadora = equipo.propuestas.find(p => conteoVotos[p.id] === Math.max(...equipo.propuestas.map(prop => conteoVotos[prop.id] || 0)));
+            const votosPropuesta = conteoVotos[propuestaGanadora.id] || 0;
+            const esGanadora = votosPropuesta > 0;
+            
+            html += `<tr>
+              <td><strong>${equipo.nombre}</strong></td>
+              <td>${propuestaGanadora.titulo}</td>
+              <td><span class="badge bg-primary">${votosPropuesta}</span></td>
+              <td>${esGanadora ? '<span class="badge bg-success">Seleccionada</span>' : '<span class="badge bg-secondary">Sin votos</span>'}</td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+
+          // Mostrar resumen
+          const totalVotos = Object.values(conteoVotos).reduce((sum, count) => sum + count, 0);
+          const juradosQueHanVotado = Object.keys(votos).length;
+          const totalJurados = Object.keys(jurados).length;
+          
+          html += `<div class="mt-3">
+            <div class="alert alert-info">
+              <strong>Resumen:</strong> ${totalVotos} votos registrados de ${juradosQueHanVotado} jurados.
+            </div>
+          </div>`;
+
+          resultadosContainer.innerHTML = html;
+        }
+
+        function cargarProyectos() {
+          const proyectosContainer = document.getElementById('proyectosContainer');
+          if (!juradoActual) {
+            proyectosContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">Selecciona un jurado para comenzar a calificar.</div></div>';
+            return;
+          }
+
+          proyectosContainer.innerHTML = '';
+          
+          proyectosFinales.forEach(proyecto => {
+            const proyectoCard = document.createElement('div');
+            proyectoCard.className = 'col-lg-6 mb-4';
+            proyectoCard.innerHTML = `
+              <div class="card h-100" style="background: var(--cyber-gray); border: 1px solid var(--cyber-border);">
+                <div class="card-header" style="background: var(--cyber-light-gray); border-bottom: 1px solid var(--cyber-border);">
+                  <h5 class="card-title mb-0" style="color: var(--cyber-primary);">
+                    <i class="bi bi-code-square me-2"></i>${proyecto.titulo}
+                  </h5>
+                  <small class="text-muted">Equipo: ${proyecto.equipo}</small>
+                </div>
+                <div class="card-body">
+                  <p class="mb-3" style="color: var(--cyber-text-muted);">${proyecto.descripcion}</p>
+                  
+                  <div class="mb-3">
+                    <h6 style="color: var(--cyber-secondary);">Tecnologías:</h6>
+                    <div class="d-flex flex-wrap gap-1">
+                      ${proyecto.tecnologias.map(tech => 
+                        `<span class="badge" style="background: var(--cyber-accent); color: var(--cyber-dark);">${tech}</span>`
+                      ).join('')}
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <h6 style="color: var(--cyber-secondary);">Enlaces:</h6>
+                    <div class="d-flex gap-2">
+                      <a href="${proyecto.github}" target="_blank" class="btn btn-sm" style="background: var(--cyber-primary); border: none; color: var(--cyber-dark);">
+                        <i class="bi bi-github me-1"></i>GitHub
+                      </a>
+                      <a href="${proyecto.demo}" target="_blank" class="btn btn-sm" style="background: var(--cyber-secondary); border: none; color: var(--cyber-dark);">
+                        <i class="bi bi-play-circle me-1"></i>Demo
+                      </a>
+                    </div>
+                  </div>
+
+                  <hr style="border-color: var(--cyber-border);">
+
+                  <h6 style="color: var(--cyber-secondary);">Calificación:</h6>
+                  <div class="row">
+                    <div class="col-6 mb-2">
+                      <label class="form-label small" style="color: var(--cyber-text);">Funcionalidad (30%)</label>
+                      <select class="form-select form-select-sm calificacion-select" data-proyecto="${proyecto.id}" data-criterio="funcionalidad" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                        <option value="" style="color: var(--cyber-text);">Seleccionar</option>
+                        <option value="1" style="color: var(--cyber-text);">1 - Muy deficiente</option>
+                        <option value="2" style="color: var(--cyber-text);">2 - Deficiente</option>
+                        <option value="3" style="color: var(--cyber-text);">3 - Regular</option>
+                        <option value="4" style="color: var(--cyber-text);">4 - Bueno</option>
+                        <option value="5" style="color: var(--cyber-text);">5 - Excelente</option>
+                      </select>
+                    </div>
+                    <div class="col-6 mb-2">
+                      <label class="form-label small" style="color: var(--cyber-text);">Innovación (25%)</label>
+                      <select class="form-select form-select-sm calificacion-select" data-proyecto="${proyecto.id}" data-criterio="innovacion" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                        <option value="" style="color: var(--cyber-text);">Seleccionar</option>
+                        <option value="1" style="color: var(--cyber-text);">1 - Muy deficiente</option>
+                        <option value="2" style="color: var(--cyber-text);">2 - Deficiente</option>
+                        <option value="3" style="color: var(--cyber-text);">3 - Regular</option>
+                        <option value="4" style="color: var(--cyber-text);">4 - Bueno</option>
+                        <option value="5" style="color: var(--cyber-text);">5 - Excelente</option>
+                      </select>
+                    </div>
+                    <div class="col-6 mb-2">
+                      <label class="form-label small" style="color: var(--cyber-text);">Calidad Técnica (20%)</label>
+                      <select class="form-select form-select-sm calificacion-select" data-proyecto="${proyecto.id}" data-criterio="calidad" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                        <option value="" style="color: var(--cyber-text);">Seleccionar</option>
+                        <option value="1" style="color: var(--cyber-text);">1 - Muy deficiente</option>
+                        <option value="2" style="color: var(--cyber-text);">2 - Deficiente</option>
+                        <option value="3" style="color: var(--cyber-text);">3 - Regular</option>
+                        <option value="4" style="color: var(--cyber-text);">4 - Bueno</option>
+                        <option value="5" style="color: var(--cyber-text);">5 - Excelente</option>
+                      </select>
+                    </div>
+                    <div class="col-6 mb-2">
+                      <label class="form-label small" style="color: var(--cyber-text);">Presentación (15%)</label>
+                      <select class="form-select form-select-sm calificacion-select" data-proyecto="${proyecto.id}" data-criterio="presentacion" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                        <option value="" style="color: var(--cyber-text);">Seleccionar</option>
+                        <option value="1" style="color: var(--cyber-text);">1 - Muy deficiente</option>
+                        <option value="2" style="color: var(--cyber-text);">2 - Deficiente</option>
+                        <option value="3" style="color: var(--cyber-text);">3 - Regular</option>
+                        <option value="4" style="color: var(--cyber-text);">4 - Bueno</option>
+                        <option value="5" style="color: var(--cyber-text);">5 - Excelente</option>
+                      </select>
+                    </div>
+                    <div class="col-6 mb-2">
+                      <label class="form-label small" style="color: var(--cyber-text);">Viabilidad (10%)</label>
+                      <select class="form-select form-select-sm calificacion-select" data-proyecto="${proyecto.id}" data-criterio="viabilidad" style="background: var(--cyber-light-gray); border: 1px solid var(--cyber-border); color: var(--cyber-text);">
+                        <option value="" style="color: var(--cyber-text);">Seleccionar</option>
+                        <option value="1" style="color: var(--cyber-text);">1 - Muy deficiente</option>
+                        <option value="2" style="color: var(--cyber-text);">2 - Deficiente</option>
+                        <option value="3" style="color: var(--cyber-text);">3 - Regular</option>
+                        <option value="4" style="color: var(--cyber-text);">4 - Bueno</option>
+                        <option value="5" style="color: var(--cyber-text);">5 - Excelente</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="mt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span style="color: var(--cyber-text-muted);">Puntuación Total:</span>
+                      <span id="puntuacion-${proyecto.id}" class="badge" style="background: var(--cyber-primary); color: var(--cyber-dark); font-size: 1rem;">
+                        0.0
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+            proyectosContainer.appendChild(proyectoCard);
+          });
+
+          // Agregar event listeners a los selects de calificación
+          document.querySelectorAll('.calificacion-select').forEach(select => {
+            select.addEventListener('change', function() {
+              const proyectoId = this.dataset.proyecto;
+              const criterio = this.dataset.criterio;
+              const puntuacion = parseInt(this.value);
+              
+              if (!calificaciones[juradoActual]) {
+                calificaciones[juradoActual] = {};
+              }
+              if (!calificaciones[juradoActual][proyectoId]) {
+                calificaciones[juradoActual][proyectoId] = {};
+              }
+              
+              calificaciones[juradoActual][proyectoId][criterio] = puntuacion;
+              actualizarPuntuacionProyecto(proyectoId);
+              actualizarRanking();
+            });
+          });
+        }
+
+        function actualizarPuntuacionProyecto(proyectoId) {
+          const proyecto = proyectosFinales.find(p => p.id === proyectoId);
+          const calificacion = calificaciones[juradoActual] && calificaciones[juradoActual][proyectoId] ? calificaciones[juradoActual][proyectoId] : {};
+          
+          // Pesos de los criterios
+          const pesos = {
+            funcionalidad: 0.30,
+            innovacion: 0.25,
+            calidad: 0.20,
+            presentacion: 0.15,
+            viabilidad: 0.10
+          };
+          
+          let puntuacionTotal = 0;
+          let criteriosCompletos = 0;
+          
+          Object.keys(pesos).forEach(criterio => {
+            if (calificacion[criterio]) {
+              puntuacionTotal += calificacion[criterio] * pesos[criterio];
+              criteriosCompletos++;
+            }
+          });
+          
+          const puntuacionElement = document.getElementById(`puntuacion-${proyectoId}`);
+          if (criteriosCompletos === 5) {
+            puntuacionElement.textContent = puntuacionTotal.toFixed(1);
+            puntuacionElement.style.background = 'var(--cyber-accent)';
+          } else {
+            puntuacionElement.textContent = 'Incompleto';
+            puntuacionElement.style.background = 'var(--cyber-text-muted)';
+          }
+        }
+
+        function actualizarRanking() {
+          const rankingContainer = document.getElementById('rankingContainer');
+          
+          if (!juradoActual) {
+            rankingContainer.innerHTML = '<p class="text-muted">El ranking aparecerá aquí una vez que comiences a calificar proyectos.</p>';
+            return;
+          }
+
+          // Calcular puntuaciones promedio de todos los jurados
+          const puntuacionesProyectos = {};
+          
+          proyectosFinales.forEach(proyecto => {
+            puntuacionesProyectos[proyecto.id] = {
+              proyecto: proyecto,
+              puntuacionTotal: 0,
+              jurados: 0
+            };
+          });
+
+          // Sumar puntuaciones de todos los jurados
+          Object.keys(calificaciones).forEach(juradoId => {
+            Object.keys(calificaciones[juradoId]).forEach(proyectoId => {
+              const calificacion = calificaciones[juradoId][proyectoId];
+              const proyecto = proyectosFinales.find(p => p.id === proyectoId);
+              
+              if (proyecto && calificacion.funcionalidad && calificacion.innovacion && 
+                  calificacion.calidad && calificacion.presentacion && calificacion.viabilidad) {
+                
+                const pesos = {
+                  funcionalidad: 0.30,
+                  innovacion: 0.25,
+                  calidad: 0.20,
+                  presentacion: 0.15,
+                  viabilidad: 0.10
+                };
+                
+                let puntuacion = 0;
+                Object.keys(pesos).forEach(criterio => {
+                  puntuacion += calificacion[criterio] * pesos[criterio];
+                });
+                
+                puntuacionesProyectos[proyectoId].puntuacionTotal += puntuacion;
+                puntuacionesProyectos[proyectoId].jurados++;
+              }
+            });
+          });
+
+          // Calcular promedios y ordenar
+          const ranking = Object.values(puntuacionesProyectos)
+            .map(item => ({
+              ...item,
+              promedio: item.jurados > 0 ? item.puntuacionTotal / item.jurados : 0
+            }))
+            .sort((a, b) => b.promedio - a.promedio);
+
+          if (ranking.every(item => item.promedio === 0)) {
+            rankingContainer.innerHTML = '<p class="text-muted">Aún no hay calificaciones completas registradas.</p>';
+            return;
+          }
+
+          // Crear tabla de ranking
+          let html = '<div class="table-responsive"><table class="table table-dark table-striped">';
+          html += '<thead><tr><th>Posición</th><th>Equipo</th><th>Proyecto</th><th>Puntuación</th><th>Jurados</th><th>Estado</th></tr></thead><tbody>';
+
+          ranking.forEach((item, index) => {
+            const posicion = index + 1;
+            const medalla = posicion === 1 ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : '';
+            
+            html += `<tr>
+              <td><strong>${medalla} ${posicion}°</strong></td>
+              <td>${item.proyecto.equipo}</td>
+              <td>${item.proyecto.titulo}</td>
+              <td><span class="badge bg-primary">${item.promedio.toFixed(1)}</span></td>
+              <td><span class="badge bg-secondary">${item.jurados}</span></td>
+              <td>${item.promedio > 0 ? '<span class="badge bg-success">Calificado</span>' : '<span class="badge bg-warning">Pendiente</span>'}</td>
+            </tr>`;
+          });
+
+          html += '</tbody></table></div>';
+
+          // Mostrar resumen
+          const totalJurados = Object.keys(calificaciones).length;
+          const proyectosCalificados = ranking.filter(item => item.promedio > 0).length;
+          
+          html += `<div class="mt-3">
+            <div class="alert alert-info">
+              <strong>Resumen:</strong> ${proyectosCalificados} de ${proyectosFinales.length} proyectos calificados por ${totalJurados} jurados.
+            </div>
+          </div>`;
+
+          rankingContainer.innerHTML = html;
+        }
+      });
+    </script>
+    
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
