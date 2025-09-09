@@ -911,6 +911,71 @@
         actualizarResultados();
       };
 
+      window.mostrarSeccion = function(tipo) {
+        mostrarSeccion(tipo);
+      };
+
+      // Función para mostrar resultados finales cuando todos han votado
+      function mostrarResultadosFinales() {
+        const resultadosContainer = document.getElementById('resultadosContainer');
+        
+        // Calcular votos por propuesta
+        const conteoVotos = {};
+        Object.values(votos).forEach(votosJurado => {
+          Object.values(votosJurado).forEach(propuestaId => {
+            conteoVotos[propuestaId] = (conteoVotos[propuestaId] || 0) + 1;
+          });
+        });
+
+        // Crear tabla de resultados finales
+        let html = `
+          <div class="text-center mb-4">
+            <div class="mb-3">
+              <i class="bi bi-trophy-fill" style="font-size: 3rem; color: var(--cyber-accent);"></i>
+            </div>
+            <h3 style="color: var(--cyber-primary);">¡Votación Finalizada!</h3>
+            <p style="color: var(--cyber-text-muted);">Todos los jurados han completado su votación. Aquí están los resultados finales:</p>
+          </div>
+        `;
+
+        html += '<div class="table-responsive"><table class="table table-dark table-striped">';
+        html += '<thead><tr><th>Equipo</th><th>Propuesta Ganadora</th><th>Votos</th><th>Estado</th></tr></thead><tbody>';
+
+        equipos.forEach(equipo => {
+          const propuestaGanadora = equipo.propuestas.find(p => conteoVotos[p.id] === Math.max(...equipo.propuestas.map(prop => conteoVotos[prop.id] || 0)));
+          const votosPropuesta = conteoVotos[propuestaGanadora.id] || 0;
+          const esGanadora = votosPropuesta > 0;
+          
+          html += `<tr>
+            <td><strong>${equipo.nombre}</strong></td>
+            <td>${propuestaGanadora.titulo}</td>
+            <td><span class="badge bg-primary">${votosPropuesta}</span></td>
+            <td>${esGanadora ? '<span class="badge bg-success">Seleccionada</span>' : '<span class="badge bg-secondary">Sin votos</span>'}</td>
+          </tr>`;
+        });
+
+        html += '</tbody></table></div>';
+
+        // Mostrar resumen final
+        const totalVotos = Object.values(conteoVotos).reduce((sum, count) => sum + count, 0);
+        const juradosQueHanVotado = Object.keys(votos).length;
+        const totalJurados = Object.keys(jurados).length;
+        
+        html += `<div class="mt-4">
+          <div class="alert alert-success">
+            <h5><i class="bi bi-check-circle me-2"></i>Votación Completada</h5>
+            <p class="mb-0"><strong>Resumen Final:</strong> ${totalVotos} votos registrados de ${juradosQueHanVotado} jurados. Todas las propuestas han sido seleccionadas.</p>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-lg" style="background: var(--cyber-primary); border: none; color: var(--cyber-dark); font-weight: 600;" onclick="mostrarSeccion('calificacion')">
+              <i class="bi bi-star-fill me-2"></i>Continuar a Calificación de Proyectos
+            </button>
+          </div>
+        </div>`;
+
+        resultadosContainer.innerHTML = html;
+      }
+
       // Proyectos finales (ejemplo)
       const proyectosFinales = [
         {
@@ -1156,8 +1221,15 @@
             return;
           }
 
-          // Si el jurado ha completado su votación, mostrar mensaje de espera
+          // Si el jurado ha completado su votación, verificar si todos han votado
           if (haCompletadoVotacion) {
+            // Si todos los jurados han votado, mostrar resultados finales directamente
+            if (juradosQueHanVotado >= totalJurados) {
+              mostrarResultadosFinales();
+              return;
+            }
+            
+            // Si no todos han votado, mostrar pantalla de espera
             let html = `
               <div class="text-center py-4">
                 <div class="mb-4">
@@ -1166,10 +1238,7 @@
                 <h4 style="color: var(--cyber-primary);">¡Votación Completada!</h4>
                 <p class="mb-4" style="color: var(--cyber-text-muted);">
                   Has terminado de votar por todas las propuestas. 
-                  ${juradosQueHanVotado < totalJurados ? 
-                    `Esperando que los demás jurados voten... (${juradosQueHanVotado}/${totalJurados})` : 
-                    'Todos los jurados han votado. ¡Puedes ver los resultados finales!'
-                  }
+                  Esperando que los demás jurados voten... (${juradosQueHanVotado}/${totalJurados})
                 </p>
                 <div class="mb-4">
                   <div class="progress" style="height: 8px; background: var(--cyber-light-gray);">
@@ -1376,7 +1445,6 @@
         }
 
         function actualizarPuntuacionProyecto(proyectoId) {
-          const proyecto = proyectosFinales.find(p => p.id === proyectoId);
           const calificacion = calificaciones[juradoActual] && calificaciones[juradoActual][proyectoId] ? calificaciones[juradoActual][proyectoId] : {};
           
           // Pesos de los criterios
@@ -1400,6 +1468,7 @@
           
           const puntuacionElement = document.getElementById(`puntuacion-${proyectoId}`);
           if (criteriosCompletos === 5) {
+            // Mostrar la puntuación individual del jurado actual (escala 1-5)
             puntuacionElement.textContent = puntuacionTotal.toFixed(1);
             puntuacionElement.style.background = 'var(--cyber-accent)';
           } else {
@@ -1422,18 +1491,18 @@
           proyectosFinales.forEach(proyecto => {
             puntuacionesProyectos[proyecto.id] = {
               proyecto: proyecto,
-              puntuacionTotal: 0,
-              jurados: 0
+              puntuaciones: [], // Array para almacenar puntuaciones individuales
+              jurados: 0,
+              detalleJurados: [] // Para mostrar qué jurado calificó qué
             };
           });
 
-          // Sumar puntuaciones de todos los jurados
+          // Recopilar puntuaciones de todos los jurados
           Object.keys(calificaciones).forEach(juradoId => {
             Object.keys(calificaciones[juradoId]).forEach(proyectoId => {
               const calificacion = calificaciones[juradoId][proyectoId];
-              const proyecto = proyectosFinales.find(p => p.id === proyectoId);
               
-              if (proyecto && calificacion.funcionalidad && calificacion.innovacion && 
+              if (calificacion.funcionalidad && calificacion.innovacion && 
                   calificacion.calidad && calificacion.presentacion && calificacion.viabilidad) {
                 
                 const pesos = {
@@ -1449,8 +1518,12 @@
                   puntuacion += calificacion[criterio] * pesos[criterio];
                 });
                 
-                puntuacionesProyectos[proyectoId].puntuacionTotal += puntuacion;
+                puntuacionesProyectos[proyectoId].puntuaciones.push(puntuacion);
                 puntuacionesProyectos[proyectoId].jurados++;
+                puntuacionesProyectos[proyectoId].detalleJurados.push({
+                  jurado: jurados[juradoId],
+                  puntuacion: puntuacion.toFixed(1)
+                });
               }
             });
           });
@@ -1459,7 +1532,8 @@
           const ranking = Object.values(puntuacionesProyectos)
             .map(item => ({
               ...item,
-              promedio: item.jurados > 0 ? item.puntuacionTotal / item.jurados : 0
+              promedio: item.puntuaciones.length > 0 ? 
+                item.puntuaciones.reduce((sum, p) => sum + p, 0) / item.puntuaciones.length : 0
             }))
             .sort((a, b) => b.promedio - a.promedio);
 
@@ -1470,11 +1544,16 @@
 
           // Crear tabla de ranking
           let html = '<div class="table-responsive"><table class="table table-dark table-striped">';
-          html += '<thead><tr><th>Posición</th><th>Equipo</th><th>Proyecto</th><th>Puntuación</th><th>Jurados</th><th>Estado</th></tr></thead><tbody>';
+          html += '<thead><tr><th>Posición</th><th>Equipo</th><th>Proyecto</th><th>Puntuación Promedio</th><th>Jurados</th><th>Detalle</th><th>Estado</th></tr></thead><tbody>';
 
           ranking.forEach((item, index) => {
             const posicion = index + 1;
             const medalla = posicion === 1 ? '🥇' : posicion === 2 ? '🥈' : posicion === 3 ? '🥉' : '';
+            
+            // Crear detalle de jurados
+            const detalleJurados = item.detalleJurados.map(d => 
+              `${d.jurado.split(' - ')[0]}: ${d.puntuacion}`
+            ).join('<br>');
             
             html += `<tr>
               <td><strong>${medalla} ${posicion}°</strong></td>
@@ -1482,6 +1561,7 @@
               <td>${item.proyecto.titulo}</td>
               <td><span class="badge bg-primary">${item.promedio.toFixed(1)}</span></td>
               <td><span class="badge bg-secondary">${item.jurados}</span></td>
+              <td><small>${detalleJurados}</small></td>
               <td>${item.promedio > 0 ? '<span class="badge bg-success">Calificado</span>' : '<span class="badge bg-warning">Pendiente</span>'}</td>
             </tr>`;
           });
@@ -1495,6 +1575,7 @@
           html += `<div class="mt-3">
             <div class="alert alert-info">
               <strong>Resumen:</strong> ${proyectosCalificados} de ${proyectosFinales.length} proyectos calificados por ${totalJurados} jurados.
+              <br><small>La puntuación promedio se calcula sumando las calificaciones individuales de todos los jurados y dividiendo por el número de jurados que calificaron.</small>
             </div>
           </div>`;
 
