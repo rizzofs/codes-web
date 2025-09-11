@@ -683,6 +683,72 @@
         color: var(--primary);
       }
 
+      /* Dark mode support for colaboradores section */
+      [data-theme="dark"] #colaboradores {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] #colaboradores .section-title {
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] #colaboradores .section-subtitle {
+        color: #cccccc;
+      }
+
+      [data-theme="dark"] .collaborator-card {
+        background: #2d2d2d;
+        border: 1px solid #404040;
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .collaborator-card h4 {
+        color: #ffffff;
+      }
+
+      [data-theme="dark"] .collaborator-card .collaborator-role {
+        color: var(--primary);
+      }
+
+      [data-theme="dark"] .collaborator-card .collaborator-description {
+        color: #cccccc;
+      }
+
+      [data-theme="dark"] .collaborator-card .social-links a {
+        color: #ffffff;
+        background: #404040;
+      }
+
+      [data-theme="dark"] .collaborator-card .social-links a:hover {
+        background: var(--primary);
+        color: #000000;
+      }
+
+      [data-theme="dark"] .collaborator-card .cta-button {
+        background: var(--primary);
+        color: #000000;
+      }
+
+      [data-theme="dark"] .collaborator-card .cta-button:hover {
+        background: var(--primary-dark);
+        color: #000000;
+      }
+
+      [data-theme="dark"] .collaborator-card .cta-button .btn {
+        background: var(--primary);
+        color: #000000;
+        border-color: var(--primary);
+      }
+
+      [data-theme="dark"] .collaborator-card .cta-button .btn:hover {
+        background: var(--primary-dark);
+        color: #000000;
+        border-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(57, 192, 195, 0.3);
+      }
+
       /* Sidebar toggle button styling to match other buttons */
       #sidebarToggleBtn {
         height: 38px !important;

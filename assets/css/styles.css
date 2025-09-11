@@ -1585,6 +1585,42 @@ footer {
     color: #ffffff !important; /* Ensure visibility in dark mode */
 }
 
+/* Dark mode support for footer */
+[data-theme="dark"] footer {
+  background: var(--background-alt);
+  color: var(--text);
+}
+
+[data-theme="dark"] .footer-title {
+  color: var(--primary);
+}
+
+[data-theme="dark"] .contact-item {
+  color: var(--text);
+}
+
+[data-theme="dark"] .contact-item a {
+  color: var(--primary);
+}
+
+[data-theme="dark"] .contact-item a:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .social-link {
+  background: var(--primary);
+  color: white;
+}
+
+[data-theme="dark"] .social-link:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+
+[data-theme="dark"] footer p {
+  color: var(--text-light);
+}
+
 /* COMPLETE DARK MODE FIX FOR NAVBAR TEXT */
 [data-theme="dark"] .navbar-actions .fw-bold.text-dark,
 [data-theme="dark"] .navbar-actions span.fw-bold.text-dark,
