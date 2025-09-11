@@ -1,0 +1,553 @@
+/* Estilos para el juego de letras escondidas */
+
+/* Círculo con letra escondida */
+.letter-circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: var(--gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0 3px 10px rgba(57, 192, 195, 0.3);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    animation: subtlePulse 4s infinite;
+    opacity: 0.8;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    will-change: transform;
+    text-align: center;
+}
+
+.letter-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(57, 192, 195, 0.6);
+    opacity: 1;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.letter-content {
+    color: white;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+}
+
+.letter {
+    font-size: 22px;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: center;
+}
+
+.letter-hint {
+    font-size: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-top: 2px;
+    line-height: 1;
+    text-align: center;
+}
+
+.letter-circle:hover .letter-hint {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes subtlePulse {
+    0% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(1.02); 
+    }
+    100% { 
+        transform: scale(1); 
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes expandWidth {
+    from { width: 0; }
+    to { width: 100px; }
+}
+
+/* Notificación de letra encontrada */
+.letter-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--gradient);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(57, 192, 195, 0.3);
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.letter-notification.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.notification-content i {
+    font-size: 18px;
+}
+
+/* Botón flotante del juego */
+#gameButton {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 20px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(57, 192, 195, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+#gameButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 192, 195, 0.6);
+}
+
+#gameButton i {
+    font-size: 18px;
+}
+
+.game-text {
+    font-size: 14px;
+}
+
+/* Modal del juego */
+#gameModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.game-modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.3s ease;
+    border: 2px solid var(--primary);
+}
+
+/* Animación del modal ya está usando fadeInUp */
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background: var(--gradient);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+.game-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.game-header h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.btn-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.game-body {
+    padding: 25px;
+}
+
+.game-instructions {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.game-instructions p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.game-instructions strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Container de letras */
+.letters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.letter-slot {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #ddd;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #f8f9fa;
+    position: relative;
+    cursor: pointer;
+}
+
+.letter-slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.letter-slot.found {
+    background: var(--gradient);
+    color: white;
+    border-color: var(--primary);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(57, 192, 195, 0.3);
+    animation: fadeInUp 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.letter-slot.found::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.letter-slot.missing {
+    background: #f8f9fa;
+    color: #999;
+    border-color: #ddd;
+}
+
+.letter-display {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.letter-number {
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* Barra de progreso */
+.game-progress {
+    margin-bottom: 25px;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: var(--gradient);
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+/* Acciones del juego */
+.game-complete {
+    text-align: center;
+    padding: 20px;
+    background: var(--gradient);
+    color: white;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+.success-message h4 {
+    margin: 15px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.success-message p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.instagram-instructions {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.instagram-instructions p {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.instagram-instructions .btn {
+    background: #E4405F;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.instagram-instructions .btn:hover {
+    background: #C13584;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+}
+
+.verification-note {
+    background: rgba(57, 192, 195, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border-left: 3px solid var(--primary);
+    display: block;
+}
+
+.verification-note small {
+    color: var(--primary) !important;
+    font-weight: 600;
+    display: block;
+    font-size: 12px;
+}
+
+.word-discovery {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.discovery-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.mystery-hint {
+    background: var(--gradient);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: 600;
+}
+
+.mystery-hint i {
+    font-size: 16px;
+}
+
+.game-incomplete {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+.pages-hint {
+    margin-top: 15px;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 8px;
+}
+
+.pages-hint small {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .letter-circle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .letter {
+        font-size: 20px;
+    }
+    
+    .letters-container {
+        gap: 10px;
+    }
+    
+    .letter-slot {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .letter-display {
+        font-size: 1.2rem;
+    }
+    
+    .game-modal-content {
+        margin: 10px;
+    }
+    
+    .game-body {
+        padding: 20px;
+    }
+    
+    #gameButton {
+        bottom: 90px;
+        right: 15px;
+        padding: 12px 16px;
+    }
+}
+
+/* Modo oscuro */
+[data-theme="dark"] .game-modal-content {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .game-header {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+}
+
+[data-theme="dark"] .letter-slot.missing {
+    background: #4a5568;
+    border-color: #718096;
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .game-incomplete {
+    background: #4a5568;
+}
+
+[data-theme="dark"] .pages-hint {
+    background: #2d3748;
+}
+
+[data-theme="dark"] .pages-hint small {
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .mystery-hint {
+    background: var(--gradient);
+}
+
+[data-theme="dark"] .verification-note {
+    background: rgba(57, 192, 195, 0.2);
+    border-left-color: var(--primary);
+}
+
+[data-theme="dark"] .verification-note span {
+    color: var(--primary) !important;
+}
+

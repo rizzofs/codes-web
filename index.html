@@ -126,6 +126,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/letter-game.css?v=1.0" />
     
     <!-- Carrusel Custom Styles -->
     <style>
@@ -744,8 +745,8 @@
       }
 
       .hero-content .subtitle {
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-size: 1.2rem;
+        font-weight: 600;
         margin-bottom: 2rem;
         color: #00ff88 !important;
         text-shadow: 0 0 15px rgba(0, 255, 136, 0.8), 0 0 30px rgba(0, 255, 136, 0.6), 0 0 45px rgba(0, 255, 136, 0.4);
@@ -783,6 +784,7 @@
       .futuristic-title {
         position: relative;
         font-weight: 800;
+        font-size: 3.5rem;
         letter-spacing: 2px;
         text-transform: uppercase;
         display: flex;
@@ -795,6 +797,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+
+      /* Responsive title sizing */
+      @media (max-width: 768px) {
+        .futuristic-title {
+          font-size: 2.5rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .futuristic-title {
+          font-size: 2rem;
+        }
       }
 
       .letter {
@@ -902,7 +917,7 @@
         }
 
         .hero-content .subtitle {
-          font-size: 1.3rem;
+          font-size: 1rem;
         }
 
         .hero-content .description {
@@ -929,7 +944,7 @@
         }
 
         .hero-content .subtitle {
-          font-size: 1.1rem;
+          font-size: 0.9rem;
         }
 
         .hero-content .description {
@@ -2881,6 +2896,7 @@
 
     <!-- Custom JS -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/letter-game.js?v=1.0"></script>
 
     <!-- Back to Top Button -->
     <button
@@ -3047,7 +3063,7 @@
           }
         });
 
-        // Matrix Rain Effect
+        // Matrix Rain Effect - Optimized
         function initMatrixRain() {
           const canvas = document.getElementById('matrixCanvas');
           const heroSection = document.querySelector('.hero-section');
@@ -3056,82 +3072,107 @@
           
           const ctx = canvas.getContext('2d');
           let animationId;
+          let isVisible = true;
           
-          // Set canvas size
+          // Performance optimizations
+          const FPS = 30; // Target FPS
+          const frameInterval = 1000 / FPS;
+          let lastTime = 0;
+          
+          // Pre-calculate values
+          const fontSize = 16;
+          let columns = 0;
+          let drops = [];
+          let charArray = ['0', '1'];
+          let charCache = [];
+          
+          // Set canvas size with throttling
+          let resizeTimeout;
           function resizeCanvas() {
-            canvas.width = heroSection.offsetWidth;
-            canvas.height = heroSection.offsetHeight;
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+              const rect = heroSection.getBoundingClientRect();
+              canvas.width = rect.width;
+              canvas.height = rect.height;
+              
+              columns = Math.floor(canvas.width / fontSize);
+              drops = new Array(columns).fill(1);
+              
+              // Pre-generate character cache
+              charCache = new Array(columns);
+              for (let i = 0; i < columns; i++) {
+                charCache[i] = charArray[Math.floor(Math.random() * charArray.length)];
+              }
+            }, 100);
           }
           
           resizeCanvas();
-          window.addEventListener('resize', resizeCanvas);
+          window.addEventListener('resize', resizeCanvas, { passive: true });
           
-          // Matrix characters
-          const chars = '01';
-          const charArray = chars.split('');
+          // Visibility API for performance
+          document.addEventListener('visibilitychange', () => {
+            isVisible = !document.hidden;
+            if (!isVisible) {
+              // Clear canvas when not visible to save resources
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+          });
           
-          const fontSize = 14;
-          const columns = Math.floor(canvas.width / fontSize);
-          const drops = [];
-          
-          // Initialize drops
-          for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-          }
-          
-          // Draw function
+          // Optimized draw function
           function draw() {
-            // Black background with opacity for trail effect
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+            if (!isVisible) return;
+            
+            // Use faster clear method
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
+            // Set font once
+            ctx.font = `${fontSize}px monospace`;
             ctx.fillStyle = '#0088ff';
-            ctx.font = fontSize + 'px monospace';
             
-            // Draw characters
-            for (let i = 0; i < drops.length; i++) {
-              const char = charArray[Math.floor(Math.random() * charArray.length)];
+            // Remove expensive shadow effects
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'transparent';
+            
+            // Draw characters with optimized loop
+            for (let i = 0; i < columns; i++) {
               const x = i * fontSize;
               const y = drops[i] * fontSize;
               
-              // Add glow effect with blue color
-              ctx.shadowBlur = 8;
-              ctx.shadowColor = '#0088ff';
-              ctx.fillText(char, x, y);
-              
-              // Reset shadow
-              ctx.shadowBlur = 0;
-              
-              // Reset drop to top randomly (much slower)
-              if (y > canvas.height && Math.random() > 0.99) {
-                drops[i] = 0;
+              if (y < canvas.height) {
+                ctx.fillText(charCache[i], x, y);
               }
               
-              // Move slower - only increment every few frames
-              if (Math.random() > 0.7) {
+              // Optimized drop logic
+              if (y > canvas.height && Math.random() > 0.95) {
+                drops[i] = 0;
+                charCache[i] = charArray[Math.floor(Math.random() * charArray.length)];
+              } else if (Math.random() > 0.8) {
                 drops[i]++;
               }
             }
           }
           
-          // Animation loop with slower frame rate
-          let frameCount = 0;
-          function animate() {
-            frameCount++;
-            // Only draw every 2nd frame for slower animation
-            if (frameCount % 2 === 0) {
-              draw();
+          // Throttled animation loop with adaptive FPS
+          function animate(currentTime) {
+            if (currentTime - lastTime >= frameInterval) {
+              if (isVisible) {
+                draw();
+              }
+              lastTime = currentTime;
             }
             animationId = requestAnimationFrame(animate);
           }
           
-          animate();
+          animate(0);
           
           // Cleanup function
           return function cleanup() {
             if (animationId) {
               cancelAnimationFrame(animationId);
             }
+            window.removeEventListener('resize', resizeCanvas);
+            document.removeEventListener('visibilitychange', () => {});
           };
         }
 

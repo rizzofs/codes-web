@@ -74,12 +74,7 @@ header.scrolled {
 }
 
 [data-theme="dark"] .navbar-brand img {
-    filter: brightness(0) invert(1);
-}
-
-/* Alternative: if you want to keep some color in dark mode */
-[data-theme="dark"] .navbar-brand img {
-    filter: brightness(0.9) contrast(1.2) saturate(0.8);
+    filter: brightness(0) invert(1) contrast(1.2);
 }
 
 /* Logo navbar: tamaño fijo y sin cambios entre modos */
@@ -109,7 +104,7 @@ header.scrolled {
 [data-theme="dark"] .navbar-logo {
   background: transparent !important;
   box-shadow: none !important;
-  filter: none !important;
+  filter: brightness(0) invert(1) contrast(1.2) !important;
   border-radius: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -450,7 +445,7 @@ header.scrolled {
 }
 
 .hero .subtitle {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInUp 1s ease-out 1s forwards;
@@ -645,7 +640,7 @@ header.scrolled {
   }
   
   .hero .subtitle {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   
   .hero .description {
@@ -2026,7 +2021,12 @@ header, .navbar, .navbar-light {
 }
 
 /* Eliminar cualquier filtro/fondo en modo oscuro */
-[data-theme="dark"] .navbar-logo,
+[data-theme="dark"] .navbar-logo {
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: brightness(0) invert(1) contrast(1.2) !important;
+}
+
 .navbar-logo {
   background: transparent !important;
   box-shadow: none !important;
