@@ -1,0 +1,325 @@
+/* ========================================
+   LOADING SCREEN - SPECTACULAR DESIGN
+   ======================================== */
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  overflow: hidden;
+  transition: all 1s ease-out;
+}
+
+.loading-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.loading-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.loading-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(57, 192, 195, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(57, 192, 195, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(57, 192, 195, 0.05) 0%, transparent 50%);
+  animation: backgroundPulse 4s ease-in-out infinite;
+}
+
+.loading-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(90deg, 
+    rgba(57, 192, 195, 0.1) 0%, 
+    rgba(57, 192, 195, 0.3) 50%, 
+    rgba(57, 192, 195, 0.1) 100%);
+  animation: waveAnimation 3s ease-in-out infinite;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes waveAnimation {
+  0%, 100% {
+    transform: translateX(-100%) scaleX(1);
+  }
+  50% {
+    transform: translateX(0%) scaleX(1.2);
+  }
+}
+
+.loading-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.loading-logo {
+  margin-bottom: 3rem;
+  animation: logoFloat 2s ease-in-out infinite;
+}
+
+.logo-container {
+  position: relative;
+}
+
+.logo-text {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #39c0c3 0%, #ffffff 50%, #39c0c3 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+  text-shadow: 0 0 30px rgba(57, 192, 195, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.logo-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.loading-progress {
+  margin-bottom: 3rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 100%);
+  animation: progressShine 2s ease-in-out infinite;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #39c0c3 0%, #ffffff 50%, #39c0c3 100%);
+  background-size: 200% 100%;
+  animation: progressGradient 2s ease infinite;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 20px rgba(57, 192, 195, 0.5);
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes progressGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.progress-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  animation: textPulse 1s ease-in-out infinite;
+}
+
+.progress-percentage {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #39c0c3;
+  text-shadow: 0 0 10px rgba(57, 192, 195, 0.5);
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.loading-animation {
+  margin-top: 2rem;
+}
+
+.code-animation {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #39c0c3;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(57, 192, 195, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.code-animation::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(57, 192, 195, 0.1) 50%, 
+    transparent 100%);
+  animation: codeScan 3s ease-in-out infinite;
+}
+
+.code-line {
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: codeReveal 0.5s ease-out forwards;
+}
+
+.code-line:nth-child(1) { animation-delay: 0.5s; }
+.code-line:nth-child(2) { animation-delay: 1s; }
+.code-line:nth-child(3) { animation-delay: 1.5s; }
+.code-line:nth-child(4) { animation-delay: 2s; }
+.code-line:nth-child(5) { animation-delay: 2.5s; }
+
+@keyframes codeReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes codeScan {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 3rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 1rem;
+  }
+  
+  .code-animation {
+    font-size: 0.8rem;
+    padding: 1rem;
+  }
+  
+  .progress-text {
+    font-size: 1rem;
+  }
+  
+  .progress-percentage {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-text {
+    font-size: 2.5rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .code-animation {
+    font-size: 0.7rem;
+    padding: 0.8rem;
+  }
+  
+  .loading-content {
+    padding: 1rem;
+  }
+}
